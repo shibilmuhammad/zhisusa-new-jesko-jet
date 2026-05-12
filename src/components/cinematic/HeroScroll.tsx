@@ -1,7 +1,11 @@
 "use client";
 
-import { useRef, useEffect, useState } from "react";
-import { motion, useScroll, useTransform, useMotionValueEvent } from "framer-motion";
+import { useRef, useEffect, useCallback } from "react";
+import {
+  motion,
+  useMotionValue,
+  useTransform,
+} from "framer-motion";
 import { SequenceCanvas } from "./SequenceCanvas";
 
 interface HeroScrollProps {
@@ -11,27 +15,53 @@ interface HeroScrollProps {
 
 export function HeroScroll({ onLoadProgress, onLoaded }: HeroScrollProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [isCanvasReady, setIsCanvasReady] = useState(false);
 
-  // Use native scroll position — NOT lenis-filtered — for maximum responsiveness
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"],
-  });
+  // ── Manual scroll progress (bypasses Framer Motion's useScroll bug) ──
+  // We create our own MotionValue and drive it from native scroll events.
+  // This eliminates the "container must have non-static position" issue
+  // and gives us reliable 0→1 progress across the full scroll range.
+  const scrollProgress = useMotionValue(0);
 
-  // Track scroll phase for debugging
-  const [currentPhase, setCurrentPhase] = useState(0);
-  useMotionValueEvent(scrollYProgress, "change", (v) => {
-    if (v < 0.30) setCurrentPhase(1);
-    else if (v < 0.65) setCurrentPhase(2);
-    else setCurrentPhase(3);
-  });
+  const updateProgress = useCallback(() => {
+    const el = containerRef.current;
+    if (!el) return;
 
-  // Show canvas content once first frame loads
-  const handleCanvasLoaded = () => {
-    setIsCanvasReady(true);
-    onLoaded?.();
-  };
+    const rect = el.getBoundingClientRect();
+    const windowH = window.innerHeight;
+    const sectionH = el.offsetHeight;
+
+    // Progress: 0 when section top is at viewport top,
+    //           1 when section bottom is at viewport bottom
+    // scrollRange = sectionHeight - viewportHeight
+    const scrollRange = sectionH - windowH;
+    if (scrollRange <= 0) return;
+
+    // rect.top starts at 0 (section at viewport top) and goes to -(sectionH - windowH)
+    const rawProgress = -rect.top / scrollRange;
+    const clamped = Math.max(0, Math.min(1, rawProgress));
+
+    scrollProgress.set(clamped);
+  }, [scrollProgress]);
+
+  useEffect(() => {
+    // Initial calculation
+    updateProgress();
+
+    // Synchronous scroll handler — no RAF delay.
+    // This ensures the canvas frame updates on the SAME paint frame
+    // as the scroll, eliminating black flashes between frames.
+    const onScroll = () => {
+      updateProgress();
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", updateProgress, { passive: true });
+
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", updateProgress);
+    };
+  }, [updateProgress]);
 
   // ═══════════════════════════════════════════════════════════
   // PHASE 1 — OPENING (0% → 28%)
@@ -39,75 +69,72 @@ export function HeroScroll({ onLoadProgress, onLoaded }: HeroScrollProps) {
   // "Work. Live. Leisure." top-left, "We are nature" bottom-right
   // ═══════════════════════════════════════════════════════════
 
-  // TOP-LEFT: "Work. Live. Leisure." — visible immediately, slides out left
+  // TOP-LEFT: "Work. Live. Leisure." — visible from start, like Jesko Jets
   const p1_topLeftOpacity = useTransform(
-    scrollYProgress,
-    [0, 0.01, 0.18, 0.26],
-    [1, 1, 1, 0]
-  );
-  const p1_topLeftY = useTransform(
-    scrollYProgress,
-    [0, 0.05],
-    [20, 0]
+    scrollProgress,
+    [0, 0.18, 0.26],
+    [1, 1, 0]
   );
   const p1_topLeftExitX = useTransform(
-    scrollYProgress,
+    scrollProgress,
     [0.18, 0.28],
     [0, -80]
   );
 
-  // Each word staggers slightly for drone-passing effect
-  const p1_word1_y = useTransform(scrollYProgress, [0, 0.08], [40, 0]);
-  const p1_word2_y = useTransform(scrollYProgress, [0, 0.10], [50, 0]);
-  const p1_word3_y = useTransform(scrollYProgress, [0, 0.12], [60, 0]);
-  const p1_word1_opacity = useTransform(scrollYProgress, [0, 0.03], [0, 1]);
-  const p1_word2_opacity = useTransform(scrollYProgress, [0.02, 0.06], [0, 1]);
-  const p1_word3_opacity = useTransform(scrollYProgress, [0.04, 0.09], [0, 1]);
+  // Staggered EXIT — each word fades at slightly different times
+  // as the drone "passes by" them. Creates parallax depth.
+  const p1_word1_opacity = useTransform(scrollProgress, [0, 0.16, 0.22], [1, 1, 0]);
+  const p1_word2_opacity = useTransform(scrollProgress, [0, 0.18, 0.24], [1, 1, 0]);
+  const p1_word3_opacity = useTransform(scrollProgress, [0, 0.20, 0.26], [1, 1, 0]);
+  // Words shift up slightly as drone passes for parallax
+  const p1_word1_y = useTransform(scrollProgress, [0.14, 0.24], [0, -20]);
+  const p1_word2_y = useTransform(scrollProgress, [0.16, 0.26], [0, -15]);
+  const p1_word3_y = useTransform(scrollProgress, [0.18, 0.28], [0, -10]);
 
-  // BOTTOM-RIGHT: "We are nature" — Jesko "We are distinction" style
+  // BOTTOM-RIGHT: "We are nature" — visible from start
   const p1_bottomRightOpacity = useTransform(
-    scrollYProgress,
-    [0.01, 0.04, 0.18, 0.26],
-    [0, 1, 1, 0]
+    scrollProgress,
+    [0, 0.18, 0.26],
+    [1, 1, 0]
   );
   const p1_bottomRightY = useTransform(
-    scrollYProgress,
-    [0.01, 0.06],
-    [40, 0]
+    scrollProgress,
+    [0.16, 0.26],
+    [0, 20]
   );
   const p1_bottomRightExitX = useTransform(
-    scrollYProgress,
+    scrollProgress,
     [0.18, 0.28],
     [0, 80]
   );
 
-  // BOTTOM-LEFT: Tagline + description (like Jesko's "Your freedom to enjoy life")
+  // BOTTOM-LEFT: Tagline + description (Jesko's "Your freedom to enjoy life")
   const p1_taglineOpacity = useTransform(
-    scrollYProgress,
-    [0.03, 0.07, 0.18, 0.26],
-    [0, 1, 1, 0]
+    scrollProgress,
+    [0, 0.18, 0.26],
+    [1, 1, 0]
   );
   const p1_taglineY = useTransform(
-    scrollYProgress,
-    [0.03, 0.09],
-    [30, 0]
+    scrollProgress,
+    [0.16, 0.26],
+    [0, 15]
   );
 
   // CENTER: "Zhisusa" brand text (like Jesko Jets center logo)
   const p1_centerOpacity = useTransform(
-    scrollYProgress,
+    scrollProgress,
     [0, 0.02, 0.12, 0.20],
     [1, 1, 1, 0]
   );
   const p1_centerScale = useTransform(
-    scrollYProgress,
+    scrollProgress,
     [0, 0.20],
     [1, 0.92]
   );
 
   // BOTTOM-CENTER: Scroll indicator
   const scrollIndicatorOpacity = useTransform(
-    scrollYProgress,
+    scrollProgress,
     [0, 0.04],
     [1, 0]
   );
@@ -118,39 +145,39 @@ export function HeroScroll({ onLoadProgress, onLoaded }: HeroScrollProps) {
   // ═══════════════════════════════════════════════════════════
 
   const p2_opacity = useTransform(
-    scrollYProgress,
+    scrollProgress,
     [0.30, 0.38, 0.55, 0.62],
     [0, 1, 1, 0]
   );
   const p2_y = useTransform(
-    scrollYProgress,
+    scrollProgress,
     [0.30, 0.40],
     [50, 0]
   );
   const p2_scale = useTransform(
-    scrollYProgress,
+    scrollProgress,
     [0.30, 0.40, 0.55, 0.62],
     [0.95, 1, 1, 1.03]
   );
 
-  // Side accents for phase 2 — small text that sweeps in from sides
+  // Side accents for phase 2
   const p2_leftAccentOpacity = useTransform(
-    scrollYProgress,
+    scrollProgress,
     [0.34, 0.42, 0.52, 0.58],
     [0, 1, 1, 0]
   );
   const p2_leftAccentX = useTransform(
-    scrollYProgress,
+    scrollProgress,
     [0.34, 0.44],
     [-40, 0]
   );
   const p2_rightAccentOpacity = useTransform(
-    scrollYProgress,
+    scrollProgress,
     [0.36, 0.44, 0.52, 0.58],
     [0, 1, 1, 0]
   );
   const p2_rightAccentX = useTransform(
-    scrollYProgress,
+    scrollProgress,
     [0.36, 0.46],
     [40, 0]
   );
@@ -161,29 +188,29 @@ export function HeroScroll({ onLoadProgress, onLoaded }: HeroScrollProps) {
   // ═══════════════════════════════════════════════════════════
 
   const p3_opacity = useTransform(
-    scrollYProgress,
+    scrollProgress,
     [0.65, 0.73, 0.88, 0.96],
     [0, 1, 1, 0]
   );
   const p3_leftX = useTransform(
-    scrollYProgress,
+    scrollProgress,
     [0.65, 0.76],
     [-100, 0]
   );
   const p3_rightX = useTransform(
-    scrollYProgress,
+    scrollProgress,
     [0.65, 0.76],
     [100, 0]
   );
 
-  // Bottom CTA that appears at the very end
+  // Bottom CTA at the very end
   const p3_ctaOpacity = useTransform(
-    scrollYProgress,
+    scrollProgress,
     [0.80, 0.88, 0.95, 1.0],
     [0, 1, 1, 0.6]
   );
   const p3_ctaY = useTransform(
-    scrollYProgress,
+    scrollProgress,
     [0.80, 0.90],
     [20, 0]
   );
@@ -193,8 +220,8 @@ export function HeroScroll({ onLoadProgress, onLoaded }: HeroScrollProps) {
       ref={containerRef}
       className="relative"
       style={{
-        height: "500vh",
-        // CRITICAL: no overflow:hidden here — it breaks sticky
+        height: "600vh",
+        position: "relative",
       }}
       aria-label="Hero cinematic sequence"
     >
@@ -209,17 +236,17 @@ export function HeroScroll({ onLoadProgress, onLoaded }: HeroScrollProps) {
           zIndex: 1,
         }}
       >
-        {/* Black fallback background to prevent flash */}
+        {/* Black fallback background */}
         <div className="absolute inset-0 bg-[#050505]" />
 
         {/* Canvas — the scroll-driven drone video */}
         <SequenceCanvas
           path="/sequence-1"
           frameCount={96}
-          progress={scrollYProgress}
+          progress={scrollProgress}
           className="absolute inset-0"
           onLoadProgress={onLoadProgress}
-          onLoaded={handleCanvasLoaded}
+          onLoaded={onLoaded}
         />
 
         {/* ── RADIAL VIGNETTE: sides dark, center bright ── */}
@@ -281,7 +308,6 @@ export function HeroScroll({ onLoadProgress, onLoaded }: HeroScrollProps) {
           style={{
             opacity: p1_topLeftOpacity,
             x: p1_topLeftExitX,
-            y: p1_topLeftY,
           }}
           className="absolute z-10 pointer-events-none top-[14vh] left-[clamp(1.5rem,4vw,4.5rem)]"
           data-phase="1-top-left"
@@ -311,7 +337,7 @@ export function HeroScroll({ onLoadProgress, onLoaded }: HeroScrollProps) {
           </h1>
         </motion.div>
 
-        {/* CENTER: "Zhisusa" brand (like Jesko Jets center logo in the window) */}
+        {/* CENTER: "Zhisusa" brand (like Jesko Jets center logo) */}
         <motion.div
           style={{
             opacity: p1_centerOpacity,
@@ -349,7 +375,7 @@ export function HeroScroll({ onLoadProgress, onLoaded }: HeroScrollProps) {
           </h2>
         </motion.div>
 
-        {/* BOTTOM-LEFT: Tagline + paragraph (like Jesko's "Your freedom to enjoy life") */}
+        {/* BOTTOM-LEFT: Tagline + paragraph */}
         <motion.div
           style={{
             opacity: p1_taglineOpacity,
@@ -373,7 +399,7 @@ export function HeroScroll({ onLoadProgress, onLoaded }: HeroScrollProps) {
           </p>
         </motion.div>
 
-        {/* BOTTOM-CENTER: Scroll indicator + journey text */}
+        {/* BOTTOM-CENTER: Scroll indicator */}
         <motion.div
           style={{ opacity: scrollIndicatorOpacity }}
           className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex items-center gap-6"
@@ -399,7 +425,7 @@ export function HeroScroll({ onLoadProgress, onLoaded }: HeroScrollProps) {
             PHASE 2 — MID-FLIGHT CENTER STATEMENT
             ═══════════════════════════════════════════════ */}
 
-        {/* Left side accent — thin vertical text */}
+        {/* Left side accent — vertical text */}
         <motion.div
           style={{
             opacity: p2_leftAccentOpacity,
@@ -446,7 +472,7 @@ export function HeroScroll({ onLoadProgress, onLoaded }: HeroScrollProps) {
           </div>
         </motion.div>
 
-        {/* Right side accent — coordinates/location style */}
+        {/* Right side accent — coordinates */}
         <motion.div
           style={{
             opacity: p2_rightAccentOpacity,
@@ -472,7 +498,6 @@ export function HeroScroll({ onLoadProgress, onLoaded }: HeroScrollProps) {
           style={{ opacity: p3_opacity }}
           className="absolute inset-0 z-10 flex items-center justify-between pointer-events-none px-[clamp(1.5rem,4vw,4.5rem)]"
         >
-          {/* Left text slides in from left */}
           <motion.div style={{ x: p3_leftX }}>
             <h2
               className="font-display uppercase leading-[0.92] font-extralight tracking-[0.03em]"
@@ -489,7 +514,6 @@ export function HeroScroll({ onLoadProgress, onLoaded }: HeroScrollProps) {
             </h2>
           </motion.div>
 
-          {/* Right text slides in from right */}
           <motion.div style={{ x: p3_rightX }} className="text-right">
             <h2
               className="font-display uppercase leading-[0.92] font-extralight tracking-[0.03em]"

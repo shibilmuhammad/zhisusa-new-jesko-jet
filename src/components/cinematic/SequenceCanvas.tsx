@@ -38,7 +38,8 @@ export function SequenceCanvas({
     const dw = img.naturalWidth * scale;
     const dh = img.naturalHeight * scale;
 
-    ctx.clearRect(0, 0, cw, ch);
+    // No clearRect needed — cover-sized images fully overlap the canvas.
+    // clearRect with alpha:false fills with black, causing visible flashes.
     ctx.drawImage(img, (cw - dw) / 2, (ch - dh) / 2, dw, dh);
   }, []);
 
@@ -154,6 +155,17 @@ export function SequenceCanvas({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [path, frameCount]);
 
+  // ── Find nearest loaded frame (fallback for fast scrolling) ──
+  const findNearestFrame = useCallback((imgs: HTMLImageElement[], targetIdx: number): HTMLImageElement | null => {
+    if (imgs[targetIdx]) return imgs[targetIdx];
+    // Search outward from target index
+    for (let d = 1; d < imgs.length; d++) {
+      if (targetIdx - d >= 0 && imgs[targetIdx - d]) return imgs[targetIdx - d];
+      if (targetIdx + d < imgs.length && imgs[targetIdx + d]) return imgs[targetIdx + d];
+    }
+    return null;
+  }, []);
+
   // ── 3. Scroll → frame sync via direct RAF polling ──
   // This is smoother than onChange because we sync on every paint frame
   useEffect(() => {
@@ -166,14 +178,16 @@ export function SequenceCanvas({
       const imgs = imagesRef.current;
 
       if (imgs.length > 0) {
+        // Clamp progress to 0-1 range
+        const clamped = Math.max(0, Math.min(1, v));
         const idx = Math.min(
-          Math.max(Math.round(v * (frameCount - 1)), 0),
+          Math.max(Math.round(clamped * (frameCount - 1)), 0),
           frameCount - 1
         );
 
         if (idx !== currentFrameRef.current) {
           currentFrameRef.current = idx;
-          const img = imgs[idx];
+          const img = findNearestFrame(imgs, idx);
           if (img) draw(img);
         }
       }
@@ -187,7 +201,7 @@ export function SequenceCanvas({
       running = false;
       cancelAnimationFrame(rafIdRef.current);
     };
-  }, [progress, frameCount, draw]);
+  }, [progress, frameCount, draw, findNearestFrame]);
 
   return (
     <canvas
