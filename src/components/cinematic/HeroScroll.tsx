@@ -314,8 +314,9 @@ export function HeroScroll({ onLoadProgress, onLoaded }: HeroScrollProps) {
             x: p1_topLeftExitX,
             scale: p1_topLeftScale,
             y: p1_topLeftY,
+            transformOrigin: "left center",
           }}
-          className="absolute z-10 pointer-events-none top-[14vh] left-[clamp(1.5rem,4vw,4.5rem)]"
+          className="absolute z-10 pointer-events-none top-[14vh] left-6 md:left-10 lg:left-16"
           data-phase="1-top-left"
         >
           <h1
@@ -362,8 +363,9 @@ export function HeroScroll({ onLoadProgress, onLoaded }: HeroScrollProps) {
             x: p1_bottomRightExitX,
             y: p1_bottomRightY,
             scale: p1_bottomRightScale,
+            transformOrigin: "right center",
           }}
-          className="absolute z-10 pointer-events-none bottom-[12vh] right-[clamp(0.15rem,1.2vw,1rem)] text-right"
+          className="absolute z-10 pointer-events-none bottom-[12vh] right-6 md:right-10 lg:right-16 text-right"
           data-phase="1-bottom-right"
         >
           <h2
@@ -383,8 +385,9 @@ export function HeroScroll({ onLoadProgress, onLoaded }: HeroScrollProps) {
             y: p1_taglineY,
             x: p1_taglineX,
             scale: p1_taglineScale,
+            transformOrigin: "left center",
           }}
-          className="absolute z-10 pointer-events-none bottom-[12vh] left-[clamp(1.5rem,4vw,4.5rem)] max-w-[280px] md:max-w-[320px] text-left"
+          className="absolute z-10 pointer-events-none bottom-[12vh] left-6 md:left-10 lg:left-16 max-w-[280px] md:max-w-[320px] text-left"
           data-phase="1-bottom-left"
         >
           <p className="font-display text-[clamp(1rem,2.2vw,1.35rem)] font-medium italic leading-snug tracking-wide text-white/85 mb-3">
