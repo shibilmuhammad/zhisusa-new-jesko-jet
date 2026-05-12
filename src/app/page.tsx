@@ -33,7 +33,7 @@ export default function HomePage() {
     <>
       <IntroLoader isLoading={!heroLoaded} progress={heroProgress} />
 
-      <main className="bg-background text-foreground overflow-hidden selection:bg-white/15 selection:text-white">
+      <main className="bg-background text-foreground selection:bg-white/15 selection:text-white" style={{ overflow: 'visible' }}>
         <GrainOverlay />
         <Navbar />
 

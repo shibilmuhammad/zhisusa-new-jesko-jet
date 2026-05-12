@@ -8,7 +8,7 @@ export function useLenis() {
 
   useEffect(() => {
     const lenis = new Lenis({
-      duration: 1.4,
+      duration: 0.9,
       smoothWheel: true,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any);

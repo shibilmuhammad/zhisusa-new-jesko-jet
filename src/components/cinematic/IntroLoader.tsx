@@ -12,12 +12,21 @@ export function IntroLoader({ isLoading, progress }: IntroLoaderProps) {
   const [showLoader, setShowLoader] = useState(true);
 
   useEffect(() => {
-    if (!isLoading) {
-      // Keep the loader visible briefly after loading completes for a smooth exit
-      const timer = setTimeout(() => setShowLoader(false), 800);
+    // Dismiss the loader either when fully loaded OR after a max of 4 seconds
+    // This prevents the black screen issue — canvas draws frame 0 immediately,
+    // so hiding the loader early is safe.
+    if (!isLoading || progress > 0.3) {
+      const delay = !isLoading ? 400 : 200;
+      const timer = setTimeout(() => setShowLoader(false), delay);
       return () => clearTimeout(timer);
     }
-  }, [isLoading]);
+  }, [isLoading, progress]);
+
+  // Also add a hard timeout — never show loader for more than 5s
+  useEffect(() => {
+    const timer = setTimeout(() => setShowLoader(false), 5000);
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <AnimatePresence>
@@ -25,7 +34,7 @@ export function IntroLoader({ isLoading, progress }: IntroLoaderProps) {
         <motion.div
           initial={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           className="fixed inset-0 z-[200] bg-background flex flex-col items-center justify-center"
         >
           {/* Ambient glow */}
@@ -35,7 +44,7 @@ export function IntroLoader({ isLoading, progress }: IntroLoaderProps) {
           <motion.div
             initial={{ opacity: 0, y: 20, filter: "blur(10px)" }}
             animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-            transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
             className="relative z-10 flex flex-col items-center"
           >
             <h1 className="font-display text-3xl md:text-4xl tracking-[0.35em] uppercase font-light mb-12">
@@ -56,7 +65,7 @@ export function IntroLoader({ isLoading, progress }: IntroLoaderProps) {
             <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.5, duration: 1 }}
+              transition={{ delay: 0.3, duration: 0.8 }}
               className="mt-8 text-xs tracking-[0.3em] uppercase text-white/30 font-light"
             >
               Entering Zhisusa

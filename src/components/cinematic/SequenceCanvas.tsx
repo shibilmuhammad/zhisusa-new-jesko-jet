@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useCallback } from "react";
 import { MotionValue } from "framer-motion";
-import { cn } from "@/lib/utils";
 
 interface SequenceCanvasProps {
   path: string;
@@ -22,140 +21,132 @@ export function SequenceCanvas({
   onLoaded,
 }: SequenceCanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const currentFrameRef = useRef<number>(-1);
-  const contextRef = useRef<CanvasRenderingContext2D | null>(null);
+  const ctxRef = useRef<CanvasRenderingContext2D | null>(null);
   const imagesRef = useRef<HTMLImageElement[]>([]);
-  const loadedRef = useRef(false);
-  const isLoadedState = useRef(false);
-  const dimensionsRef = useRef({ width: 0, height: 0 });
+  const currentFrameRef = useRef(-1);
+  const rafIdRef = useRef(0);
 
-  // ───────────────────────────────────────────────
-  // 1. SET UP CANVAS CONTEXT — once, immediately
-  // ───────────────────────────────────────────────
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    // Use willReadFrequently: false + alpha: false for best GPU-composited perf
-    contextRef.current = canvas.getContext("2d", {
-      alpha: false,
-      desynchronized: true, // Reduces latency on supported browsers
-    });
+  // ── Draw a single frame (object-fit: cover) ──
+  const draw = useCallback((img: HTMLImageElement) => {
+    const ctx = ctxRef.current;
+    const c = canvasRef.current;
+    if (!ctx || !c || !img || !img.naturalWidth) return;
+
+    const cw = c.width;
+    const ch = c.height;
+    const scale = Math.max(cw / img.naturalWidth, ch / img.naturalHeight);
+    const dw = img.naturalWidth * scale;
+    const dh = img.naturalHeight * scale;
+
+    ctx.clearRect(0, 0, cw, ch);
+    ctx.drawImage(img, (cw - dw) / 2, (ch - dh) / 2, dw, dh);
   }, []);
 
-  // ───────────────────────────────────────────────
-  // 2. RESIZE HANDLER — set canvas buffer size to match CSS size × DPR
-  // ───────────────────────────────────────────────
+  // ── Size the canvas buffer to match screen ──
+  const sizeCanvas = useCallback(() => {
+    const c = canvasRef.current;
+    if (!c) return;
+    // Cap DPR at 1.5 for performance — no visual difference on most screens
+    const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+    const r = c.getBoundingClientRect();
+    if (c.width !== Math.floor(r.width * dpr) || c.height !== Math.floor(r.height * dpr)) {
+      c.width = Math.floor(r.width * dpr);
+      c.height = Math.floor(r.height * dpr);
+    }
+  }, []);
+
+  // ── 1. Init context + size canvas on mount ──
   useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
+    const c = canvasRef.current;
+    if (!c) return;
+    ctxRef.current = c.getContext("2d", {
+      alpha: false,
+      desynchronized: true, // Hints browser to reduce latency
+    });
+    sizeCanvas();
 
-    const setCanvasSize = () => {
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      const rect = canvas.getBoundingClientRect();
-      const w = Math.round(rect.width * dpr);
-      const h = Math.round(rect.height * dpr);
+    const onResize = () => {
+      sizeCanvas();
+      // Redraw current frame after resize
+      const img = imagesRef.current[Math.max(0, currentFrameRef.current)];
+      if (img) draw(img);
+    };
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, [sizeCanvas, draw]);
 
-      // Only resize if dimensions actually changed
-      if (w !== dimensionsRef.current.width || h !== dimensionsRef.current.height) {
-        canvas.width = w;
-        canvas.height = h;
-        dimensionsRef.current = { width: w, height: h };
+  // ── 2. Load all images with priority loading strategy ──
+  useEffect(() => {
+    let cancelled = false;
+    let loadedCount = 0;
+    const imgs: HTMLImageElement[] = new Array(frameCount);
 
-        // Redraw current frame if we have images
-        if (loadedRef.current && currentFrameRef.current >= 0) {
-          const img = imagesRef.current[currentFrameRef.current];
-          if (img) drawFrame(img);
-        }
+    const onImageLoaded = (i: number, img: HTMLImageElement) => {
+      if (cancelled) return;
+      imgs[i] = img;
+      loadedCount++;
+
+      // Draw frame 0 the instant it arrives — kills the black screen
+      if (i === 0) {
+        imagesRef.current = imgs;
+        sizeCanvas();
+        draw(img);
+        currentFrameRef.current = 0;
+      }
+
+      onLoadProgress?.(loadedCount / frameCount);
+
+      if (loadedCount === frameCount) {
+        imagesRef.current = imgs;
+        onLoaded?.();
       }
     };
 
-    setCanvasSize();
+    const loadImage = (i: number) => {
+      return new Promise<void>((resolve) => {
+        const img = new Image();
+        img.decoding = "async";
+        img.src = `${path}/ezgif-frame-${String(i + 1).padStart(3, "0")}.jpg`;
 
-    // Debounce resize to 150ms
-    let timer: ReturnType<typeof setTimeout>;
-    const onResize = () => {
-      clearTimeout(timer);
-      timer = setTimeout(setCanvasSize, 150);
+        img.onload = () => {
+          onImageLoaded(i, img);
+          resolve();
+        };
+        img.onerror = () => {
+          if (!cancelled) {
+            loadedCount++;
+            onLoadProgress?.(loadedCount / frameCount);
+            if (loadedCount === frameCount) {
+              imagesRef.current = imgs;
+              onLoaded?.();
+            }
+          }
+          resolve();
+        };
+      });
     };
 
-    window.addEventListener("resize", onResize);
-    return () => {
-      window.removeEventListener("resize", onResize);
-      clearTimeout(timer);
+    // Load first 5 frames eagerly for instant responsiveness
+    const loadSequentially = async () => {
+      // Priority: load frames 0-4 first
+      for (let i = 0; i < Math.min(5, frameCount); i++) {
+        await loadImage(i);
+        if (cancelled) return;
+      }
+
+      // Then load remaining frames in parallel batches of 8
+      const batchSize = 8;
+      for (let start = 5; start < frameCount; start += batchSize) {
+        const batch = [];
+        for (let i = start; i < Math.min(start + batchSize, frameCount); i++) {
+          batch.push(loadImage(i));
+        }
+        await Promise.all(batch);
+        if (cancelled) return;
+      }
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
-  // ───────────────────────────────────────────────
-  // 3. DRAW FRAME — object-fit: cover math, no allocations per call
-  // ───────────────────────────────────────────────
-  const drawFrame = useCallback((img: HTMLImageElement) => {
-    const ctx = contextRef.current;
-    const canvas = canvasRef.current;
-    if (!ctx || !canvas || !img.naturalWidth) return;
-
-    const cw = canvas.width;
-    const ch = canvas.height;
-    const iw = img.naturalWidth;
-    const ih = img.naturalHeight;
-
-    // object-fit: cover
-    const scale = Math.max(cw / iw, ch / ih);
-    const dw = iw * scale;
-    const dh = ih * scale;
-    const dx = (cw - dw) * 0.5;
-    const dy = (ch - dh) * 0.5;
-
-    ctx.drawImage(img, dx, dy, dw, dh);
-  }, []);
-
-  // ───────────────────────────────────────────────
-  // 4. PRELOAD ALL IMAGES — aggressive parallel loading
-  // ───────────────────────────────────────────────
-  useEffect(() => {
-    let cancelled = false;
-    let loaded = 0;
-    const images: HTMLImageElement[] = new Array(frameCount);
-
-    // Load all images in parallel — browsers cap concurrent
-    // connections per domain (~6-12), so this is naturally throttled
-    for (let i = 0; i < frameCount; i++) {
-      const img = new Image();
-      img.decoding = "async";
-      img.src = `${path}/ezgif-frame-${String(i + 1).padStart(3, "0")}.jpg`;
-
-      img.onload = () => {
-        if (cancelled) return;
-        images[i] = img;
-        loaded++;
-        onLoadProgress?.(loaded / frameCount);
-
-        // Draw first frame as soon as it arrives
-        if (i === 0 && canvasRef.current) {
-          drawFrame(img);
-          currentFrameRef.current = 0;
-        }
-
-        if (loaded === frameCount) {
-          imagesRef.current = images;
-          loadedRef.current = true;
-          isLoadedState.current = true;
-          onLoaded?.();
-        }
-      };
-
-      img.onerror = () => {
-        if (cancelled) return;
-        loaded++;
-        onLoadProgress?.(loaded / frameCount);
-        if (loaded === frameCount) {
-          imagesRef.current = images;
-          loadedRef.current = true;
-          isLoadedState.current = true;
-          onLoaded?.();
-        }
-      };
-    }
+    loadSequentially();
 
     return () => {
       cancelled = true;
@@ -163,42 +154,51 @@ export function SequenceCanvas({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [path, frameCount]);
 
-  // ───────────────────────────────────────────────
-  // 5. SCROLL → FRAME sync — direct RAF, no batching overhead
-  // ───────────────────────────────────────────────
+  // ── 3. Scroll → frame sync via direct RAF polling ──
+  // This is smoother than onChange because we sync on every paint frame
   useEffect(() => {
-    let raf = 0;
+    let running = true;
 
-    const unsubscribe = progress.on("change", (v) => {
-      if (!loadedRef.current) return;
+    const tick = () => {
+      if (!running) return;
 
-      const idx = Math.min(
-        Math.max(Math.round(v * (frameCount - 1)), 0),
-        frameCount - 1
-      );
+      const v = progress.get();
+      const imgs = imagesRef.current;
 
-      // Only redraw if the frame actually changed
-      if (idx === currentFrameRef.current) return;
-      currentFrameRef.current = idx;
+      if (imgs.length > 0) {
+        const idx = Math.min(
+          Math.max(Math.round(v * (frameCount - 1)), 0),
+          frameCount - 1
+        );
 
-      const img = imagesRef.current[idx];
-      if (!img) return;
+        if (idx !== currentFrameRef.current) {
+          currentFrameRef.current = idx;
+          const img = imgs[idx];
+          if (img) draw(img);
+        }
+      }
 
-      cancelAnimationFrame(raf);
-      raf = requestAnimationFrame(() => drawFrame(img));
-    });
+      rafIdRef.current = requestAnimationFrame(tick);
+    };
+
+    rafIdRef.current = requestAnimationFrame(tick);
 
     return () => {
-      unsubscribe();
-      cancelAnimationFrame(raf);
+      running = false;
+      cancelAnimationFrame(rafIdRef.current);
     };
-  }, [progress, frameCount, drawFrame]);
+  }, [progress, frameCount, draw]);
 
   return (
     <canvas
       ref={canvasRef}
-      className={cn("block w-full h-full", className)}
-      style={{ width: "100%", height: "100%" }}
+      className={className}
+      style={{
+        display: "block",
+        width: "100%",
+        height: "100%",
+        willChange: "contents",
+      }}
       aria-hidden="true"
     />
   );
