@@ -38,7 +38,7 @@ export function LeisureSection() {
           <FadeText>
             <motion.h2
               style={{ y: headingY }}
-              className="font-display text-6xl sm:text-7xl md:text-8xl lg:text-[10rem] xl:text-[12rem] uppercase tracking-[0.05em] font-extralight leading-[0.9] text-white/[0.06] text-right"
+              className="font-display text-6xl sm:text-7xl md:text-8xl lg:text-[10rem] xl:text-[12rem] uppercase tracking-[0.05em] font-light leading-[0.9] text-white/[0.14] text-right"
             >
               Leisure.
             </motion.h2>
@@ -46,14 +46,14 @@ export function LeisureSection() {
 
           <div className="mt-8 md:mt-12 max-w-2xl text-right">
             <FadeText delay={0.2}>
-              <h3 className="font-display text-3xl md:text-4xl lg:text-5xl uppercase tracking-[0.1em] font-extralight mb-6">
+              <h3 className="font-display text-3xl md:text-4xl lg:text-5xl uppercase tracking-[0.1em] font-medium text-white/95 mb-6">
                 Life Beyond
                 <br />
                 The Screen
               </h3>
             </FadeText>
             <FadeText delay={0.3}>
-              <div className="space-y-4 text-white/40 text-base md:text-lg tracking-wide font-light">
+              <div className="space-y-4 text-white/78 text-base md:text-lg tracking-wide font-normal">
                 <p>Kayaking at sunrise.</p>
                 <p>Bonfires after midnight.</p>
                 <p>Slow conversations under quiet skies.</p>
@@ -82,7 +82,7 @@ export function LeisureSection() {
             >
               <div className="flex flex-col items-center gap-4">
                 {/* Time label */}
-                <span className="text-[10px] tracking-[0.3em] uppercase text-white/20 font-light">
+                <span className="text-[10px] tracking-[0.3em] uppercase text-white/55 font-medium">
                   {activity.time}
                 </span>
 
@@ -93,7 +93,7 @@ export function LeisureSection() {
                 </div>
 
                 {/* Activity name */}
-                <span className="font-display text-lg md:text-xl tracking-[0.15em] uppercase font-light text-white/50 group-hover:text-white transition-colors duration-500 whitespace-nowrap">
+                <span className="font-display text-lg md:text-xl tracking-[0.14em] uppercase font-medium text-white/82 group-hover:text-white transition-colors duration-500 whitespace-nowrap">
                   {activity.name}
                 </span>
               </div>
@@ -105,7 +105,7 @@ export function LeisureSection() {
         <FadeText delay={0.5}>
           <div className="mt-24 flex items-center justify-center gap-6">
             <div className="flex-1 h-[1px] bg-gradient-to-r from-transparent to-white/[0.06]" />
-            <span className="text-[10px] tracking-[0.4em] uppercase text-white/15 font-light">
+            <span className="text-[10px] tracking-[0.36em] uppercase text-white/55 font-medium">
               Every hour, a new story
             </span>
             <div className="flex-1 h-[1px] bg-gradient-to-l from-transparent to-white/[0.06]" />

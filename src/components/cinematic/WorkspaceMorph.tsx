@@ -57,7 +57,7 @@ export function WorkspaceMorph() {
         />
 
         {/* Dark overlay for text legibility */}
-        <div className="absolute inset-0 z-[3] bg-black/25 pointer-events-none" />
+        <div className="absolute inset-0 z-[3] bg-black/42 pointer-events-none" />
 
         {/* Content */}
         <div className="absolute inset-0 z-10 flex flex-col items-center justify-center pointer-events-none p-6 text-center">
@@ -68,7 +68,7 @@ export function WorkspaceMorph() {
                 y: titleY,
                 filter: titleBlur,
               }}
-              className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-8xl uppercase tracking-[0.15em] font-extralight mb-4"
+              className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-8xl uppercase tracking-[0.11em] font-medium text-white/95 mb-4"
             >
               Work Without Walls
             </motion.h2>
@@ -81,7 +81,7 @@ export function WorkspaceMorph() {
 
             <motion.p
               style={{ opacity: subtitleOpacity, y: subtitleY }}
-              className="text-white/50 text-base sm:text-lg md:text-xl lg:text-2xl tracking-[0.08em] font-light max-w-2xl text-balance"
+              className="text-white/85 text-base sm:text-lg md:text-xl lg:text-2xl tracking-[0.06em] font-normal max-w-2xl text-balance"
             >
               Private offices. Open-air desks. Nature-integrated focus.
             </motion.p>
@@ -89,7 +89,7 @@ export function WorkspaceMorph() {
             {/* Accent detail */}
             <motion.div
               style={{ opacity: subtitleOpacity }}
-              className="mt-12 flex items-center gap-4 text-xs tracking-[0.3em] uppercase text-white/20 font-light"
+              className="mt-12 flex items-center gap-4 text-xs tracking-[0.24em] uppercase text-white/65 font-medium"
             >
               <span className="w-8 h-[1px] bg-white/20" />
               <span>Designed for deep work</span>

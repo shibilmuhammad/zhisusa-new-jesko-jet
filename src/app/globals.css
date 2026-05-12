@@ -7,8 +7,6 @@
   body {
     background: #050505;
     color: white;
-    /* Use clip instead of hidden — overflow:hidden breaks sticky positioning */
-    overflow-x: clip;
   }
 
   body {

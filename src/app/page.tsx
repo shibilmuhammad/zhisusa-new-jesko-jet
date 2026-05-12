@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef } from "react";
 import { useLenis } from "@/hooks/useLenis";
 import { Navbar } from "@/components/layout/Navbar";
 import { HeroScroll } from "@/components/cinematic/HeroScroll";
@@ -20,12 +20,23 @@ export default function HomePage() {
 
   const [heroLoaded, setHeroLoaded] = useState(false);
   const [heroProgress, setHeroProgress] = useState(0);
+  const lastProgressRef = useRef(0);
 
   const handleHeroLoadProgress = useCallback((progress: number) => {
-    setHeroProgress(progress);
+    // Avoid rerendering the whole page on every decoded frame.
+    if (
+      progress >= 1 ||
+      progress - lastProgressRef.current >= 0.04 ||
+      progress < lastProgressRef.current
+    ) {
+      lastProgressRef.current = progress;
+      setHeroProgress(progress);
+    }
   }, []);
 
   const handleHeroLoaded = useCallback(() => {
+    lastProgressRef.current = 1;
+    setHeroProgress(1);
     setHeroLoaded(true);
   }, []);
 
@@ -33,8 +44,8 @@ export default function HomePage() {
     <>
       <IntroLoader isLoading={!heroLoaded} progress={heroProgress} />
 
-      <main className="bg-background text-foreground selection:bg-white/15 selection:text-white" style={{ overflow: 'visible' }}>
-        <GrainOverlay />
+      <main className="bg-background text-foreground selection:bg-white/15 selection:text-white">
+        {heroLoaded && <GrainOverlay />}
         <Navbar />
 
         {/* Section 1: Cinematic Hero */}

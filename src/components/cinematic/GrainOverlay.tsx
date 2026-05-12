@@ -1,10 +1,12 @@
 export function GrainOverlay() {
   return (
     <div
-      className="pointer-events-none fixed inset-0 z-[100] opacity-[0.035] mix-blend-soft-light"
+      className="pointer-events-none fixed inset-0 z-[100] opacity-[0.015]"
       style={{
-        backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
-        backgroundRepeat: "repeat",
+        backgroundImage:
+          "radial-gradient(circle at 20% 20%, rgba(255,255,255,0.3) 0 1px, transparent 1px), radial-gradient(circle at 80% 70%, rgba(255,255,255,0.25) 0 1px, transparent 1px)",
+        backgroundSize: "3px 3px, 4px 4px",
+        transform: "translateZ(0)",
       }}
       aria-hidden="true"
     />

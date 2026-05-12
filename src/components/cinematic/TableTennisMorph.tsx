@@ -60,20 +60,20 @@ export function TableTennisMorph() {
         </motion.div>
 
         {/* Atmospheric overlay */}
-        <div className="absolute inset-0 z-[3] bg-black/30 pointer-events-none" />
+        <div className="absolute inset-0 z-[3] bg-black/45 pointer-events-none" />
 
         {/* Content */}
         <div className="absolute inset-0 z-10 flex flex-col items-center justify-center pointer-events-none p-6 text-center">
           <div className="max-w-5xl flex flex-col items-center">
             <motion.h2
               style={{ opacity: line1Opacity, y: line1Y }}
-              className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-8xl uppercase tracking-[0.15em] font-extralight leading-tight"
+              className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-8xl uppercase tracking-[0.11em] font-medium text-white/95 leading-tight"
             >
               When Work Ends,
             </motion.h2>
             <motion.h2
               style={{ opacity: line2Opacity, y: line2Y }}
-              className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-8xl uppercase tracking-[0.15em] font-extralight leading-tight mb-8"
+              className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-8xl uppercase tracking-[0.11em] font-medium text-white/95 leading-tight mb-8"
             >
               Life Begins
             </motion.h2>
@@ -83,7 +83,7 @@ export function TableTennisMorph() {
               className="flex flex-col items-center gap-6"
             >
               <div className="w-16 h-[1px] bg-white/20" />
-              <p className="text-white/50 text-base sm:text-lg md:text-xl lg:text-2xl tracking-[0.08em] font-light">
+              <p className="text-white/85 text-base sm:text-lg md:text-xl lg:text-2xl tracking-[0.06em] font-normal">
                 Fishing. Kayaking. Bonfires. Conversations.
               </p>
             </motion.div>

@@ -67,18 +67,18 @@ export function ExperienceSection() {
         <FadeText>
           <div className="flex items-center gap-6 mb-6">
             <div className="w-12 h-[1px] bg-white/15" />
-            <span className="text-[10px] tracking-[0.4em] uppercase text-white/25 font-light">
+            <span className="text-[10px] tracking-[0.38em] uppercase text-white/65 font-medium">
               Curated for you
             </span>
           </div>
         </FadeText>
         <FadeText delay={0.1}>
-          <h2 className="font-display text-4xl md:text-5xl lg:text-7xl uppercase tracking-[0.1em] font-extralight mb-6">
+          <h2 className="font-display text-4xl md:text-5xl lg:text-7xl uppercase tracking-[0.1em] font-medium text-white/95 mb-6">
             Experiences
           </h2>
         </FadeText>
         <FadeText delay={0.2}>
-          <p className="text-white/35 text-base md:text-lg tracking-wide font-light max-w-xl">
+          <p className="text-white/75 text-base md:text-lg tracking-wide font-normal max-w-xl">
             Design your perfect escape. Every experience is an invitation to
             discover something deeper.
           </p>
@@ -111,15 +111,15 @@ export function ExperienceSection() {
             />
 
             {/* Gradient for text */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/78 via-black/15 to-transparent" />
 
             {/* Content */}
             <div className="absolute inset-0 flex flex-col justify-end p-8 md:p-10">
               <div className="transform translate-y-3 group-hover:translate-y-0 transition-transform duration-700 ease-cinematic">
-                <h3 className="font-display text-lg md:text-xl lg:text-2xl uppercase tracking-[0.12em] font-light mb-2">
+                <h3 className="font-display text-lg md:text-xl lg:text-2xl uppercase tracking-[0.12em] font-medium text-white/92 mb-2">
                   {exp.title}
                 </h3>
-                <p className="text-white/35 text-sm tracking-wide font-light opacity-0 group-hover:opacity-100 transition-opacity duration-700 delay-100 max-w-md">
+                <p className="text-white/75 text-sm tracking-wide font-normal opacity-0 group-hover:opacity-100 transition-opacity duration-700 delay-100 max-w-md">
                   {exp.description}
                 </p>
               </div>

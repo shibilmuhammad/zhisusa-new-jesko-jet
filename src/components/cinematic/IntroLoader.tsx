@@ -12,21 +12,26 @@ export function IntroLoader({ isLoading, progress }: IntroLoaderProps) {
   const [showLoader, setShowLoader] = useState(true);
 
   useEffect(() => {
-    // Dismiss the loader either when fully loaded OR after a max of 4 seconds
-    // This prevents the black screen issue — canvas draws frame 0 immediately,
-    // so hiding the loader early is safe.
-    if (!isLoading || progress > 0.3) {
-      const delay = !isLoading ? 400 : 200;
+    // Keep loader until sequence is fully ready for smooth first interaction.
+    if (!isLoading) {
+      const delay = 300;
       const timer = setTimeout(() => setShowLoader(false), delay);
       return () => clearTimeout(timer);
     }
   }, [isLoading, progress]);
 
-  // Also add a hard timeout — never show loader for more than 5s
+  // Safety fallback for slow networks.
   useEffect(() => {
-    const timer = setTimeout(() => setShowLoader(false), 5000);
+    const timer = setTimeout(() => setShowLoader(false), 15000);
     return () => clearTimeout(timer);
   }, []);
+
+  useEffect(() => {
+    document.body.style.overflow = showLoader ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [showLoader]);
 
   return (
     <AnimatePresence>

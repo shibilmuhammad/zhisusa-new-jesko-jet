@@ -52,7 +52,7 @@ export function StaySection() {
         <FadeText>
           <motion.h2
             style={{ y: headingY }}
-            className="font-display text-6xl sm:text-7xl md:text-8xl lg:text-[10rem] xl:text-[12rem] uppercase tracking-[0.05em] font-extralight leading-[0.9] text-white/[0.06]"
+            className="font-display text-6xl sm:text-7xl md:text-8xl lg:text-[10rem] xl:text-[12rem] uppercase tracking-[0.05em] font-light leading-[0.9] text-white/[0.14]"
           >
             Stay.
           </motion.h2>
@@ -60,14 +60,14 @@ export function StaySection() {
 
         <div className="mt-8 md:mt-12 max-w-2xl">
           <FadeText delay={0.2}>
-            <h3 className="font-display text-3xl md:text-4xl lg:text-5xl uppercase tracking-[0.1em] font-extralight mb-6">
+            <h3 className="font-display text-3xl md:text-4xl lg:text-5xl uppercase tracking-[0.1em] font-medium text-white/95 mb-6">
               Immersive
               <br />
               Accommodations
             </h3>
           </FadeText>
           <FadeText delay={0.3}>
-            <div className="space-y-4 text-white/40 text-base md:text-lg tracking-wide font-light max-w-lg">
+            <div className="space-y-4 text-white/78 text-base md:text-lg tracking-wide font-normal max-w-lg">
               <p>Private villas hidden between forests.</p>
               <p>Luxury tents beneath open skies.</p>
               <p>Tree houses built for silence.</p>
@@ -107,15 +107,15 @@ export function StaySection() {
             <div className="absolute inset-0 opacity-[0.03] bg-[url('data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%20200%20200%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Cfilter%20id%3D%22n%22%3E%3CfeTurbulence%20baseFrequency%3D%220.9%22/%3E%3C/filter%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20filter%3D%22url(%23n)%22/%3E%3C/svg%3E')]" />
 
             {/* Bottom gradient for text */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/18 to-transparent" />
 
             {/* Content */}
             <div className="absolute inset-0 flex flex-col justify-end p-8 md:p-10">
               <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-700 ease-cinematic">
-                <h4 className="font-display text-xl md:text-2xl uppercase tracking-[0.15em] font-light mb-2">
+                <h4 className="font-display text-xl md:text-2xl uppercase tracking-[0.14em] font-medium text-white/92 mb-2">
                   {item.title}
                 </h4>
-                <p className="text-white/40 text-sm tracking-wide font-light opacity-0 group-hover:opacity-100 transition-opacity duration-700 delay-100 max-w-sm">
+                <p className="text-white/75 text-sm tracking-wide font-normal opacity-0 group-hover:opacity-100 transition-opacity duration-700 delay-100 max-w-sm">
                   {item.description}
                 </p>
               </div>
