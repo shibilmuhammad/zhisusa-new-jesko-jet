@@ -8,24 +8,28 @@ const accommodations = [
   {
     title: "Private Villas",
     description: "Hidden between ancient forests, wrapped in silence.",
+    image: "/stay_villa_1778668418060.png",
     gradient: "from-[#1a1f1a] via-[#141414] to-[#0a0a0a]",
     accentColor: "from-accent-olive/20",
   },
   {
     title: "Luxury Tents",
     description: "Beneath open skies, where comfort meets wilderness.",
+    image: "/stay_tent_1778668433003.png",
     gradient: "from-[#1a1815] via-[#141414] to-[#0a0a0a]",
     accentColor: "from-accent-beige/15",
   },
   {
     title: "Tree Houses",
     description: "Built for silence, elevated above the ordinary.",
+    image: "/stay_treehouse_1778668450104.png",
     gradient: "from-[#151a17] via-[#141414] to-[#0a0a0a]",
     accentColor: "from-accent-olive/15",
   },
   {
     title: "Glass Cabins",
     description: "Nature on every side. Nothing between you and the sky.",
+    image: "/stay_cabin_1778668472270.png",
     gradient: "from-[#181a1f] via-[#141414] to-[#0a0a0a]",
     accentColor: "from-accent-fog/10",
   },
@@ -93,10 +97,15 @@ export function StaySection() {
               index === 0 ? "md:row-span-2 aspect-[3/4] md:aspect-auto" : "aspect-[16/10]"
             }`}
           >
-            {/* Background gradient (placeholder for imagery) */}
-            <div
-              className={`absolute inset-0 bg-gradient-to-br ${item.gradient} transition-transform duration-1000 ease-cinematic group-hover:scale-105`}
+            {/* Background Image */}
+            <motion.img
+              src={item.image}
+              alt={item.title}
+              className="absolute inset-0 w-full h-full object-cover transition-transform duration-[1.2s] ease-cinematic group-hover:scale-110"
             />
+            
+            {/* Fallback Gradient (underlay) */}
+            <div className={`absolute inset-0 bg-gradient-to-br ${item.gradient} opacity-40`} />
 
             {/* Accent radial glow */}
             <div

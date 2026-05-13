@@ -24,10 +24,15 @@ export function HeroScroll({ onLoadProgress, onLoaded }: HeroScrollProps) {
     target: containerRef,
     offset: ["start start", "end end"],
   });
+  
+  // ── CINEMATIC INERTIA ──
+  // Using a faster, highly responsive spring config to avoid 'laggy' feeling
+  // while maintaining that premium weighted deceleration.
   const smoothProgress = useSpring(scrollProgress, {
-    stiffness: 185,
-    damping: 28,
-    mass: 0.3,
+    stiffness: 300, 
+    damping: 50,
+    mass: 0.1,
+    restDelta: 0.0001
   });
 
   // Shared zoom curve to create Jesko-like "camera + typography" illusion.
@@ -42,21 +47,25 @@ export function HeroScroll({ onLoadProgress, onLoaded }: HeroScrollProps) {
   // TOP-LEFT: "Work. Live. Leisure." — visible from start, like Jesko Jets
   const p1_topLeftOpacity = useTransform(
     smoothProgress,
-    [0, 0.03, 0.14, 0.22],
-    [0.6, 1, 1, 0]
+    [0, 0.10, 0.18],
+    [1, 0.9, 0]
   );
   const p1_topLeftExitX = useTransform(
     smoothProgress,
-    // High sensitivity: tiny scroll immediately drifts outward
-    [0, 0.02, 0.06, 0.18],
-    [0, -28, -90, -240]
+    [0, 0.18],
+    [0, -320]
   );
   const p1_topLeftScale = useTransform(
     smoothProgress,
-    [0, 0.02, 0.06, 0.18],
-    [0.8, 0.9, 1.02, 1.13]
+    [0, 0.18],
+    [1, 1.4]
   );
-  const p1_topLeftY = useTransform(smoothProgress, [0, 0.06, 0.18], [0, -6, -14]);
+  const p1_topLeftY = useTransform(smoothProgress, [0, 0.18], [0, -40]);
+  const p1_topLeftBlur = useTransform(
+    smoothProgress,
+    [0, 0.10, 0.18],
+    ["blur(0px)", "blur(2px)", "blur(12px)"]
+  );
 
   // Staggered EXIT — each word fades at slightly different times
   // as the drone "passes by" them. Creates parallax depth.
@@ -69,45 +78,55 @@ export function HeroScroll({ onLoadProgress, onLoaded }: HeroScrollProps) {
   // BOTTOM-RIGHT: "We are nature" — visible from start
   const p1_bottomRightOpacity = useTransform(
     smoothProgress,
-    [0, 0.03, 0.14, 0.22],
-    [0.6, 1, 1, 0]
+    [0, 0.10, 0.18],
+    [1, 0.9, 0]
   );
   const p1_bottomRightY = useTransform(
     smoothProgress,
-    [0, 0.08, 0.2],
-    [26, 0, 12]
+    [0, 0.18],
+    [0, 40]
   );
   const p1_bottomRightExitX = useTransform(
     smoothProgress,
-    [0, 0.02, 0.06, 0.18],
-    [0, 28, 90, 240]
+    [0, 0.18],
+    [0, 320]
   );
   const p1_bottomRightScale = useTransform(
     smoothProgress,
-    [0, 0.02, 0.06, 0.18],
-    [0.8, 0.9, 1.02, 1.13]
+    [0, 0.18],
+    [1, 1.4]
+  );
+  const p1_bottomRightBlur = useTransform(
+    smoothProgress,
+    [0, 0.10, 0.18],
+    ["blur(0px)", "blur(2px)", "blur(12px)"]
   );
 
   // BOTTOM-LEFT: Tagline + description (Jesko's "Your freedom to enjoy life")
   const p1_taglineOpacity = useTransform(
     smoothProgress,
-    [0, 0.14, 0.22],
-    [1, 1, 0]
+    [0, 0.10, 0.18],
+    [1, 0.9, 0]
   );
   const p1_taglineY = useTransform(
     smoothProgress,
-    [0.12, 0.22],
-    [0, 15]
+    [0, 0.18],
+    [0, 20]
   );
   const p1_taglineX = useTransform(
     smoothProgress,
-    [0, 0.02, 0.06, 0.18],
-    [0, -10, -36, -120]
+    [0, 0.18],
+    [0, -180]
   );
   const p1_taglineScale = useTransform(
     smoothProgress,
-    [0, 0.02, 0.06, 0.18],
-    [0.9, 0.96, 1.03, 1.1]
+    [0, 0.18],
+    [1, 1.25]
+  );
+  const p1_taglineBlur = useTransform(
+    smoothProgress,
+    [0, 0.10, 0.18],
+    ["blur(0px)", "blur(2px)", "blur(12px)"]
   );
 
   // CENTER: "Zhisusa" brand text (like Jesko Jets center logo)
@@ -119,13 +138,18 @@ export function HeroScroll({ onLoadProgress, onLoaded }: HeroScrollProps) {
   const p1_centerScale = useTransform(
     smoothProgress,
     [0, 0.20],
-    [1, 0.92]
+    [1, 0.98]
+  );
+  const p1_centerBlur = useTransform(
+    smoothProgress,
+    [0, 0.1, 0.17],
+    ["blur(0px)", "blur(0px)", "blur(6px)"]
   );
 
   // BOTTOM-CENTER: Scroll indicator
   const scrollIndicatorOpacity = useTransform(
     smoothProgress,
-    [0, 0.04],
+    [0, 0.08], // Stay visible slightly longer for better discovery
     [1, 0]
   );
 
@@ -199,10 +223,11 @@ export function HeroScroll({ onLoadProgress, onLoaded }: HeroScrollProps) {
     [0.80, 0.88, 0.95, 1.0],
     [0, 1, 1, 0.6]
   );
+  // Center CTA positioning (between Work and Leisure)
   const p3_ctaY = useTransform(
     smoothProgress,
-    [0.80, 0.90],
-    [20, 0]
+    [0.70, 0.85],
+    [40, 0]
   );
 
   return (
@@ -210,7 +235,7 @@ export function HeroScroll({ onLoadProgress, onLoaded }: HeroScrollProps) {
       ref={containerRef}
       className="relative"
       style={{
-        height: "600vh",
+        height: "450vh", // Reduced from 600vh for much higher scroll sensitivity
         position: "relative",
         contain: "layout paint",
       }}
@@ -243,7 +268,7 @@ export function HeroScroll({ onLoadProgress, onLoaded }: HeroScrollProps) {
           <SequenceCanvas
             path="/sequence-1"
             frameCount={96}
-            progress={scrollProgress}
+            progress={smoothProgress} // Use smoothProgress for cinematic momentum in frames
             className="absolute inset-0"
             onLoadProgress={onLoadProgress}
             onLoaded={onLoaded}
@@ -314,6 +339,7 @@ export function HeroScroll({ onLoadProgress, onLoaded }: HeroScrollProps) {
             x: p1_topLeftExitX,
             scale: p1_topLeftScale,
             y: p1_topLeftY,
+            filter: p1_topLeftBlur,
             transformOrigin: "left center",
           }}
           className="absolute z-10 pointer-events-none top-[14vh] left-6 md:left-10 lg:left-16"
@@ -322,7 +348,7 @@ export function HeroScroll({ onLoadProgress, onLoaded }: HeroScrollProps) {
           <h1
             className="font-display leading-[0.88] tracking-[0.01em]"
             // Match Jesko-like editorial sizing at rest; scaling handles the "zoom" feel.
-            style={{ fontSize: "clamp(2.5rem, 7.2vw, 7rem)" }}
+            style={{ fontSize: "clamp(2rem, 5.8vw, 5.6rem)" }}
           >
             <motion.span
               style={{ opacity: p1_word1_opacity, y: p1_word1_y }}
@@ -344,6 +370,7 @@ export function HeroScroll({ onLoadProgress, onLoaded }: HeroScrollProps) {
           style={{
             opacity: p1_centerOpacity,
             scale: p1_centerScale,
+            filter: p1_centerBlur,
           }}
           className="absolute inset-0 z-[8] pointer-events-none flex items-center justify-center"
           data-phase="1-center"
@@ -363,6 +390,7 @@ export function HeroScroll({ onLoadProgress, onLoaded }: HeroScrollProps) {
             x: p1_bottomRightExitX,
             y: p1_bottomRightY,
             scale: p1_bottomRightScale,
+            filter: p1_bottomRightBlur,
             transformOrigin: "right center",
           }}
           className="absolute z-10 pointer-events-none bottom-[12vh] right-6 md:right-10 lg:right-16 text-right"
@@ -370,7 +398,7 @@ export function HeroScroll({ onLoadProgress, onLoaded }: HeroScrollProps) {
         >
           <h2
             className="font-display uppercase leading-[0.88] tracking-[0.01em]"
-            style={{ fontSize: "clamp(2.5rem, 7.2vw, 7rem)" }}
+            style={{ fontSize: "clamp(2rem, 5.8vw, 5.6rem)" }}
           >
             <span className="block font-medium text-white/95">Work</span>
             <span className="block font-medium tracking-[0.02em] text-white/95">Live</span>
@@ -385,6 +413,7 @@ export function HeroScroll({ onLoadProgress, onLoaded }: HeroScrollProps) {
             y: p1_taglineY,
             x: p1_taglineX,
             scale: p1_taglineScale,
+            filter: p1_taglineBlur,
             transformOrigin: "left center",
           }}
           className="absolute z-10 pointer-events-none bottom-[12vh] left-6 md:left-10 lg:left-16 max-w-[280px] md:max-w-[320px] text-left"
@@ -407,26 +436,36 @@ export function HeroScroll({ onLoadProgress, onLoaded }: HeroScrollProps) {
           </p>
         </motion.div>
 
-        {/* BOTTOM-CENTER: Scroll indicator */}
+        {/* ── BOTTOM-RIGHT: SCROLL INDICATOR (Jesko Jets Style) ── */}
         <motion.div
           style={{ opacity: scrollIndicatorOpacity }}
-          className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex items-center gap-6"
+          className="absolute bottom-10 right-6 md:right-10 lg:right-16 z-30 flex flex-col items-end gap-3"
         >
-          <motion.div
-            animate={{ y: [0, 6, 0] }}
-            transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
-            className="text-white/20"
-          >
-            <svg width="10" height="14" viewBox="0 0 10 14" fill="none">
-              <path d="M5 0v14M5 14L0 9M5 14l5-5" stroke="currentColor" strokeWidth="1" />
-            </svg>
-          </motion.div>
-          <span className="text-[9px] tracking-[0.3em] uppercase text-white/20 font-light">
-            Scroll down
-          </span>
-          <span className="text-[9px] tracking-[0.18em] uppercase text-white/12 font-light hidden sm:inline">
-            to enter zhisusa
-          </span>
+          {/* Thin Divider Line */}
+          <div className="w-[140px] md:w-[200px] h-[1px] bg-white/10 relative overflow-hidden">
+            <motion.div 
+              animate={{ x: ["-100%", "100%"] }}
+              transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+              className="absolute inset-y-0 w-1/2 bg-gradient-to-r from-transparent via-white/30 to-transparent"
+            />
+          </div>
+
+          <div className="flex items-center gap-6">
+            <div className="flex flex-col items-end">
+              <span className="text-[9px] tracking-[0.25em] uppercase text-white/40 font-medium">Scroll Down</span>
+              <span className="text-[8px] tracking-[0.15em] uppercase text-white/15 font-light mt-0.5">To start the journey</span>
+            </div>
+            
+            <motion.div
+              animate={{ y: [0, 5, 0] }}
+              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+              className="text-white/40"
+            >
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                <path d="m7 13 5 5 5-5M7 6l5 5 5-5"/>
+              </svg>
+            </motion.div>
+          </div>
         </motion.div>
 
         {/* ═══════════════════════════════════════════════
@@ -539,17 +578,36 @@ export function HeroScroll({ onLoadProgress, onLoaded }: HeroScrollProps) {
           </motion.div>
         </motion.div>
 
-        {/* Phase 3 — Bottom CTA */}
+        {/* Phase 3 — Center CTA (Positioned between Work & Leisure) */}
         <motion.div
           style={{
             opacity: p3_ctaOpacity,
             y: p3_ctaY,
           }}
-          className="absolute bottom-10 left-1/2 -translate-x-1/2 z-10 pointer-events-auto"
+          className="absolute inset-0 z-30 flex items-center justify-center pointer-events-none"
         >
-          <button className="text-[11px] uppercase tracking-[0.25em] font-light border border-white/20 px-8 py-3 rounded-full hover:bg-white hover:text-[#050505] transition-all duration-600 backdrop-blur-sm bg-white/[0.04]">
-            Discover Zhisusa
-          </button>
+          <div className="relative pointer-events-auto mt-20">
+            {/* Readability Backdrop for Button */}
+            <div 
+              className="absolute left-1/2 -translate-x-1/2 -inset-y-20 w-[500px] bg-[radial-gradient(ellipse_at_center,_rgba(0,0,0,0.8)_0%,_transparent_75%)] pointer-events-none -z-10" 
+              aria-hidden="true"
+            />
+
+            <button 
+              className="group relative overflow-hidden text-[13px] uppercase tracking-[0.4em] font-medium px-14 py-5 rounded-full transition-all duration-700"
+              style={{ 
+                textShadow: "0 0 20px rgba(255,255,255,0.3), 0 2px 10px rgba(0,0,0,0.9)"
+              }}
+            >
+              {/* Glassmorphism Button Background */}
+              <div className="absolute inset-0 bg-white/[0.08] backdrop-blur-xl border border-white/30 group-hover:bg-white group-hover:border-white transition-all duration-700" />
+              
+              {/* Button Text */}
+              <span className="relative z-10 text-white group-hover:text-black transition-colors duration-700">
+                Discover Zhisusa
+              </span>
+            </button>
+          </div>
         </motion.div>
       </div>
     </section>

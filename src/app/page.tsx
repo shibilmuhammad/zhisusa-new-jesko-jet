@@ -14,6 +14,8 @@ import { CTASection } from "@/components/sections/CTASection";
 import { Footer } from "@/components/layout/Footer";
 import { GrainOverlay } from "@/components/cinematic/GrainOverlay";
 import { IntroLoader } from "@/components/cinematic/IntroLoader";
+import { BookingSystem } from "@/components/cinematic/BookingSystem";
+import { ScrollTop } from "@/components/cinematic/ScrollTop";
 
 export default function HomePage() {
   useLenis();
@@ -82,6 +84,12 @@ export default function HomePage() {
 
         {/* Section 8: CTA */}
         <CTASection />
+
+        {/* Booking Experience */}
+        <BookingSystem />
+
+        {/* Cinematic Helpers */}
+        <ScrollTop />
 
         {/* Footer */}
         <Footer />

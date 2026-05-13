@@ -7,6 +7,7 @@ const experiences = [
   {
     title: "Wellness Spaces",
     description: "Rejuvenate mind and body in nature's sanctuary.",
+    image: "/exp_wellness_1778668492340.png",
     span: "col-span-1 md:col-span-2 row-span-1",
     aspect: "aspect-[21/9]",
     gradient: "from-[#121715] to-[#0a0a0a]",
@@ -17,6 +18,7 @@ const experiences = [
   {
     title: "Social Gatherings",
     description: "Connect with like-minded souls over shared stories.",
+    image: "/exp_social_1778668512362.png",
     span: "col-span-1",
     aspect: "aspect-square",
     gradient: "from-[#171412] to-[#0a0a0a]",
@@ -27,6 +29,7 @@ const experiences = [
   {
     title: "Nature Trails",
     description: "Lose yourself in the wild. Find yourself renewed.",
+    image: "/exp_trails_1778668542925.png",
     span: "col-span-1",
     aspect: "aspect-square",
     gradient: "from-[#10150f] to-[#0a0a0a]",
@@ -37,6 +40,7 @@ const experiences = [
   {
     title: "Curated Dining",
     description: "Farm-to-table meals crafted with local essence.",
+    image: "/exp_dining_1778668559476.png",
     span: "col-span-1",
     aspect: "aspect-[4/3]",
     gradient: "from-[#151210] to-[#0a0a0a]",
@@ -47,6 +51,7 @@ const experiences = [
   {
     title: "Guided Meditation",
     description: "Stillness sessions at dawn, led by nature itself.",
+    image: "/exp_meditation_1778668575248.png",
     span: "col-span-1 md:col-span-2",
     aspect: "aspect-[21/9]",
     gradient: "from-[#111417] to-[#0a0a0a]",
@@ -100,10 +105,15 @@ export function ExperienceSection() {
             }}
             className={`group relative overflow-hidden rounded-xl cursor-pointer ${exp.span} ${exp.aspect}`}
           >
-            {/* Background */}
-            <div
-              className={`absolute inset-0 bg-gradient-to-br ${exp.gradient} transition-transform duration-[1.2s] ease-cinematic group-hover:scale-105`}
+            {/* Background Image */}
+            <motion.img
+              src={exp.image}
+              alt={exp.title}
+              className="absolute inset-0 w-full h-full object-cover transition-transform duration-[1.2s] ease-cinematic group-hover:scale-110"
             />
+            
+            {/* Fallback Gradient (shimmering underlay) */}
+            <div className={`absolute inset-0 bg-gradient-to-br ${exp.gradient} opacity-40`} />
 
             {/* Accent glow */}
             <div
