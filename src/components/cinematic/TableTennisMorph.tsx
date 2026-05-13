@@ -60,7 +60,6 @@ export function TableTennisMorph() {
             path="/sequence-3"
             frameCount={64}
             progress={smoothProgress}
-            isMobile={isMobile}
             className="absolute inset-0"
           />
         </motion.div>

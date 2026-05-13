@@ -61,7 +61,6 @@ export function WorkspaceMorph() {
           path="/sequence-2"
           frameCount={96}
           progress={smoothProgress}
-          isMobile={isMobile}
           className="absolute inset-0"
         />
 
