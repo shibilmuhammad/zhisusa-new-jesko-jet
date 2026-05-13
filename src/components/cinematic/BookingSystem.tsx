@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, ChevronRight, Calendar, Users, MapPin, Coffee, Home, Activity } from "lucide-react";
+import { X, ChevronRight, Calendar, Users, Coffee, Home, Activity } from "lucide-react";
 
 type Category = "WORK" | "LIVE" | "LEISURE";
 
@@ -32,7 +32,7 @@ export function BookingSystem() {
 
   const toggleModal = () => setIsOpen(!isOpen);
 
-  const categories: { id: Category; icon: any; label: string }[] = [
+  const categories: { id: Category; icon: React.ElementType; label: string }[] = [
     { id: "WORK", icon: Coffee, label: "Workspaces" },
     { id: "LIVE", icon: Home, label: "Accommodations" },
     { id: "LEISURE", icon: Activity, label: "Experiences" },
