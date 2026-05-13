@@ -167,7 +167,7 @@ export function SequenceCanvas({
           onLoadProgress?.(loadProgress);
         }
         if (loadedCount === frameCount) onLoaded?.();
-      } catch (e) {
+      } catch {
         // Ignore decode errors
       }
     };
@@ -178,7 +178,7 @@ export function SequenceCanvas({
         if (!response.ok) throw new Error("Failed to fetch");
         const blob = await response.blob();
         await onImageLoaded(i, blob);
-      } catch (e) {
+      } catch {
         if (!cancelled) {
           loadedCount++;
           const loadProgress = loadedCount / frameCount;
