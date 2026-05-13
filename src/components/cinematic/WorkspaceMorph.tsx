@@ -3,11 +3,8 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import { SequenceCanvas } from "./SequenceCanvas";
-import { useIsMobile } from "@/hooks/useScrollProgress";
-
 export function WorkspaceMorph() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const isMobile = useIsMobile();
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
