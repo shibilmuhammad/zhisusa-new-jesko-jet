@@ -1,18 +1,20 @@
 import type { Metadata, Viewport } from "next";
-import localFont from "next/font/local";
-import { Inter } from "next/font/google";
+import { Bodoni_Moda, Montserrat } from "next/font/google";
 import "./globals.css";
 
-const geist = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist",
+const bodoni = Bodoni_Moda({
+  subsets: ["latin"],
+  variable: "--font-bodoni",
   display: "swap",
+  style: ["normal", "italic"],
+  weight: ["400", "500", "600", "700", "800", "900"],
 });
 
-const inter = Inter({
+const montserrat = Montserrat({
   subsets: ["latin"],
-  variable: "--font-inter",
+  variable: "--font-montserrat",
   display: "swap",
+  weight: ["300", "400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -54,7 +56,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geist.variable} ${inter.variable} font-sans bg-background text-foreground antialiased`}
+        className={`${bodoni.variable} ${montserrat.variable} font-sans bg-background text-foreground antialiased`}
       >
         {children}
       </body>

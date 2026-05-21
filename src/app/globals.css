@@ -9,6 +9,13 @@
     color: white;
   }
 
+  :root {
+    --brand-cream: #F2F0EF;
+    --brand-silver: #BBBDBC;
+    --brand-teal: #245F73;
+    --brand-terra: #733E24;
+  }
+
   body {
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
@@ -28,7 +35,7 @@
 
   /* Selection */
   ::selection {
-    background: rgba(255, 255, 255, 0.15);
+    background: rgba(36, 95, 115, 0.3);
     color: white;
   }
 }

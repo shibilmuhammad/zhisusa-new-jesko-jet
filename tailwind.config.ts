@@ -12,6 +12,12 @@ const config: Config = {
         background: "#050505",
         foreground: "#ffffff",
         secondary: "rgba(255,255,255,0.65)",
+        brand: {
+          cream: "#F2F0EF",
+          silver: "#BBBDBC",
+          teal: "#245F73",
+          terra: "#733E24",
+        },
         accent: {
           olive: "#8A9A86",
           beige: "#E5DCC5",
@@ -20,8 +26,9 @@ const config: Config = {
         },
       },
       fontFamily: {
-        sans: ["var(--font-inter)", "system-ui", "sans-serif"],
-        display: ["var(--font-geist)", "var(--font-inter)", "sans-serif"],
+        sans: ["var(--font-montserrat)", "system-ui", "sans-serif"],
+        display: ["var(--font-bodoni)", "var(--font-montserrat)", "serif"],
+        mono: ["var(--font-montserrat)", "monospace"],
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",

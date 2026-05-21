@@ -56,21 +56,21 @@ export function BookingSystem() {
               whileHover={{ y: -6, scale: 1.02 }}
               whileTap={{ scale: 0.97 }}
               onClick={toggleModal}
-              className="group relative pointer-events-auto flex items-center gap-3 bg-white px-7 py-2.5 rounded-full shadow-[0_15px_40px_rgba(0,0,0,0.4)] transition-all duration-500"
+              className="group relative pointer-events-auto flex items-center gap-3 bg-brand-teal px-7 py-2.5 rounded-full shadow-[0_15px_40px_rgba(36,95,115,0.5)] transition-all duration-500"
             >
               {/* Outer Glass Effect Ring */}
-              <div className="absolute -inset-[6px] rounded-full bg-white/15 backdrop-blur-xl border-[1.5px] border-white/30 -z-10 group-hover:bg-white/25 transition-all duration-500" />
+              <div className="absolute -inset-[6px] rounded-full bg-brand-teal/20 backdrop-blur-xl border-[1.5px] border-brand-teal/40 -z-10 group-hover:bg-brand-teal/30 transition-all duration-500" />
               
-              <span className="text-[10px] uppercase tracking-[0.35em] font-bold text-black pl-1">
+              <span className="text-[10px] uppercase tracking-[0.35em] font-semibold text-white pl-1 font-sans">
                 Book Escape
               </span>
               
-              <div className="w-5 h-5 rounded-full bg-black text-white flex items-center justify-center group-hover:rotate-45 transition-transform duration-500">
+              <div className="w-5 h-5 rounded-full bg-white/20 text-white flex items-center justify-center group-hover:rotate-45 transition-transform duration-500 border border-white/30">
                 <ChevronRight size={12} strokeWidth={3} />
               </div>
 
               {/* Floating Glow */}
-              <div className="absolute inset-0 rounded-full bg-white/40 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-20" />
+              <div className="absolute inset-0 rounded-full bg-brand-teal/60 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-20" />
             </motion.button>
           </motion.div>
         )}
@@ -111,31 +111,31 @@ export function BookingSystem() {
               </button>
 
               {/* ── LEFT SIDE: Category Tabs ── */}
-              <div className="w-full md:w-[32%] bg-white/[0.02] border-r border-white/5 p-8 md:p-12 flex flex-col justify-between shrink-0">
+              <div className="w-full md:w-[32%] bg-brand-teal/5 border-r border-brand-teal/10 p-8 md:p-12 flex flex-col justify-between shrink-0">
                 <div>
-                  <h2 className="font-display text-3xl uppercase tracking-[0.1em] text-white mb-2">Reserve</h2>
-                  <p className="text-white/40 text-xs tracking-widest uppercase mb-12">Your Curated Escape</p>
+                  <h2 className="font-display text-3xl uppercase tracking-[0.1em] text-white mb-1">Reserve</h2>
+                  <p className="text-brand-silver text-[10px] tracking-widest uppercase mb-12 font-sans">Your Curated Escape</p>
                   
-                  <nav className="flex flex-col gap-4">
+                  <nav className="flex flex-col gap-3">
                     {categories.map((cat) => (
                       <button
                         key={cat.id}
                         onClick={() => setActiveCategory(cat.id)}
-                        className={`flex items-center gap-4 px-6 py-5 rounded-2xl transition-all duration-500 group ${
+                        className={`flex items-center gap-4 px-6 py-4 rounded-2xl transition-all duration-500 group ${
                           activeCategory === cat.id 
-                            ? "bg-white text-black" 
+                            ? "bg-brand-teal text-white" 
                             : "text-white/40 hover:text-white hover:bg-white/5"
                         }`}
                       >
-                        <cat.icon size={18} className={activeCategory === cat.id ? "text-black" : "text-white/40 group-hover:text-white transition-colors"} />
-                        <span className="text-xs uppercase tracking-[0.2em] font-semibold">{cat.label}</span>
+                        <cat.icon size={16} className={activeCategory === cat.id ? "text-white" : "text-white/40 group-hover:text-white transition-colors"} />
+                        <span className="text-[11px] uppercase tracking-[0.2em] font-semibold font-sans">{cat.label}</span>
                       </button>
                     ))}
                   </nav>
                 </div>
 
-                <div className="mt-12 pt-12 border-t border-white/5 hidden md:block">
-                  <p className="text-[10px] text-white/20 uppercase tracking-[0.4em] leading-relaxed">
+                <div className="mt-12 pt-8 border-t border-brand-teal/15 hidden md:block">
+                  <p className="text-[10px] text-brand-silver/40 uppercase tracking-[0.4em] leading-relaxed font-sans">
                     Zhisusa Concierge<br />
                     Available 24/7 for tailored requests.
                   </p>
@@ -154,8 +154,8 @@ export function BookingSystem() {
                     className="pb-10"
                   >
                       <div className="max-w-xl">
-                        <header className="mb-12">
-                          <h3 className="font-display text-4xl md:text-5xl uppercase tracking-[0.05em] text-white font-light leading-tight">
+                        <header className="mb-10">
+                          <h3 className="font-display text-4xl md:text-5xl uppercase tracking-[0.06em] text-white font-normal leading-tight italic">
                             {activeCategory === "WORK" && "Focus with purpose."}
                             {activeCategory === "LIVE" && "Sleep between trees."}
                             {activeCategory === "LEISURE" && "Reconnect with life."}
@@ -166,12 +166,12 @@ export function BookingSystem() {
                           {/* ── DYNAMIC FIELDS ── */}
                           
                           {/* Field 1: Type Selection */}
-                          <div className="space-y-4">
-                            <label className="text-[10px] uppercase tracking-[0.4em] text-white/30 font-semibold block">Select Experience</label>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                          <div className="space-y-3">
+                            <label className="text-[9px] uppercase tracking-[0.5em] text-brand-silver/50 font-semibold block font-sans">Select Experience</label>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                               {(activeCategory === "WORK" ? workspaceOptions : 
                                 activeCategory === "LIVE" ? accommodationOptions : activityOptions).map((opt) => (
-                                <button key={opt} className="px-5 py-4 rounded-xl border border-white/5 bg-white/[0.03] text-left text-white/70 text-xs hover:border-white/20 hover:bg-white/[0.06] hover:text-white transition-all duration-300">
+                                <button key={opt} className="px-4 py-3.5 rounded-xl border border-white/5 bg-white/[0.03] text-left text-white/60 text-[11px] font-sans tracking-wide hover:border-brand-teal/40 hover:bg-brand-teal/10 hover:text-brand-teal transition-all duration-300">
                                   {opt}
                                 </button>
                               ))}
@@ -179,41 +179,41 @@ export function BookingSystem() {
                           </div>
 
                           {/* Field 2: Dates/Time */}
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-                            <div className="space-y-4">
-                              <label className="text-[10px] uppercase tracking-[0.4em] text-white/30 font-semibold block">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <div className="space-y-3">
+                              <label className="text-[9px] uppercase tracking-[0.5em] text-brand-silver/50 font-semibold block font-sans">
                                 {activeCategory === "LEISURE" ? "Preferred Date" : "Arrival Date"}
                               </label>
                               <div className="relative group">
-                                <Calendar className="absolute left-0 top-1/2 -translate-y-1/2 text-white/20 group-hover:text-white/50 transition-colors" size={16} />
+                                <Calendar className="absolute left-0 top-1/2 -translate-y-1/2 text-white/20 group-hover:text-brand-teal/60 transition-colors" size={15} />
                                 <input 
                                   type="text" 
                                   placeholder={activeCategory === "LEISURE" ? "Select Date" : "Check-in"} 
-                                  className="w-full bg-transparent border-b border-white/10 py-3 pl-8 text-white text-sm focus:outline-none focus:border-white transition-colors placeholder:text-white/10"
+                                  className="w-full bg-transparent border-b border-white/10 py-3 pl-7 text-white text-sm font-sans focus:outline-none focus:border-brand-teal/60 transition-colors placeholder:text-white/10"
                                 />
                               </div>
                             </div>
-                            <div className="space-y-4">
-                              <label className="text-[10px] uppercase tracking-[0.4em] text-white/30 font-semibold block">
+                            <div className="space-y-3">
+                              <label className="text-[9px] uppercase tracking-[0.5em] text-brand-silver/50 font-semibold block font-sans">
                                 {activeCategory === "LEISURE" ? "Preferred Time" : "Departure Date"}
                               </label>
                               <div className="relative group">
-                                <Users className="absolute left-0 top-1/2 -translate-y-1/2 text-white/20 group-hover:text-white/50 transition-colors" size={16} />
+                                <Users className="absolute left-0 top-1/2 -translate-y-1/2 text-white/20 group-hover:text-brand-teal/60 transition-colors" size={15} />
                                 <input 
                                   type="text" 
                                   placeholder={activeCategory === "LEISURE" ? "Select Time" : "Check-out"} 
-                                  className="w-full bg-transparent border-b border-white/10 py-3 pl-8 text-white text-sm focus:outline-none focus:border-white transition-colors placeholder:text-white/10"
+                                  className="w-full bg-transparent border-b border-white/10 py-3 pl-7 text-white text-sm font-sans focus:outline-none focus:border-brand-teal/60 transition-colors placeholder:text-white/10"
                                 />
                               </div>
                             </div>
                           </div>
 
                           {/* Field 3: Guests/People */}
-                          <div className="space-y-4">
-                            <label className="text-[10px] uppercase tracking-[0.4em] text-white/30 font-semibold block">Number of People</label>
-                            <div className="flex gap-4">
+                          <div className="space-y-3">
+                            <label className="text-[9px] uppercase tracking-[0.5em] text-brand-silver/50 font-semibold block font-sans">Number of People</label>
+                            <div className="flex gap-3">
                               {[1, 2, 3, 4, "5+"].map((num) => (
-                                <button key={num.toString()} className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center text-xs text-white/50 hover:border-white hover:text-white transition-all duration-300">
+                                <button key={num.toString()} className="w-11 h-11 rounded-full border border-white/10 flex items-center justify-center text-xs font-sans text-white/50 hover:border-brand-teal hover:text-brand-teal hover:bg-brand-teal/10 transition-all duration-300">
                                   {num}
                                 </button>
                               ))}
@@ -221,20 +221,20 @@ export function BookingSystem() {
                           </div>
 
                           {/* Field 4: Notes */}
-                          <div className="space-y-4">
-                            <label className="text-[10px] uppercase tracking-[0.4em] text-white/30 font-semibold block">Additional Requests</label>
+                          <div className="space-y-3">
+                            <label className="text-[9px] uppercase tracking-[0.5em] text-brand-silver/50 font-semibold block font-sans">Additional Requests</label>
                             <textarea 
                               placeholder="Notes or special requests..."
-                              className="w-full bg-white/[0.03] border border-white/5 rounded-2xl p-6 text-white text-sm focus:outline-none focus:border-white/20 focus:bg-white/[0.05] transition-all min-h-[100px] placeholder:text-white/10"
+                              className="w-full bg-white/[0.03] border border-white/5 rounded-2xl p-5 text-white text-sm font-sans focus:outline-none focus:border-brand-teal/30 focus:bg-brand-teal/5 transition-all min-h-[90px] placeholder:text-white/10"
                             />
                           </div>
 
                           {/* Submit */}
-                          <div className="pt-8">
-                            <button className="w-full py-6 rounded-2xl bg-white text-black text-xs uppercase tracking-[0.3em] font-bold hover:scale-[1.02] active:scale-[0.98] transition-all duration-500 shadow-[0_20px_50px_rgba(255,255,255,0.1)]">
+                          <div className="pt-6">
+                            <button className="w-full py-5 rounded-2xl bg-brand-teal text-white text-[11px] uppercase tracking-[0.35em] font-semibold font-sans hover:bg-brand-teal/90 hover:scale-[1.01] active:scale-[0.99] transition-all duration-500 shadow-[0_20px_50px_rgba(36,95,115,0.3)]">
                               Confirm Reservation
                             </button>
-                            <p className="text-center text-white/20 text-[9px] uppercase tracking-[0.3em] mt-6">
+                            <p className="text-center text-brand-silver/30 text-[9px] uppercase tracking-[0.3em] mt-5 font-sans">
                               Our team will contact you within 2 hours.
                             </p>
                           </div>

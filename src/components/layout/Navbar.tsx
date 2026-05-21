@@ -71,7 +71,9 @@ export function Navbar() {
 
         {/* CTA Button */}
         <div className="flex items-center gap-4">
-          <button className="hidden sm:block text-[11px] uppercase tracking-[0.2em] font-light border border-white/15 px-6 py-2.5 rounded-full hover:bg-white hover:text-background transition-all duration-600 ease-cinematic">
+          <button 
+            onClick={() => window.dispatchEvent(new CustomEvent("open-booking"))}
+            className="hidden sm:block text-[11px] uppercase tracking-[0.2em] font-medium border border-brand-teal/40 px-6 py-2.5 rounded-full text-brand-teal hover:bg-brand-teal hover:text-white transition-all duration-500 ease-cinematic font-sans">
             Book Escape
           </button>
 
