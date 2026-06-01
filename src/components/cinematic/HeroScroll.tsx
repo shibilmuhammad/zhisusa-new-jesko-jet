@@ -365,23 +365,7 @@ export function HeroScroll({ onLoadProgress, onLoaded }: HeroScrollProps) {
           </h1>
         </motion.div>
 
-        {/* CENTER: "Zhisusa" brand (like Jesko Jets center logo) */}
-        <motion.div
-          style={{
-            opacity: p1_centerOpacity,
-            scale: p1_centerScale,
-            filter: p1_centerBlur,
-          }}
-          className="absolute inset-0 z-[8] pointer-events-none flex items-center justify-center"
-          data-phase="1-center"
-        >
-          <p
-            className="font-display tracking-[0.08em] font-light text-white/80"
-            style={{ fontSize: "clamp(1rem, 2.5vw, 1.8rem)" }}
-          >
-            Zhisusa
-          </p>
-        </motion.div>
+
 
         {/* BOTTOM-RIGHT: "We are nature" — Jesko "We are distinction" style */}
         <motion.div
@@ -426,13 +410,7 @@ export function HeroScroll({ onLoadProgress, onLoaded }: HeroScrollProps) {
           </p>
           <div className="w-10 h-[1px] bg-white/25 mb-3" />
           <p className="text-[11px] md:text-xs leading-[1.7] text-white/30 font-light tracking-wide">
-            Stay in private villas, luxury tents, tree houses,
-            <br />
-            and modern retreats with offices, co-working
-            <br />
-            zones, and leisure experiences built for
-            <br />
-            comfort, slow living, and meaningful travel.
+            Private villas hidden between forests. Luxury tents beneath open skies. Tree houses built for silence.
           </p>
         </motion.div>
 

@@ -1,139 +1,257 @@
 "use client";
 
-import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
-import { FadeText } from "../cinematic/FadeText";
+import { motion, useScroll, useTransform, useSpring, useMotionValueEvent } from "framer-motion";
+import { useRef, useState } from "react";
 
 const accommodations = [
   {
     title: "Private Villas",
-    description: "Hidden between ancient forests, wrapped in silence.",
+    subtitle: "Hidden between forests",
+    description: "Wrapped in silence, designed for slow mornings and open skies.",
     image: "/stay_villa_1778668418060.png",
-    gradient: "from-[#1a1f1a] via-[#141414] to-[#0a0a0a]",
-    accentColor: "from-accent-olive/20",
+    index: "01",
   },
   {
     title: "Luxury Tents",
-    description: "Beneath open skies, where comfort meets wilderness.",
+    subtitle: "Beneath open skies",
+    description: "Where comfort meets wilderness — unfiltered and untouched.",
     image: "/stay_tent_1778668433003.png",
-    gradient: "from-[#1a1815] via-[#141414] to-[#0a0a0a]",
-    accentColor: "from-accent-beige/15",
+    index: "02",
   },
   {
     title: "Tree Houses",
-    description: "Built for silence, elevated above the ordinary.",
+    subtitle: "Built for silence",
+    description: "Elevated above the ordinary, surrounded by canopy and calm.",
     image: "/stay_treehouse_1778668450104.png",
-    gradient: "from-[#151a17] via-[#141414] to-[#0a0a0a]",
-    accentColor: "from-accent-olive/15",
+    index: "03",
   },
   {
     title: "Glass Cabins",
-    description: "Nature on every side. Nothing between you and the sky.",
+    subtitle: "Nothing between you and the sky",
+    description: "Nature on every side — transparent living at its finest.",
     image: "/stay_cabin_1778668472270.png",
-    gradient: "from-[#181a1f] via-[#141414] to-[#0a0a0a]",
-    accentColor: "from-accent-fog/10",
+    index: "04",
   },
 ];
 
+// Section height controls how much vertical scroll drives the horizontal travel.
+// At ~200vh the sticky releases gradually, giving the WORK section room to emerge.
+const SECTION_HEIGHT = "200vh";
+
 export function StaySection() {
   const sectionRef = useRef<HTMLDivElement>(null);
+  const [isTextVisible, setIsTextVisible] = useState(false);
+
   const { scrollYProgress } = useScroll({
     target: sectionRef,
-    offset: ["start end", "end start"],
+    offset: ["start start", "end end"],
   });
 
-  // Parallax for the heading
-  const headingY = useTransform(scrollYProgress, [0, 1], [100, -100]);
+  // Cinematic spring for buttery-smooth motion
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 200,
+    damping: 60,
+    mass: 0.3,
+    restDelta: 0.0001,
+  });
+
+  // Trigger cinematic text animations shortly after pinning
+  useMotionValueEvent(scrollYProgress, "change", (latest) => {
+    if (latest > 0.01 && !isTextVisible) {
+      setIsTextVisible(true);
+    } else if (latest <= 0.01 && isTextVisible) {
+      setIsTextVisible(false);
+    }
+  });
+
+  // ──────────────────────────────────────────────────────────────
+  // HORIZONTAL GALLERY TRAVEL
+  // Spreads across the entire scroll length. It reaches the end exactly
+  // when the section un-sticks, so the next section follows immediately.
+  // ──────────────────────────────────────────────────────────────
+  const galleryX = useTransform(smoothProgress, [0.05, 1.0], ["2%", "-40%"]);
+
+  // ── Editorial text animations
+  // Outro is handled here to fade out right at the end of the section.
+  const textOutroOpacity = useTransform(smoothProgress, [0.9, 1.0], [1, 0]);
+
+  // ── Progress bar
+  const progressWidth = useTransform(smoothProgress, [0.05, 1.0], ["0%", "100%"]);
+
+  // ── Per-card parallax
+  const card0Parallax = useTransform(smoothProgress, [0.05, 1.0], [0, -12]);
+  const card1Parallax = useTransform(smoothProgress, [0.05, 1.0], [0, -25]);
+  const card2Parallax = useTransform(smoothProgress, [0.05, 1.0], [0, -40]);
+  const card3Parallax = useTransform(smoothProgress, [0.05, 1.0], [0, -55]);
+  const cardParallax = [card0Parallax, card1Parallax, card2Parallax, card3Parallax];
+
+  // ── Per-card scale
+  const card0Scale = useTransform(smoothProgress, [0.02, 0.12, 0.28, 0.38], [0.94, 1, 1, 0.97]);
+  const card1Scale = useTransform(smoothProgress, [0.12, 0.25, 0.40, 0.52], [0.94, 1, 1, 0.97]);
+  const card2Scale = useTransform(smoothProgress, [0.25, 0.40, 0.55, 0.65], [0.94, 1, 1, 0.97]);
+  const card3Scale = useTransform(smoothProgress, [0.40, 0.55, 0.68, 0.80], [0.94, 1, 1, 0.97]);
+  const cardScales = [card0Scale, card1Scale, card2Scale, card3Scale];
+
+  // ── Per-card opacity
+  const card0Opacity = useTransform(smoothProgress, [0.02, 0.10, 0.30, 0.45], [0.5, 1, 1, 0.6]);
+  const card1Opacity = useTransform(smoothProgress, [0.10, 0.25, 0.45, 0.60], [0.5, 1, 1, 0.6]);
+  const card2Opacity = useTransform(smoothProgress, [0.25, 0.40, 0.60, 0.80], [0.5, 1, 1, 0.6]);
+  const card3Opacity = useTransform(smoothProgress, [0.40, 0.60, 0.85, 1.0], [0.5, 1, 1, 1.0]);
+  const cardOpacities = [card0Opacity, card1Opacity, card2Opacity, card3Opacity];
 
   return (
     <section
       ref={sectionRef}
-      className="relative w-full py-32 md:py-48 lg:py-56 px-6 md:px-10 lg:px-16 bg-background overflow-hidden"
+      className="relative bg-background"
+      style={{ height: SECTION_HEIGHT }}
       aria-label="Stay experiences"
     >
-      {/* Large editorial heading */}
-      <div className="max-w-[90rem] mx-auto mb-24 md:mb-32">
-        <FadeText>
+      {/* ── STICKY VIEWPORT ── */}
+      {/* Standard sticky block. No artificial fading. */}
+      <div
+        className="sticky top-0 h-screen overflow-hidden flex flex-col will-change-transform"
+      >
+
+        {/* ══════════════════════════════════════════════════════════ */}
+        {/* TOP: Editorial text block                                 */}
+        {/* ══════════════════════════════════════════════════════════ */}
+        <motion.div
+          style={{ opacity: textOutroOpacity }}
+          className="relative z-20 px-6 md:px-10 lg:px-16 pt-20 md:pt-24 lg:pt-28 pb-8 md:pb-10 flex-shrink-0"
+        >
+
+          {/* Oversized "STAY." watermark */}
           <motion.h2
-            style={{ y: headingY }}
-            className="font-display text-6xl sm:text-7xl md:text-8xl lg:text-[10rem] xl:text-[12rem] uppercase tracking-[0.05em] font-light leading-[0.9] text-white/[0.14]"
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: isTextVisible ? 1 : 0, y: isTextVisible ? 0 : 40 }}
+            transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1] }}
+            className="font-display text-[5.5rem] sm:text-[7rem] md:text-[9rem] lg:text-[11rem] xl:text-[13rem] uppercase tracking-[0.04em] font-light leading-[0.82] text-brand-forest/[0.06] select-none"
           >
             Stay.
           </motion.h2>
-        </FadeText>
 
-        <div className="mt-8 md:mt-12 max-w-2xl">
-          <FadeText delay={0.2}>
-            <h3 className="font-display text-3xl md:text-4xl lg:text-5xl uppercase tracking-[0.1em] font-medium text-white/95 mb-6">
-              Immersive
-              <br />
-              Accommodations
-            </h3>
-          </FadeText>
-          <FadeText delay={0.3}>
-            <div className="space-y-4 text-white/78 text-base md:text-lg tracking-wide font-normal max-w-lg">
-              <p>Private villas hidden between forests.</p>
-              <p>Luxury tents beneath open skies.</p>
-              <p>Tree houses built for silence.</p>
-            </div>
-          </FadeText>
-        </div>
-      </div>
-
-      {/* Accommodation cards — asymmetric editorial grid */}
-      <div className="max-w-[90rem] mx-auto grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-        {accommodations.map((item, index) => (
-          <motion.div
-            key={item.title}
-            initial={{ opacity: 0, y: 60, scale: 0.97 }}
-            whileInView={{ opacity: 1, y: 0, scale: 1 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{
-              duration: 1.2,
-              delay: index * 0.15,
-              ease: [0.22, 1, 0.36, 1],
-            }}
-            className={`group relative overflow-hidden rounded-xl cursor-pointer ${
-              index === 0 ? "md:row-span-2 aspect-[3/4] md:aspect-auto" : "aspect-[16/10]"
-            }`}
+          {/* Section title */}
+          <motion.h3
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: isTextVisible ? 1 : 0, y: isTextVisible ? 0 : 30 }}
+            transition={{ duration: 1.4, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+            className="font-display text-2xl sm:text-3xl md:text-4xl lg:text-5xl uppercase tracking-[0.12em] font-medium text-brand-forest/90 leading-tight mt-3 md:mt-4"
           >
-            {/* Background Image */}
-            <motion.img
-              src={item.image}
-              alt={item.title}
-              className="absolute inset-0 w-full h-full object-cover transition-transform duration-[1.2s] ease-cinematic group-hover:scale-110"
-            />
-            
-            {/* Fallback Gradient (underlay) */}
-            <div className={`absolute inset-0 bg-gradient-to-br ${item.gradient} opacity-40`} />
+            Immersive
+            <br />
+            Accommodations
+          </motion.h3>
 
-            {/* Accent radial glow */}
-            <div
-              className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-1000 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] ${item.accentColor} via-transparent to-transparent`}
-            />
-
-            {/* Noise texture */}
-            <div className="absolute inset-0 opacity-[0.03] bg-[url('data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%20200%20200%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Cfilter%20id%3D%22n%22%3E%3CfeTurbulence%20baseFrequency%3D%220.9%22/%3E%3C/filter%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20filter%3D%22url(%23n)%22/%3E%3C/svg%3E')]" />
-
-            {/* Bottom gradient for text */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/18 to-transparent" />
-
-            {/* Content */}
-            <div className="absolute inset-0 flex flex-col justify-end p-8 md:p-10">
-              <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-700 ease-cinematic">
-                <h4 className="font-display text-xl md:text-2xl uppercase tracking-[0.14em] font-medium text-white/92 mb-2">
-                  {item.title}
-                </h4>
-                <p className="text-white/75 text-sm tracking-wide font-normal opacity-0 group-hover:opacity-100 transition-opacity duration-700 delay-100 max-w-sm">
-                  {item.description}
-                </p>
-              </div>
-            </div>
-
-            {/* Corner accent */}
-            <div className="absolute top-6 right-6 w-8 h-8 border-t border-r border-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-700 rounded-tr-sm" />
+          {/* Supporting copy */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: isTextVisible ? 1 : 0, y: isTextVisible ? 0 : 20 }}
+            transition={{ duration: 1.4, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            className="mt-4 md:mt-5 max-w-lg"
+          >
+            <div className="w-10 h-[1px] bg-brand-teal/40 mb-3" />
+            <p className="text-brand-forest/50 text-xs md:text-sm tracking-wide leading-relaxed font-sans">
+              Private villas hidden between forests. Luxury tents beneath open skies. Tree houses built for silence.
+            </p>
           </motion.div>
-        ))}
+        </motion.div>
+
+        {/* ══════════════════════════════════════════════════════════ */}
+        {/* BOTTOM: Horizontal scrolling gallery                      */}
+        {/* ══════════════════════════════════════════════════════════ */}
+        <div className="relative flex-1 min-h-0">
+          <motion.div
+            style={{ x: galleryX }}
+            className="absolute top-0 h-full flex items-center gap-5 md:gap-7 pl-6 md:pl-10 lg:pl-16 pr-[30vw]"
+          >
+            {accommodations.map((item, index) => (
+              <motion.div
+                key={item.title}
+                style={{
+                  y: cardParallax[index],
+                  scale: cardScales[index],
+                  opacity: cardOpacities[index],
+                }}
+                className="relative flex-shrink-0 w-[340px] sm:w-[400px] md:w-[460px] lg:w-[520px] h-[85%] rounded-[20px] md:rounded-[24px] overflow-hidden cursor-pointer group"
+              >
+                {/* ── Card Image ── */}
+                <motion.img
+                  src={item.image}
+                  alt={item.title}
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-[2s] ease-cinematic group-hover:scale-[1.06]"
+                  style={{ willChange: "transform" }}
+                  loading={index < 2 ? "eager" : "lazy"}
+                />
+
+                {/* Gradient overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+
+                {/* Subtle edge vignette */}
+                <div className="absolute inset-0 shadow-[inset_0_0_50px_rgba(0,0,0,0.25)]" />
+
+                {/* ── Card Content ── */}
+                <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-8">
+                  {/* Index number */}
+                  <span className="text-[10px] tracking-[0.4em] uppercase text-brand-teal/60 font-sans font-medium mb-1.5 opacity-0 group-hover:opacity-100 transition-opacity duration-700">
+                    {item.index}
+                  </span>
+
+                  <div className="transform translate-y-2 group-hover:translate-y-0 transition-transform duration-700 ease-cinematic">
+                    {/* Subtitle */}
+                    <p className="text-[10px] md:text-[11px] uppercase tracking-[0.25em] text-white/45 font-sans mb-1 opacity-0 group-hover:opacity-100 transition-opacity duration-700 delay-75">
+                      {item.subtitle}
+                    </p>
+
+                    {/* Title */}
+                    <h4 className="font-display text-lg md:text-xl lg:text-2xl uppercase tracking-[0.12em] font-medium text-white/90">
+                      {item.title}
+                    </h4>
+
+                    {/* Description */}
+                    <p className="text-white/45 text-[11px] md:text-xs tracking-wide font-sans leading-relaxed mt-1.5 max-w-[260px] opacity-0 group-hover:opacity-100 transition-opacity duration-700 delay-150">
+                      {item.description}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Corner accent */}
+                <div className="absolute top-5 right-5 w-6 h-6 border-t border-r border-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-700 rounded-tr-sm" />
+
+                {/* Bottom accent line */}
+                <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-brand-teal/0 via-brand-teal/25 to-brand-teal/0 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+              </motion.div>
+            ))}
+          </motion.div>
+
+          {/* Left fade for cards entering */}
+          <div className="absolute top-0 left-0 bottom-0 w-6 md:w-10 lg:w-16 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
+        </div>
+
+        {/* ── Progress bar (bottom of sticky frame) ── */}
+        <motion.div
+          style={{ opacity: textOutroOpacity }}
+          className="absolute bottom-8 left-6 md:left-10 lg:left-16 z-20"
+        >
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: isTextVisible ? 1 : 0, x: isTextVisible ? 0 : -20 }}
+            transition={{ duration: 1.4, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <div className="w-[100px] h-[1px] bg-white/[0.06] relative overflow-hidden rounded-full">
+              <motion.div
+                style={{ width: progressWidth }}
+                className="absolute inset-y-0 left-0 bg-brand-teal/50 rounded-full"
+              />
+            </div>
+            <p className="text-[8px] uppercase tracking-[0.5em] text-white/15 mt-2 font-sans">
+              Scroll to explore
+            </p>
+          </motion.div>
+        </motion.div>
+
+        {/* ── Edge gradients ── */}
+        <div className="absolute top-0 left-0 right-0 h-20 bg-gradient-to-b from-background to-transparent z-10 pointer-events-none" />
+        <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-background to-transparent z-10 pointer-events-none" />
       </div>
     </section>
   );

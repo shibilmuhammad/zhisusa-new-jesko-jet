@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Bodoni_Moda, Montserrat } from "next/font/google";
+import { Bodoni_Moda, Poppins } from "next/font/google";
 import "./globals.css";
 
 const bodoni = Bodoni_Moda({
@@ -10,9 +10,9 @@ const bodoni = Bodoni_Moda({
   weight: ["400", "500", "600", "700", "800", "900"],
 });
 
-const montserrat = Montserrat({
+const poppins = Poppins({
   subsets: ["latin"],
-  variable: "--font-montserrat",
+  variable: "--font-poppins",
   display: "swap",
   weight: ["300", "400", "500", "600", "700"],
 });
@@ -43,7 +43,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#050505",
+  themeColor: "#F7F4EE",
   width: "device-width",
   initialScale: 1,
 };
@@ -56,7 +56,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${bodoni.variable} ${montserrat.variable} font-sans bg-background text-foreground antialiased`}
+        className={`${bodoni.variable} ${poppins.variable} font-sans bg-background text-foreground antialiased`}
       >
         {children}
       </body>

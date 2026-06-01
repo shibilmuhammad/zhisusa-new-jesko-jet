@@ -41,7 +41,7 @@ export function Navbar() {
         className={cn(
           "fixed top-0 left-0 right-0 z-[60] flex items-center justify-between px-6 md:px-10 lg:px-16 py-5 md:py-6 transition-all duration-700",
           scrolled
-            ? "bg-background/60 backdrop-blur-xl border-b border-white/[0.04]"
+            ? "bg-background/80 backdrop-blur-xl border-b border-brand-forest/[0.07]"
             : "bg-transparent"
         )}
         role="navigation"
@@ -50,37 +50,38 @@ export function Navbar() {
         {/* Logo */}
         <a
           href="#"
-          className="font-display text-lg md:text-xl tracking-[0.25em] uppercase font-light hover:opacity-70 transition-opacity duration-500"
+          className="font-display text-lg md:text-xl tracking-[0.25em] uppercase font-light text-brand-forest hover:opacity-60 transition-opacity duration-500"
         >
           Zhisusa
         </a>
 
         {/* Desktop Links */}
-        <div className="hidden md:flex items-center gap-10 text-[11px] uppercase tracking-[0.2em] font-light text-white/50">
+        <div className="hidden md:flex items-center gap-10 text-[11px] uppercase tracking-[0.2em] font-light text-brand-forest/50">
           {navLinks.map((link) => (
             <a
               key={link.label}
               href={link.href}
-              className="relative hover:text-white transition-colors duration-500 group py-1"
+              className="relative hover:text-brand-forest transition-colors duration-500 group py-1"
             >
               {link.label}
-              <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-white/40 group-hover:w-full transition-all duration-500 ease-cinematic" />
+              <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-brand-forest/30 group-hover:w-full transition-all duration-500 ease-cinematic" />
             </a>
           ))}
         </div>
 
         {/* CTA Button */}
         <div className="flex items-center gap-4">
-          <button 
+          <button
             onClick={() => window.dispatchEvent(new CustomEvent("open-booking"))}
-            className="hidden sm:block text-[11px] uppercase tracking-[0.2em] font-medium border border-brand-teal/40 px-6 py-2.5 rounded-full text-brand-teal hover:bg-brand-teal hover:text-white transition-all duration-500 ease-cinematic font-sans">
+            className="hidden sm:block text-[11px] uppercase tracking-[0.2em] font-medium border border-brand-teal/50 px-6 py-2.5 rounded-full text-brand-teal hover:bg-brand-teal hover:text-white transition-all duration-500 ease-cinematic font-sans"
+          >
             Book Escape
           </button>
 
           {/* Mobile Menu Toggle */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden relative w-8 h-8 flex items-center justify-center text-white/70 hover:text-white transition-colors"
+            className="md:hidden relative w-8 h-8 flex items-center justify-center text-brand-forest/70 hover:text-brand-forest transition-colors"
             aria-label="Toggle mobile menu"
           >
             {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
@@ -113,7 +114,7 @@ export function Navbar() {
               delay: mobileMenuOpen ? index * 0.1 : 0,
               ease: [0.22, 1, 0.36, 1],
             }}
-            className="font-display text-2xl tracking-[0.2em] uppercase font-light text-white/70 hover:text-white transition-colors duration-300"
+            className="font-display text-2xl tracking-[0.2em] uppercase font-light text-brand-forest/70 hover:text-brand-forest transition-colors duration-300"
           >
             {link.label}
           </motion.a>
@@ -129,7 +130,7 @@ export function Navbar() {
             delay: mobileMenuOpen ? 0.4 : 0,
             ease: [0.22, 1, 0.36, 1],
           }}
-          className="mt-4 text-sm uppercase tracking-[0.2em] font-light border border-white/20 px-8 py-3 rounded-full hover:bg-white hover:text-background transition-all duration-500"
+          className="mt-4 text-sm uppercase tracking-[0.2em] font-light border border-brand-forest/20 px-8 py-3 rounded-full text-brand-forest hover:bg-brand-forest hover:text-background transition-all duration-500"
         >
           Book Escape
         </motion.button>

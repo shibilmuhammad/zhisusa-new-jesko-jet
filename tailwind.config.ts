@@ -9,26 +9,27 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: "#050505",
-        foreground: "#ffffff",
-        secondary: "rgba(255,255,255,0.65)",
+        background: "#F7F4EE",
+        foreground: "#1F3A36",
+        secondary: "rgba(31,58,54,0.55)",
         brand: {
-          cream: "#F2F0EF",
-          silver: "#BBBDBC",
-          teal: "#245F73",
-          terra: "#733E24",
+          cream: "#F7F4EE",
+          silver: "#B8B8A8",
+          teal: "#4E7C7A",
+          terra: "#D8C3A5",
+          forest: "#1F3A36",
         },
         accent: {
-          olive: "#8A9A86",
-          beige: "#E5DCC5",
-          charcoal: "#333333",
-          fog: "#E8EAEB",
+          olive: "#4E7C7A",
+          beige: "#D8C3A5",
+          charcoal: "#2A3D38",
+          fog: "#EDE9E0",
         },
       },
       fontFamily: {
-        sans: ["var(--font-montserrat)", "system-ui", "sans-serif"],
-        display: ["var(--font-bodoni)", "var(--font-montserrat)", "serif"],
-        mono: ["var(--font-montserrat)", "monospace"],
+        sans: ["var(--font-poppins)", "system-ui", "sans-serif"],
+        display: ["var(--font-bodoni)", "var(--font-poppins)", "serif"],
+        mono: ["var(--font-poppins)", "monospace"],
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",

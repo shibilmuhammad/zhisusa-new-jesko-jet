@@ -53,10 +53,8 @@ export function LeisureSection() {
               </h3>
             </FadeText>
             <FadeText delay={0.3}>
-              <div className="space-y-4 text-white/78 text-base md:text-lg tracking-wide font-normal">
-                <p>Kayaking at sunrise.</p>
-                <p>Bonfires after midnight.</p>
-                <p>Slow conversations under quiet skies.</p>
+              <div className="text-white/78 text-sm md:text-base tracking-wide font-normal font-sans">
+                <p>Kayaking at sunrise. Bonfires after midnight. Slow conversations under quiet skies.</p>
               </div>
             </FadeText>
           </div>

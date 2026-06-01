@@ -5,15 +5,16 @@
 @layer base {
   html,
   body {
-    background: #050505;
-    color: white;
+    background: #F7F4EE;
+    color: #1F3A36;
   }
 
   :root {
-    --brand-cream: #F2F0EF;
-    --brand-silver: #BBBDBC;
-    --brand-teal: #245F73;
-    --brand-terra: #733E24;
+    --brand-cream: #F7F4EE;
+    --brand-silver: #B8B8A8;
+    --brand-teal: #4E7C7A;
+    --brand-terra: #D8C3A5;
+    --brand-forest: #1F3A36;
   }
 
   body {
@@ -35,8 +36,8 @@
 
   /* Selection */
   ::selection {
-    background: rgba(36, 95, 115, 0.3);
-    color: white;
+    background: rgba(78, 124, 122, 0.25);
+    color: #1F3A36;
   }
 }
 
@@ -48,7 +49,7 @@
 
 /* Cinematic vignette layer */
 .vignette {
-  box-shadow: inset 0 0 200px rgba(0, 0, 0, 0.6);
+  box-shadow: inset 0 0 200px rgba(31, 58, 54, 0.15);
   pointer-events: none;
 }
 
@@ -69,7 +70,7 @@
   background: linear-gradient(
     90deg,
     transparent 0%,
-    rgba(255, 255, 255, 0.3) 50%,
+    rgba(78, 124, 122, 0.4) 50%,
     transparent 100%
   );
   animation: loaderSweep 2s ease-in-out infinite;
