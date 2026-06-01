@@ -129,22 +129,7 @@ export function HeroScroll({ onLoadProgress, onLoaded }: HeroScrollProps) {
     ["blur(0px)", "blur(2px)", "blur(12px)"]
   );
 
-  // CENTER: "Zhisusa" brand text (like Jesko Jets center logo)
-  const p1_centerOpacity = useTransform(
-    smoothProgress,
-    [0, 0.02, 0.1, 0.17],
-    [1, 1, 1, 0]
-  );
-  const p1_centerScale = useTransform(
-    smoothProgress,
-    [0, 0.20],
-    [1, 0.98]
-  );
-  const p1_centerBlur = useTransform(
-    smoothProgress,
-    [0, 0.1, 0.17],
-    ["blur(0px)", "blur(0px)", "blur(6px)"]
-  );
+
 
   // BOTTOM-CENTER: Scroll indicator
   const scrollIndicatorOpacity = useTransform(
