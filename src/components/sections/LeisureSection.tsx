@@ -38,7 +38,7 @@ export function LeisureSection() {
           <FadeText>
             <motion.h2
               style={{ y: headingY }}
-              className="font-display text-6xl sm:text-7xl md:text-8xl lg:text-[10rem] xl:text-[12rem] uppercase tracking-[0.05em] font-light leading-[0.9] text-white/[0.14] text-right"
+              className="font-display text-6xl sm:text-7xl md:text-8xl lg:text-[10rem] xl:text-[12rem] uppercase tracking-[0.05em] font-light leading-[0.9] text-brand-forest/[0.07] text-right"
             >
               Leisure.
             </motion.h2>
@@ -46,14 +46,14 @@ export function LeisureSection() {
 
           <div className="mt-8 md:mt-12 max-w-2xl text-right">
             <FadeText delay={0.2}>
-              <h3 className="font-display text-3xl md:text-4xl lg:text-5xl uppercase tracking-[0.1em] font-medium text-white/95 mb-6">
+              <h3 className="font-display text-3xl md:text-4xl lg:text-5xl uppercase tracking-[0.1em] font-medium text-brand-forest/90 mb-6">
                 Life Beyond
                 <br />
                 The Screen
               </h3>
             </FadeText>
             <FadeText delay={0.3}>
-              <div className="text-white/78 text-sm md:text-base tracking-wide font-normal font-sans">
+              <div className="text-brand-forest/55 text-sm md:text-base tracking-wide font-normal font-sans">
                 <p>Kayaking at sunrise. Bonfires after midnight. Slow conversations under quiet skies.</p>
               </div>
             </FadeText>
@@ -80,18 +80,18 @@ export function LeisureSection() {
             >
               <div className="flex flex-col items-center gap-4">
                 {/* Time label */}
-                <span className="text-[10px] tracking-[0.3em] uppercase text-white/55 font-medium">
+                <span className="text-[10px] tracking-[0.3em] uppercase text-brand-forest/45 font-medium">
                   {activity.time}
                 </span>
 
                 {/* Dot */}
                 <div className="relative">
-                  <div className="w-2 h-2 rounded-full bg-white/20 group-hover:bg-white/60 transition-colors duration-700" />
-                  <div className="absolute inset-0 w-2 h-2 rounded-full bg-white/10 group-hover:scale-[3] transition-transform duration-700 opacity-0 group-hover:opacity-100" />
+                  <div className="w-2 h-2 rounded-full bg-brand-forest/20 group-hover:bg-brand-teal transition-colors duration-700" />
+                  <div className="absolute inset-0 w-2 h-2 rounded-full bg-brand-teal/10 group-hover:scale-[3] transition-transform duration-700 opacity-0 group-hover:opacity-100" />
                 </div>
 
                 {/* Activity name */}
-                <span className="font-display text-lg md:text-xl tracking-[0.14em] uppercase font-medium text-white/82 group-hover:text-white transition-colors duration-500 whitespace-nowrap">
+                <span className="font-display text-lg md:text-xl tracking-[0.14em] uppercase font-medium text-brand-forest/75 group-hover:text-brand-forest transition-colors duration-500 whitespace-nowrap">
                   {activity.name}
                 </span>
               </div>
@@ -102,11 +102,11 @@ export function LeisureSection() {
         {/* Decorative line */}
         <FadeText delay={0.5}>
           <div className="mt-24 flex items-center justify-center gap-6">
-            <div className="flex-1 h-[1px] bg-gradient-to-r from-transparent to-white/[0.06]" />
-            <span className="text-[10px] tracking-[0.36em] uppercase text-white/55 font-medium">
+            <div className="flex-1 h-[1px] bg-gradient-to-r from-transparent to-brand-forest/[0.08]" />
+            <span className="text-[10px] tracking-[0.36em] uppercase text-brand-forest/40 font-medium">
               Every hour, a new story
             </span>
-            <div className="flex-1 h-[1px] bg-gradient-to-l from-transparent to-white/[0.06]" />
+            <div className="flex-1 h-[1px] bg-gradient-to-l from-transparent to-brand-forest/[0.08]" />
           </div>
         </FadeText>
       </div>

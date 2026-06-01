@@ -20,23 +20,23 @@ export function CTASection() {
       className="relative w-full py-48 md:py-64 lg:py-80 px-6 md:px-10 bg-background flex items-center justify-center overflow-hidden"
       aria-label="Book your journey"
     >
-      {/* Ambient lighting — radial glow */}
+      {/* Ambient glow */}
       <motion.div
         style={{ scale: glowScale }}
-        className="absolute inset-0 opacity-[0.04] bg-[radial-gradient(circle_at_center,_rgba(255,255,255,0.2)_0%,_transparent_50%)] pointer-events-none"
+        className="absolute inset-0 opacity-[0.04] bg-[radial-gradient(circle_at_center,_rgba(31,58,54,0.15)_0%,_transparent_50%)] pointer-events-none"
       />
 
       <motion.div
         style={{ scale, opacity }}
         className="text-center z-10 max-w-4xl flex flex-col items-center"
       >
-        {/* Decorative top element */}
+        {/* Decorative top line */}
         <motion.div
           initial={{ width: 0 }}
           whileInView={{ width: 80 }}
           viewport={{ once: true }}
           transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1] }}
-          className="h-[1px] bg-white/15 mb-16"
+          className="h-[1px] bg-brand-forest/15 mb-16"
         />
 
         <motion.h2
@@ -44,11 +44,11 @@ export function CTASection() {
           whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 1.6, ease: [0.22, 1, 0.36, 1] }}
-          className="font-display text-5xl sm:text-6xl md:text-7xl lg:text-9xl uppercase tracking-[0.08em] font-extralight mb-8 leading-tight"
+          className="font-display text-5xl sm:text-6xl md:text-7xl lg:text-9xl uppercase tracking-[0.08em] font-extralight mb-8 leading-tight text-brand-forest"
         >
           Ready to
           <br />
-          <span className="text-white/60">Escape?</span>
+          <span className="text-brand-forest/50">Escape?</span>
         </motion.h2>
 
         <motion.p
@@ -60,7 +60,7 @@ export function CTASection() {
             delay: 0.3,
             ease: [0.22, 1, 0.36, 1],
           }}
-          className="text-white/30 text-base md:text-lg tracking-wide font-light mb-16 max-w-lg text-balance"
+          className="text-brand-forest/40 text-base md:text-lg tracking-wide font-light mb-16 max-w-lg text-balance"
         >
           Begin your journey to a place where nature sets the pace, and every
           moment is yours to define.
@@ -77,14 +77,14 @@ export function CTASection() {
           }}
           whileHover={{
             scale: 1.05,
-            borderColor: "rgba(255,255,255,0.4)",
+            borderColor: "rgba(31,58,54,0.4)",
           }}
           whileTap={{ scale: 0.98 }}
-          className="relative border border-white/15 px-14 py-5 rounded-full uppercase tracking-[0.2em] text-sm font-light transition-colors duration-700 group overflow-hidden"
+          className="relative border border-brand-forest/20 px-14 py-5 rounded-full uppercase tracking-[0.2em] text-sm font-light transition-colors duration-700 group overflow-hidden text-brand-forest"
         >
           {/* Hover fill effect */}
-          <span className="absolute inset-0 bg-white scale-x-0 group-hover:scale-x-100 transition-transform duration-700 ease-cinematic origin-left rounded-full" />
-          <span className="relative z-10 group-hover:text-background transition-colors duration-500">
+          <span className="absolute inset-0 bg-brand-forest scale-x-0 group-hover:scale-x-100 transition-transform duration-700 ease-cinematic origin-left rounded-full" />
+          <span className="relative z-10 group-hover:text-brand-cream transition-colors duration-500">
             Book Your Journey
           </span>
         </motion.button>
