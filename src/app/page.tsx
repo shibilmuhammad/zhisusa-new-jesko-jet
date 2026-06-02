@@ -6,6 +6,7 @@ import { Navbar } from "@/components/layout/Navbar";
 import { HeroScroll } from "@/components/cinematic/HeroScroll";
 import { StaySection } from "@/components/sections/StaySection";
 import { WorkspaceMorph } from "@/components/cinematic/WorkspaceMorph";
+import { WorkSection } from "@/components/sections/WorkSection";
 import { LeisureSection } from "@/components/sections/LeisureSection";
 import { TableTennisMorph } from "@/components/cinematic/TableTennisMorph";
 import { ExperienceSection } from "@/components/sections/ExperienceSection";
@@ -61,9 +62,10 @@ export default function HomePage() {
           <StaySection />
         </div>
 
-        {/* Section 3: Workspace Morph */}
+        {/* Section 3: Workspace Morph + Work Gallery */}
         <div id="work">
           <WorkspaceMorph />
+          <WorkSection />
         </div>
 
         {/* Section 4: Leisure */}
