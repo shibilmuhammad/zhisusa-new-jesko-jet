@@ -53,7 +53,7 @@ export function LeisureSection() {
               </h3>
             </FadeText>
             <FadeText delay={0.3}>
-              <div className="text-brand-forest/55 text-sm md:text-base tracking-wide font-normal font-sans">
+              <div className="text-brand-teal text-sm md:text-base tracking-wide font-normal font-sans">
                 <p>Kayaking at sunrise. Bonfires after midnight. Slow conversations under quiet skies.</p>
               </div>
             </FadeText>
@@ -80,7 +80,7 @@ export function LeisureSection() {
             >
               <div className="flex flex-col items-center gap-4">
                 {/* Time label */}
-                <span className="text-[10px] tracking-[0.3em] uppercase text-brand-forest/45 font-medium">
+                <span className="text-[10px] tracking-[0.3em] uppercase text-brand-teal font-medium">
                   {activity.time}
                 </span>
 
@@ -103,7 +103,7 @@ export function LeisureSection() {
         <FadeText delay={0.5}>
           <div className="mt-24 flex items-center justify-center gap-6">
             <div className="flex-1 h-[1px] bg-gradient-to-r from-transparent to-brand-forest/[0.08]" />
-            <span className="text-[10px] tracking-[0.36em] uppercase text-brand-forest/40 font-medium">
+            <span className="text-[10px] tracking-[0.36em] uppercase text-brand-teal font-medium">
               Every hour, a new story
             </span>
             <div className="flex-1 h-[1px] bg-gradient-to-l from-transparent to-brand-forest/[0.08]" />

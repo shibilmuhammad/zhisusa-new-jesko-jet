@@ -43,7 +43,7 @@ export function IntroLoader({ isLoading, progress }: IntroLoaderProps) {
           className="fixed inset-0 z-[200] bg-background flex flex-col items-center justify-center"
         >
           {/* Ambient glow */}
-          <div className="absolute inset-0 opacity-[0.03] bg-[radial-gradient(circle_at_50%_50%,_rgba(255,255,255,0.15)_0%,_transparent_70%)]" />
+          <div className="absolute inset-0 opacity-[0.03] bg-[radial-gradient(circle_at_50%_50%,_rgba(31,58,54,0.15)_0%,_transparent_70%)]" />
 
           {/* Logo */}
           <motion.div
@@ -52,14 +52,14 @@ export function IntroLoader({ isLoading, progress }: IntroLoaderProps) {
             transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
             className="relative z-10 flex flex-col items-center"
           >
-            <h1 className="font-display text-3xl md:text-4xl tracking-[0.35em] uppercase font-light mb-12">
+            <h1 className="font-display text-brand-forest text-3xl md:text-4xl tracking-[0.35em] uppercase font-light mb-12">
               Zhisusa
             </h1>
 
             {/* Progress bar */}
-            <div className="w-48 h-[1px] bg-white/10 relative overflow-hidden rounded-full">
+            <div className="w-48 h-[1px] bg-brand-forest/10 relative overflow-hidden rounded-full">
               <motion.div
-                className="absolute inset-y-0 left-0 bg-white/50"
+                className="absolute inset-y-0 left-0 bg-brand-teal"
                 initial={{ width: "0%" }}
                 animate={{ width: `${Math.round(progress * 100)}%` }}
                 transition={{ duration: 0.3, ease: "easeOut" }}
@@ -71,7 +71,7 @@ export function IntroLoader({ isLoading, progress }: IntroLoaderProps) {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.3, duration: 0.8 }}
-              className="mt-8 text-xs tracking-[0.3em] uppercase text-white/30 font-light"
+              className="mt-8 text-xs tracking-[0.3em] uppercase text-brand-teal font-light"
             >
               Entering Zhisusa
             </motion.p>

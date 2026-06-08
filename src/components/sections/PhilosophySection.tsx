@@ -31,7 +31,7 @@ export function PhilosophySection() {
         <FadeText>
           <div className="flex items-center justify-center gap-6 mb-12">
             <div className="w-16 h-[1px] bg-brand-forest/10" />
-            <span className="text-[10px] tracking-[0.5em] uppercase text-brand-forest/35 font-light">
+            <span className="text-[10px] tracking-[0.5em] uppercase text-brand-teal font-light">
               Our Philosophy
             </span>
             <div className="w-16 h-[1px] bg-brand-forest/10" />
@@ -43,7 +43,7 @@ export function PhilosophySection() {
             <p className="font-display text-2xl sm:text-3xl md:text-4xl lg:text-5xl uppercase tracking-[0.08em] font-extralight leading-relaxed mb-12 text-balance text-brand-forest/85">
               We don&apos;t build resorts.
               <br />
-              <span className="text-brand-forest/40">We create worlds</span>
+              <span className="text-brand-teal/80">We create worlds</span>
               <br />
               where time moves differently.
             </p>
@@ -51,7 +51,7 @@ export function PhilosophySection() {
         </motion.blockquote>
 
         <FadeText delay={0.4}>
-          <p className="text-brand-forest/45 text-base md:text-lg tracking-wide font-light max-w-2xl mx-auto text-balance">
+          <p className="text-brand-teal text-base md:text-lg tracking-wide font-light max-w-2xl mx-auto text-balance">
             Zhisusa was born from a simple belief — that the best work, the
             deepest rest, and the most meaningful connections happen when we
             return to nature. Not as tourists, but as residents of a gentler

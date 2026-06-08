@@ -24,12 +24,12 @@ export function HeroScroll({ onLoadProgress, onLoaded }: HeroScrollProps) {
     target: containerRef,
     offset: ["start start", "end end"],
   });
-  
+
   // ── CINEMATIC INERTIA ──
   // Using a faster, highly responsive spring config to avoid 'laggy' feeling
   // while maintaining that premium weighted deceleration.
   const smoothProgress = useSpring(scrollProgress, {
-    stiffness: 300, 
+    stiffness: 300,
     damping: 50,
     mass: 0.1,
     restDelta: 0.0001
@@ -406,7 +406,7 @@ export function HeroScroll({ onLoadProgress, onLoaded }: HeroScrollProps) {
         >
           {/* Thin Divider Line */}
           <div className="w-[140px] md:w-[200px] h-[1px] bg-white/10 relative overflow-hidden">
-            <motion.div 
+            <motion.div
               animate={{ x: ["-100%", "100%"] }}
               transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
               className="absolute inset-y-0 w-1/2 bg-gradient-to-r from-transparent via-white/30 to-transparent"
@@ -418,14 +418,14 @@ export function HeroScroll({ onLoadProgress, onLoaded }: HeroScrollProps) {
               <span className="text-[9px] tracking-[0.25em] uppercase text-white/40 font-medium">Scroll Down</span>
               <span className="text-[8px] tracking-[0.15em] uppercase text-white/15 font-light mt-0.5">To start the journey</span>
             </div>
-            
+
             <motion.div
               animate={{ y: [0, 5, 0] }}
               transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
               className="text-white/40"
             >
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                <path d="m7 13 5 5 5-5M7 6l5 5 5-5"/>
+                <path d="m7 13 5 5 5-5M7 6l5 5 5-5" />
               </svg>
             </motion.div>
           </div>
@@ -469,7 +469,7 @@ export function HeroScroll({ onLoadProgress, onLoaded }: HeroScrollProps) {
         >
           <div className="text-center px-6">
             <h2
-              className="font-display uppercase leading-[1] font-extralight tracking-[0.06em] mb-4"
+              className="font-display text-[#D8C3A5] uppercase leading-[1] font-extralight tracking-[0.06em] mb-4"
               style={{ fontSize: "clamp(2.4rem, 7vw, 7.5rem)" }}
             >
               Work. Stay.
@@ -510,13 +510,13 @@ export function HeroScroll({ onLoadProgress, onLoaded }: HeroScrollProps) {
         >
           <motion.div style={{ x: p3_leftX }}>
             <h2
-              className="font-display uppercase leading-[0.92] font-extralight tracking-[0.03em]"
+              className="font-display uppercase leading-[0.92] text-[#D8C3A5] font-extralight tracking-[0.03em]"
               style={{ fontSize: "clamp(2.5rem, 6.5vw, 7rem)" }}
             >
               Work
               <br />
               <span
-                className="text-white/30 tracking-[0.12em] block mt-2"
+                className="text-white/50 tracking-[0.12em] block mt-2"
                 style={{ fontSize: "clamp(0.8rem, 1.8vw, 1.4rem)" }}
               >
                 peacefully in nature
@@ -526,13 +526,13 @@ export function HeroScroll({ onLoadProgress, onLoaded }: HeroScrollProps) {
 
           <motion.div style={{ x: p3_rightX }} className="text-right">
             <h2
-              className="font-display uppercase leading-[0.92] font-extralight tracking-[0.03em]"
+              className="font-display uppercase text-[#D8C3A5] leading-[0.92] font-extralight tracking-[0.03em]"
               style={{ fontSize: "clamp(2.5rem, 6.5vw, 7rem)" }}
             >
               Leisure
               <br />
               <span
-                className="text-white/30 tracking-[0.12em] block mt-2"
+                className="text-white/50 tracking-[0.12em] block mt-2"
                 style={{ fontSize: "clamp(0.8rem, 1.8vw, 1.4rem)" }}
               >
                 reconnect and slow down
@@ -551,20 +551,20 @@ export function HeroScroll({ onLoadProgress, onLoaded }: HeroScrollProps) {
         >
           <div className="relative pointer-events-auto mt-20">
             {/* Readability Backdrop for Button */}
-            <div 
-              className="absolute left-1/2 -translate-x-1/2 -inset-y-20 w-[500px] bg-[radial-gradient(ellipse_at_center,_rgba(0,0,0,0.8)_0%,_transparent_75%)] pointer-events-none -z-10" 
+            <div
+              className="absolute left-1/2 -translate-x-1/2 -inset-y-20 w-[500px] bg-[radial-gradient(ellipse_at_center,_rgba(0,0,0,0.8)_0%,_transparent_75%)] pointer-events-none -z-10"
               aria-hidden="true"
             />
 
-            <button 
-              className="group relative overflow-hidden text-[13px] uppercase tracking-[0.4em] font-medium px-14 py-5 rounded-full transition-all duration-700"
-              style={{ 
+            <button
+              className="group relative overflow-hidden text-[10px] sm:text-[13px] uppercase tracking-[0.25em] sm:tracking-[0.4em] font-medium px-8 py-3 sm:px-14 sm:py-5 rounded-full transition-all duration-700"
+              style={{
                 textShadow: "0 0 20px rgba(255,255,255,0.3), 0 2px 10px rgba(0,0,0,0.9)"
               }}
             >
               {/* Glassmorphism Button Background */}
-              <div className="absolute inset-0 bg-white/[0.08] backdrop-blur-xl border border-white/30 group-hover:bg-white group-hover:border-white transition-all duration-700" />
-              
+              <div className="absolute inset-0 bg-white/[0.04] backdrop-blur-md border border-white/20 group-hover:bg-white group-hover:border-white transition-all duration-700" />
+
               {/* Button Text */}
               <span className="relative z-10 text-white group-hover:text-black transition-colors duration-700">
                 Discover Zhisusa

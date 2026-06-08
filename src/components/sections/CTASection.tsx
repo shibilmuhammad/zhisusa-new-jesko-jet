@@ -60,7 +60,7 @@ export function CTASection() {
             delay: 0.3,
             ease: [0.22, 1, 0.36, 1],
           }}
-          className="text-brand-forest/40 text-base md:text-lg tracking-wide font-light mb-16 max-w-lg text-balance"
+          className="text-brand-teal text-base md:text-lg tracking-wide font-light mb-16 max-w-lg text-balance"
         >
           Begin your journey to a place where nature sets the pace, and every
           moment is yours to define.

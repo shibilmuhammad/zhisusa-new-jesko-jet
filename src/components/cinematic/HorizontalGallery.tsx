@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useScroll, useTransform, useSpring, useMotionValueEvent } from "framer-motion";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 
 // ── Types ────────────────────────────────────────────────────────────────────
 export interface GalleryCard {
@@ -61,8 +61,24 @@ export function HorizontalGallery({
     }
   });
 
-  // ── Horizontal gallery travel ─────────────────────────────────────────────
-  const galleryX = useTransform(smoothProgress, [0.05, 1.0], ["0%", "-44%"]);
+  // ── Responsive scroll distance to avoid Safari calc() crashes ──
+  const [endX, setEndX] = useState("-44%");
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 640) {
+        setEndX("-85%"); // Mobile needs to travel further for wide cards
+      } else if (window.innerWidth < 1024) {
+        setEndX("-65%"); // Tablet
+      } else {
+        setEndX("-44%"); // Desktop
+      }
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const galleryX = useTransform(smoothProgress, [0.05, 1.0], ["0%", endX]);
 
   // ── Outro fades ──────────────────────────────────────────────────────────
   const headerOutro = useTransform(smoothProgress, [0.88, 1.0], [1, 0]);
@@ -112,7 +128,7 @@ export function HorizontalGallery({
         {/* ══ HEADER ROW: title left + tagline right ══ */}
         <motion.div
           style={{ opacity: headerOutro }}
-          className="relative z-20 flex items-end justify-between px-8 md:px-12 lg:px-16 pt-16 md:pt-20 pb-4 md:pb-5 flex-shrink-0"
+          className="relative z-20 flex flex-col sm:flex-row items-start sm:items-end justify-between gap-2 sm:gap-4 px-8 md:px-12 lg:px-16 pt-16 md:pt-20 pb-4 md:pb-5 flex-shrink-0"
         >
           {/* ── Big gradient title ── */}
           <motion.h2
@@ -136,12 +152,12 @@ export function HorizontalGallery({
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: isTextVisible ? 1 : 0, x: isTextVisible ? 0 : 20 }}
             transition={{ duration: 1.4, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-            className="text-right mb-3 md:mb-4 flex-shrink-0 max-w-[200px] md:max-w-[240px]"
+            className="text-left sm:text-right mb-1 sm:mb-3 md:mb-4 flex-shrink-0 max-w-[240px]"
           >
-            <p className="text-brand-forest/55 text-sm md:text-base tracking-wide font-sans leading-snug">
+            <p className="text-brand-teal text-sm md:text-base tracking-wide font-sans leading-snug">
               {taglineBase}{" "}
               {taglineEmphasis && (
-                <em className="not-italic font-semibold text-brand-forest/80">
+                <em className="not-italic font-semibold text-brand-forest">
                   {taglineEmphasis}
                 </em>
               )}
@@ -189,13 +205,13 @@ export function HorizontalGallery({
                 {/* Card Content */}
                 <div className="absolute inset-0 flex flex-col justify-end p-5 md:p-7 lg:p-8">
                   {/* Index tag */}
-                  <span className="text-[9px] tracking-[0.45em] uppercase text-brand-teal font-sans font-medium mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                  <span className="text-[9px] tracking-[0.45em] uppercase text-brand-terra font-sans font-medium mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                     {item.index}
                   </span>
 
                   <div className="transform translate-y-1.5 group-hover:translate-y-0 transition-transform duration-600 ease-cinematic">
                     {/* Subtitle */}
-                    <p className="text-[10px] uppercase tracking-[0.28em] text-white/55 font-sans mb-1 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-50">
+                    <p className="text-[10px] uppercase tracking-[0.28em] text-brand-terra/80 font-sans mb-1 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-50">
                       {item.subtitle}
                     </p>
 
@@ -205,7 +221,7 @@ export function HorizontalGallery({
                     </h4>
 
                     {/* Description — hover only */}
-                    <p className="text-white/55 text-[11px] md:text-xs tracking-wide font-sans leading-relaxed mt-2 max-w-[260px] opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
+                    <p className="text-white/80 text-[11px] md:text-xs tracking-wide font-sans leading-relaxed mt-2 max-w-[260px] opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
                       {item.description}
                     </p>
                   </div>
@@ -237,7 +253,7 @@ export function HorizontalGallery({
                 className="absolute inset-y-0 left-0 bg-brand-teal/60 rounded-full"
               />
             </div>
-            <p className="text-[8px] uppercase tracking-[0.45em] text-brand-forest/30 mt-1.5 font-sans">
+            <p className="text-[8px] uppercase tracking-[0.45em] text-brand-teal mt-1.5 font-sans">
               Scroll to explore
             </p>
           </motion.div>

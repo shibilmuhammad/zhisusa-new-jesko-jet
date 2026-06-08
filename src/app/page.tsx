@@ -68,13 +68,13 @@ export default function HomePage() {
           <WorkSection />
         </div>
 
-        {/* Section 4: Leisure */}
+        {/* Section 4: Table Tennis Morph (Transition from Work to Leisure) */}
+        <TableTennisMorph />
+
+        {/* Section 5: Leisure */}
         <div id="leisure">
           <LeisureSection />
         </div>
-
-        {/* Section 5: Table Tennis Morph */}
-        <TableTennisMorph />
 
         {/* Section 6: Experiences */}
         <div id="experiences">

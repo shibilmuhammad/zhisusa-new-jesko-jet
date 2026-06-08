@@ -72,7 +72,7 @@ export function ExperienceSection() {
         <FadeText>
           <div className="flex items-center gap-6 mb-6">
             <div className="w-12 h-[1px] bg-brand-forest/15" />
-            <span className="text-[10px] tracking-[0.38em] uppercase text-brand-forest/50 font-medium">
+            <span className="text-[10px] tracking-[0.38em] uppercase text-brand-teal font-medium">
               Curated for you
             </span>
           </div>
@@ -83,7 +83,7 @@ export function ExperienceSection() {
           </h2>
         </FadeText>
         <FadeText delay={0.2}>
-          <p className="text-brand-forest/55 text-base md:text-lg tracking-wide font-normal max-w-xl">
+          <p className="text-brand-teal text-base md:text-lg tracking-wide font-normal max-w-xl">
             Design your perfect escape. Every experience is an invitation to
             discover something deeper.
           </p>
@@ -103,7 +103,7 @@ export function ExperienceSection() {
               delay: index * 0.1,
               ease: [0.22, 1, 0.36, 1],
             }}
-            className={`group relative overflow-hidden rounded-xl cursor-pointer ${exp.span} ${exp.aspect}`}
+            className={`group relative overflow-hidden rounded-xl text-white cursor-pointer ${exp.span} ${exp.aspect}`}
           >
             {/* Background Image */}
             <motion.img
@@ -111,7 +111,7 @@ export function ExperienceSection() {
               alt={exp.title}
               className="absolute inset-0 w-full h-full object-cover transition-transform duration-[1.2s] ease-cinematic group-hover:scale-110"
             />
-            
+
             {/* Fallback Gradient (shimmering underlay) */}
             <div className={`absolute inset-0 bg-gradient-to-br ${exp.gradient} opacity-40`} />
 
@@ -129,7 +129,7 @@ export function ExperienceSection() {
                 <h3 className="font-display text-lg md:text-xl lg:text-2xl uppercase tracking-[0.12em] font-medium text-white/92 mb-2">
                   {exp.title}
                 </h3>
-                <p className="text-white/75 text-sm tracking-wide font-normal opacity-0 group-hover:opacity-100 transition-opacity duration-700 delay-100 max-w-md">
+                <p className="text-brand-terra/90 text-sm tracking-wide font-normal opacity-0 group-hover:opacity-100 transition-opacity duration-700 delay-100 max-w-md">
                   {exp.description}
                 </p>
               </div>
