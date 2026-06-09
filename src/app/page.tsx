@@ -8,6 +8,7 @@ import { StaySection } from "@/components/sections/StaySection";
 import { WorkspaceMorph } from "@/components/cinematic/WorkspaceMorph";
 import { WorkSection } from "@/components/sections/WorkSection";
 import { LeisureSection } from "@/components/sections/LeisureSection";
+import { LeisureGallerySection } from "@/components/sections/LeisureGallerySection";
 import { TableTennisMorph } from "@/components/cinematic/TableTennisMorph";
 import { ExperienceSection } from "@/components/sections/ExperienceSection";
 import { PhilosophySection } from "@/components/sections/PhilosophySection";
@@ -74,6 +75,7 @@ export default function HomePage() {
         {/* Section 5: Leisure */}
         <div id="leisure">
           <LeisureSection />
+          <LeisureGallerySection />
         </div>
 
         {/* Section 6: Experiences */}

@@ -44,8 +44,8 @@ export function WorkspaceMorph() {
   const outdoorSubY = useTransform(smoothProgress, [0.41, 0.46, 0.8, 0.9], [20, 0, 0, -20]);
   const outdoorSubBlur = useTransform(smoothProgress, [0.41, 0.46, 0.8, 0.9], ["blur(8px)", "blur(0px)", "blur(0px)", "blur(8px)"]);
 
-  const textShadowStyle = { textShadow: "0 0 30px rgba(0,0,0,0.5), 0 4px 12px rgba(0,0,0,0.3)" };
-  const titleShadowStyle = { textShadow: "0 0 50px rgba(255,255,255,0.1), 0 0 30px rgba(0,0,0,0.5)" };
+  const textShadowStyle = { textShadow: "0 4px 20px rgba(247, 244, 238, 0.6)" };
+  const titleShadowStyle = { textShadow: "0 10px 40px rgba(247, 244, 238, 0.7)" };
 
   return (
     <section
@@ -55,11 +55,15 @@ export function WorkspaceMorph() {
     >
       <div className="sticky top-0 h-screen overflow-hidden">
         <SequenceCanvas
-          path="/sequence-2"
+          path="/sequence-2-updated"
           frameCount={96}
           progress={smoothProgress}
           className="absolute inset-0"
         />
+
+        {/* ── Top & Bottom Edge Blending Gradients ── */}
+        <div className="absolute top-0 left-0 right-0 h-32 md:h-64 bg-gradient-to-b from-background to-transparent z-[3] pointer-events-none" />
+        <div className="absolute bottom-0 left-0 right-0 h-32 md:h-64 bg-gradient-to-t from-background to-transparent z-[3] pointer-events-none" />
 
         {/* Subtle global darkening (much lighter than before) */}
         <div className="absolute inset-0 z-[3] bg-black/10 pointer-events-none" />
@@ -78,11 +82,11 @@ export function WorkspaceMorph() {
               maskImage: "radial-gradient(ellipse 60% 40% at 50% 30%, black 10%, transparent 60%)",
             }}
           />
-          {/* Radial dark gradient specifically for text backing */}
+          {/* Radial light gradient specifically for dark text backing */}
           <div 
             className="absolute inset-0 pointer-events-none"
             style={{
-              background: "radial-gradient(circle at 50% 30%, rgba(0,0,0,0.28) 0%, rgba(0,0,0,0) 70%)",
+              background: "radial-gradient(circle at 50% 30%, rgba(247, 244, 238, 0.5) 0%, rgba(247, 244, 238, 0) 70%)",
             }}
           />
         </motion.div>
@@ -91,7 +95,7 @@ export function WorkspaceMorph() {
         <div className="absolute inset-0 z-10 flex flex-col items-center pointer-events-none p-6 text-center">
           
           {/* ── PHASE 1: INDOOR WORKSPACE ── */}
-          <div className="absolute top-[16vh] md:top-[18vh] flex flex-col items-center w-full px-4">
+          <div className="absolute top-[8vh] md:top-[10vh] lg:top-[12vh] flex flex-col items-center w-full px-4">
             <motion.h2
               style={{
                 ...titleShadowStyle,
@@ -100,7 +104,7 @@ export function WorkspaceMorph() {
                 filter: indoorTitleBlur,
                 scale: indoorTitleScale
               }}
-              className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl uppercase tracking-[0.11em] font-medium text-white/95 mb-5"
+              className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl uppercase tracking-[0.11em] font-medium text-brand-forest mb-5"
             >
               Work Without Walls
             </motion.h2>
@@ -109,23 +113,27 @@ export function WorkspaceMorph() {
               className="flex flex-col items-center"
               style={{ opacity: indoorSubOpacity, y: indoorSubY, filter: indoorSubBlur }}
             >
-              <div className="h-[1px] w-[1px] min-w-[150px] max-w-[250px] bg-gradient-to-r from-transparent via-white/40 to-transparent mb-6" />
-              <p
+              <div className="h-[1px] w-[1px] min-w-[150px] max-w-[250px] bg-gradient-to-r from-transparent via-brand-forest/30 to-transparent mb-6" />
+              <div
                 style={textShadowStyle}
-                className="text-white/85 text-base sm:text-lg md:text-xl lg:text-2xl tracking-[0.06em] font-normal max-w-xl text-balance"
+                className="flex flex-wrap justify-center items-center gap-2 sm:gap-3 md:gap-4 text-brand-forest/90 text-sm sm:text-base md:text-lg lg:text-xl tracking-[0.06em] font-normal"
               >
-                Private offices. Focus zones. Minimal deep-work spaces.
-              </p>
-              <div className="mt-8 flex items-center gap-4 text-[10px] sm:text-xs tracking-[0.24em] uppercase text-white/65 font-medium">
-                <span className="w-8 h-[1px] bg-white/20" />
+                <span>Private offices</span>
+                <span className="text-brand-forest/40 text-xs md:text-sm">•</span>
+                <span>Focus zones</span>
+                <span className="text-brand-forest/40 text-xs md:text-sm">•</span>
+                <span>Minimal deep-work spaces</span>
+              </div>
+              <div className="mt-6 md:mt-8 flex items-center gap-4 text-[10px] sm:text-xs tracking-[0.24em] uppercase text-brand-forest/70 font-medium">
+                <span className="w-8 h-[1px] bg-brand-forest/20" />
                 <span style={textShadowStyle}>Designed for uninterrupted focus.</span>
-                <span className="w-8 h-[1px] bg-white/20" />
+                <span className="w-8 h-[1px] bg-brand-forest/20" />
               </div>
             </motion.div>
           </div>
 
           {/* ── PHASE 2: OUTDOOR WORKSPACE ── */}
-          <div className="absolute top-[16vh] md:top-[18vh] flex flex-col items-center w-full px-4">
+          <div className="absolute top-[8vh] md:top-[10vh] lg:top-[12vh] flex flex-col items-center w-full px-4">
             <motion.h2
               style={{
                 ...titleShadowStyle,
@@ -134,7 +142,7 @@ export function WorkspaceMorph() {
                 filter: outdoorTitleBlur,
                 scale: outdoorTitleScale
               }}
-              className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl uppercase tracking-[0.11em] font-medium text-white/95 mb-5"
+              className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl uppercase tracking-[0.11em] font-medium text-brand-forest mb-5"
             >
               Work With Nature
             </motion.h2>
@@ -143,17 +151,19 @@ export function WorkspaceMorph() {
               className="flex flex-col items-center"
               style={{ opacity: outdoorSubOpacity, y: outdoorSubY, filter: outdoorSubBlur }}
             >
-              <div className="h-[1px] w-[1px] min-w-[150px] max-w-[250px] bg-gradient-to-r from-transparent via-white/40 to-transparent mb-6" />
-              <p
+              <div className="h-[1px] w-[1px] min-w-[150px] max-w-[250px] bg-gradient-to-r from-transparent via-brand-forest/30 to-transparent mb-6" />
+              <div
                 style={textShadowStyle}
-                className="text-white/85 text-base sm:text-lg md:text-xl lg:text-2xl tracking-[0.06em] font-normal max-w-xl text-balance"
+                className="flex flex-wrap justify-center items-center gap-2 sm:gap-3 md:gap-4 text-brand-forest/90 text-sm sm:text-base md:text-lg lg:text-xl tracking-[0.06em] font-normal"
               >
-                Open-air desks. Nature-integrated focus.
-              </p>
-              <div className="mt-8 flex items-center gap-4 text-[10px] sm:text-xs tracking-[0.24em] uppercase text-white/65 font-medium">
-                <span className="w-8 h-[1px] bg-white/20" />
+                <span>Open-air desks</span>
+                <span className="text-brand-forest/40 text-xs md:text-sm">•</span>
+                <span>Nature-integrated focus</span>
+              </div>
+              <div className="mt-6 md:mt-8 flex items-center gap-4 text-[10px] sm:text-xs tracking-[0.24em] uppercase text-brand-forest/70 font-medium">
+                <span className="w-8 h-[1px] bg-brand-forest/20" />
                 <span style={textShadowStyle}>Designed for calm, creative productivity.</span>
-                <span className="w-8 h-[1px] bg-white/20" />
+                <span className="w-8 h-[1px] bg-brand-forest/20" />
               </div>
             </motion.div>
           </div>

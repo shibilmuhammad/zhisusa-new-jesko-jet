@@ -61,6 +61,10 @@ export function TableTennisMorph() {
           />
         </motion.div>
 
+        {/* ── Top & Bottom Edge Blending Gradients ── */}
+        <div className="absolute top-0 left-0 right-0 h-32 md:h-64 bg-gradient-to-b from-background to-transparent z-[3] pointer-events-none" />
+        <div className="absolute bottom-0 left-0 right-0 h-32 md:h-64 bg-gradient-to-t from-background to-transparent z-[3] pointer-events-none" />
+
         {/* Subtle global darkening */}
         <div className="absolute inset-0 z-[3] bg-black/10 pointer-events-none" />
 

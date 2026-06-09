@@ -56,17 +56,17 @@ export function BookingSystem() {
               whileHover={{ y: -6, scale: 1.02 }}
               whileTap={{ scale: 0.97 }}
               onClick={toggleModal}
-              className="group relative pointer-events-auto flex items-center gap-3 bg-brand-teal px-7 py-2.5 rounded-full shadow-[0_15px_40px_rgba(36,95,115,0.5)] transition-all duration-500"
+              className="group relative pointer-events-auto flex items-center gap-2 md:gap-3 bg-brand-cream/80 md:bg-brand-teal backdrop-blur-xl border border-brand-cream/50 md:border-transparent px-5 md:px-7 py-2 md:py-2.5 rounded-full shadow-lg md:shadow-[0_15px_40px_rgba(36,95,115,0.5)] transition-all duration-500"
             >
-              {/* Outer Glass Effect Ring */}
-              <div className="absolute -inset-[6px] rounded-full bg-brand-teal/20 backdrop-blur-xl border-[1.5px] border-brand-teal/40 -z-10 group-hover:bg-brand-teal/30 transition-all duration-500" />
+              {/* Outer Glass Effect Ring - Desktop Only */}
+              <div className="hidden md:block absolute -inset-[6px] rounded-full bg-brand-teal/20 backdrop-blur-xl border-[1.5px] border-brand-teal/40 -z-10 group-hover:bg-brand-teal/30 transition-all duration-500" />
               
-              <span className="text-[10px] uppercase tracking-[0.35em] font-semibold text-white pl-1 font-sans">
+              <span className="text-[9px] md:text-[10px] uppercase tracking-[0.2em] md:tracking-[0.35em] font-semibold text-brand-forest md:text-white pl-1 font-sans">
                 Book Escape
               </span>
               
-              <div className="w-5 h-5 rounded-full bg-white/20 text-white flex items-center justify-center group-hover:rotate-45 transition-transform duration-500 border border-white/30">
-                <ChevronRight size={12} strokeWidth={3} />
+              <div className="w-4 h-4 md:w-5 md:h-5 rounded-full bg-brand-forest/10 md:bg-white/20 text-brand-forest md:text-white flex items-center justify-center group-hover:rotate-45 transition-transform duration-500 border border-brand-forest/20 md:border-white/30">
+                <ChevronRight className="w-[10px] h-[10px] md:w-3 md:h-3" strokeWidth={3} />
               </div>
 
               {/* Floating Glow */}

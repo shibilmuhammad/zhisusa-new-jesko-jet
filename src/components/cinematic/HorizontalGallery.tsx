@@ -37,6 +37,7 @@ export function HorizontalGallery({
   sectionHeight = "200vh",
 }: HorizontalGalleryProps) {
   const sectionRef = useRef<HTMLDivElement>(null);
+  const galleryRef = useRef<HTMLDivElement>(null);
   const [isTextVisible, setIsTextVisible] = useState(false);
 
   const { scrollYProgress } = useScroll({
@@ -61,24 +62,33 @@ export function HorizontalGallery({
     }
   });
 
-  // ── Responsive scroll distance to avoid Safari calc() crashes ──
-  const [endX, setEndX] = useState("-44%");
+  // ── Responsive scroll distance calculating exact pixels ──
+  const [endX, setEndX] = useState(0);
+
   useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth < 640) {
-        setEndX("-85%"); // Mobile needs to travel further for wide cards
-      } else if (window.innerWidth < 1024) {
-        setEndX("-65%"); // Tablet
-      } else {
-        setEndX("-44%"); // Desktop
+    const updateScroll = () => {
+      if (galleryRef.current) {
+        // The scrollWidth already includes the 15vw right padding (pr-[15vw])
+        const distance = galleryRef.current.scrollWidth - window.innerWidth;
+        setEndX(distance > 0 ? -distance : 0);
       }
     };
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+    
+    // Initial and resize updates
+    updateScroll();
+    window.addEventListener("resize", updateScroll);
+    
+    // Observer handles dynamic image loads changing dimensions
+    const observer = new ResizeObserver(updateScroll);
+    if (galleryRef.current) observer.observe(galleryRef.current);
+    
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("resize", updateScroll);
+    };
+  }, [cards.length]);
 
-  const galleryX = useTransform(smoothProgress, [0.05, 1.0], ["0%", endX]);
+  const galleryX = useTransform(smoothProgress, [0.05, 1.0], [0, endX]);
 
   // ── Outro fades ──────────────────────────────────────────────────────────
   const headerOutro = useTransform(smoothProgress, [0.88, 1.0], [1, 0]);
@@ -177,6 +187,7 @@ export function HorizontalGallery({
         {/* ══ GALLERY: fixed height with breathing room ══ */}
         <div className="relative flex-1 min-h-0 mt-3 md:mt-4 mb-8 md:mb-10">
           <motion.div
+            ref={galleryRef}
             style={{ x: galleryX }}
             className="absolute top-0 bottom-0 flex items-start gap-4 md:gap-5 pl-8 md:pl-12 lg:pl-16 pr-[15vw]"
           >

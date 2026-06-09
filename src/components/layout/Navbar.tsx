@@ -50,7 +50,10 @@ export function Navbar() {
         {/* Logo */}
         <a
           href="#"
-          className="font-display text-lg md:text-xl tracking-[0.25em] uppercase font-light text-brand-forest hover:opacity-60 transition-opacity duration-500"
+          className={cn(
+            "font-display text-lg md:text-xl tracking-[0.25em] uppercase font-light transition-colors duration-500 hover:opacity-60",
+            scrolled ? "text-brand-forest" : "text-brand-cream md:text-brand-forest"
+          )}
         >
           Zhisusa
         </a>
@@ -81,7 +84,10 @@ export function Navbar() {
           {/* Mobile Menu Toggle */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden relative w-8 h-8 flex items-center justify-center text-brand-forest/70 hover:text-brand-forest transition-colors"
+            className={cn(
+              "md:hidden relative w-8 h-8 flex items-center justify-center transition-colors",
+              scrolled ? "text-brand-forest/70 hover:text-brand-forest" : "text-brand-cream/80 hover:text-brand-cream"
+            )}
             aria-label="Toggle mobile menu"
           >
             {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}

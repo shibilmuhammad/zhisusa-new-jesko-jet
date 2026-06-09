@@ -482,24 +482,7 @@ export function HeroScroll({ onLoadProgress, onLoaded }: HeroScrollProps) {
           </div>
         </motion.div>
 
-        {/* Right side accent — coordinates */}
-        <motion.div
-          style={{
-            opacity: p2_rightAccentOpacity,
-            x: p2_rightAccentX,
-          }}
-          className="absolute z-10 pointer-events-none right-[clamp(1.5rem,4vw,4.5rem)] top-1/2 -translate-y-1/2 text-right"
-        >
-          <div className="flex flex-col items-end gap-3">
-            <p className="text-[10px] tracking-[0.3em] uppercase text-white/25 font-light">
-              Fishing
-            </p>
-            <div className="w-8 h-[1px] bg-white/15" />
-            <p className="text-[10px] tracking-[0.3em] uppercase text-white/25 font-light">
-              Kayaking
-            </p>
-          </div>
-        </motion.div>
+
 
         {/* ═══════════════════════════════════════════════
             PHASE 3 — ARRIVAL: SPLIT REVEAL FROM SIDES
@@ -516,8 +499,7 @@ export function HeroScroll({ onLoadProgress, onLoaded }: HeroScrollProps) {
               Work
               <br />
               <span
-                className="text-white/50 tracking-[0.12em] block mt-2"
-                style={{ fontSize: "clamp(0.8rem, 1.8vw, 1.4rem)" }}
+                className="text-white/50 tracking-[0.12em] block mt-1 md:mt-2 text-[10px] md:text-sm lg:text-lg"
               >
                 peacefully in nature
               </span>
@@ -532,8 +514,7 @@ export function HeroScroll({ onLoadProgress, onLoaded }: HeroScrollProps) {
               Leisure
               <br />
               <span
-                className="text-white/50 tracking-[0.12em] block mt-2"
-                style={{ fontSize: "clamp(0.8rem, 1.8vw, 1.4rem)" }}
+                className="text-white/50 tracking-[0.12em] block mt-1 md:mt-2 text-[10px] md:text-sm lg:text-lg"
               >
                 reconnect and slow down
               </span>
@@ -549,15 +530,15 @@ export function HeroScroll({ onLoadProgress, onLoaded }: HeroScrollProps) {
           }}
           className="absolute inset-0 z-30 flex items-center justify-center pointer-events-none"
         >
-          <div className="relative pointer-events-auto mt-20">
+          <div className="relative pointer-events-auto mt-32 md:mt-20">
             {/* Readability Backdrop for Button */}
             <div
-              className="absolute left-1/2 -translate-x-1/2 -inset-y-20 w-[500px] bg-[radial-gradient(ellipse_at_center,_rgba(0,0,0,0.8)_0%,_transparent_75%)] pointer-events-none -z-10"
+              className="absolute left-1/2 -translate-x-1/2 -inset-y-20 w-[150vw] md:w-[500px] bg-[radial-gradient(ellipse_at_center,_rgba(0,0,0,0.8)_0%,_transparent_75%)] pointer-events-none -z-10"
               aria-hidden="true"
             />
 
             <button
-              className="group relative overflow-hidden text-[10px] sm:text-[13px] uppercase tracking-[0.25em] sm:tracking-[0.4em] font-medium px-8 py-3 sm:px-14 sm:py-5 rounded-full transition-all duration-700"
+              className="group relative overflow-hidden text-[9px] sm:text-[13px] uppercase tracking-[0.2em] sm:tracking-[0.4em] font-medium px-6 py-3 md:px-14 md:py-5 rounded-full transition-all duration-700 whitespace-nowrap max-w-[90vw]"
               style={{
                 textShadow: "0 0 20px rgba(255,255,255,0.3), 0 2px 10px rgba(0,0,0,0.9)"
               }}
