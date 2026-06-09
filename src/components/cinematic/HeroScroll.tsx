@@ -170,16 +170,6 @@ export function HeroScroll({ onLoadProgress, onLoaded }: HeroScrollProps) {
     [0.34, 0.44],
     [-40, 0]
   );
-  const p2_rightAccentOpacity = useTransform(
-    smoothProgress,
-    [0.36, 0.44, 0.52, 0.58],
-    [0, 1, 1, 0]
-  );
-  const p2_rightAccentX = useTransform(
-    smoothProgress,
-    [0.36, 0.46],
-    [40, 0]
-  );
 
   // ═══════════════════════════════════════════════════════════
   // PHASE 3 — ARRIVAL (65% → 95%)
