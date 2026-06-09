@@ -22,54 +22,55 @@ export function SequenceCanvas({
 }: SequenceCanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const ctxRef = useRef<CanvasRenderingContext2D | null>(null);
-  // Store raw ImageBitmaps (off-main-thread decoded, GPU ready)
-  const bitmapsRef = useRef<(ImageBitmap | null)[]>(new Array(frameCount).fill(null));
+  // Store HTMLImageElements instead of raw ImageBitmaps to allow the browser to manage memory
+  // and prevent iOS Safari memory exhaustion crashes.
+  const imagesRef = useRef<(HTMLImageElement | null)[]>(new Array(frameCount).fill(null));
   const currentFrameRef = useRef(-1);
   const rafRef = useRef<number | null>(null);
   const pendingFrameRef = useRef<number | null>(null);
   const lastProgressEmitRef = useRef(0);
 
   // ── Draw a GPU bitmap with dynamic cover scaling ──
-  const drawBitmap = useCallback((bitmap: ImageBitmap) => {
+  const drawImage = useCallback((img: HTMLImageElement) => {
     const ctx = ctxRef.current;
     const c = canvasRef.current;
     if (!ctx || !c) return;
 
     const cw = c.width;
     const ch = c.height;
-    const scale = Math.max(cw / bitmap.width, ch / bitmap.height);
-    const dw = bitmap.width * scale;
-    const dh = bitmap.height * scale;
+    const scale = Math.max(cw / img.width, ch / img.height);
+    const dw = img.width * scale;
+    const dh = img.height * scale;
     
     // Fast GPU blit with scaling
-    ctx.drawImage(bitmap, (cw - dw) / 2, (ch - dh) / 2, dw, dh);
+    ctx.drawImage(img, (cw - dw) / 2, (ch - dh) / 2, dw, dh);
   }, []);
 
   // ── Draw frame by index ──
   const drawFrame = useCallback((idx: number) => {
-    const bitmaps = bitmapsRef.current;
-    const bitmap = bitmaps[idx];
-    if (bitmap) {
-      drawBitmap(bitmap);
+    const images = imagesRef.current;
+    const img = images[idx];
+    if (img) {
+      drawImage(img);
       return;
     }
     // Prefer the current frame if available to avoid O(n) scans per wheel tick.
-    if (currentFrameRef.current >= 0 && bitmaps[currentFrameRef.current]) {
-      drawBitmap(bitmaps[currentFrameRef.current]!);
+    if (currentFrameRef.current >= 0 && images[currentFrameRef.current]) {
+      drawImage(images[currentFrameRef.current]!);
       return;
     }
     // Bounded search for a nearby decoded frame while loading.
     for (let d = 1; d <= 8; d++) {
-      if (idx - d >= 0 && bitmaps[idx - d]) {
-        drawBitmap(bitmaps[idx - d]!);
+      if (idx - d >= 0 && images[idx - d]) {
+        drawImage(images[idx - d]!);
         return;
       }
-      if (idx + d < frameCount && bitmaps[idx + d]) {
-        drawBitmap(bitmaps[idx + d]!);
+      if (idx + d < frameCount && images[idx + d]) {
+        drawImage(images[idx + d]!);
         return;
       }
     }
-  }, [drawBitmap, frameCount]);
+  }, [drawImage, frameCount]);
 
   // Coalesce multiple frame requests into one draw per paint.
   const scheduleDraw = useCallback(
@@ -132,67 +133,61 @@ export function SequenceCanvas({
   useEffect(() => {
     let cancelled = false;
     let loadedCount = 0;
-    const bitmaps: (ImageBitmap | null)[] = new Array(frameCount).fill(null);
-    bitmapsRef.current = bitmaps;
+    const images: (HTMLImageElement | null)[] = new Array(frameCount).fill(null);
+    imagesRef.current = images;
 
-    const onImageLoaded = async (i: number, blob: Blob) => {
+    const onImageLoaded = (i: number, img: HTMLImageElement) => {
       if (cancelled) return;
-      try {
-        // Decode off main thread
-        const bitmap = await createImageBitmap(blob);
-        if (cancelled) {
-          bitmap.close();
-          return;
-        }
-        
-        bitmaps[i] = bitmap;
-        loadedCount++;
+      
+      images[i] = img;
+      loadedCount++;
 
-        // Draw frame 0 immediately
-        if (i === 0) {
-          sizeCanvas();
-          drawBitmap(bitmap);
-          currentFrameRef.current = 0;
-        } else if (i === currentFrameRef.current) {
-          drawBitmap(bitmap);
-        }
-
-        const loadProgress = loadedCount / frameCount;
-        if (
-          loadProgress >= 1 ||
-          loadProgress - lastProgressEmitRef.current >= 0.03 ||
-          loadProgress < lastProgressEmitRef.current
-        ) {
-          lastProgressEmitRef.current = loadProgress;
-          onLoadProgress?.(loadProgress);
-        }
-        if (loadedCount === frameCount) onLoaded?.();
-      } catch {
-        // Ignore decode errors
+      // Draw frame 0 immediately
+      if (i === 0) {
+        sizeCanvas();
+        drawImage(img);
+        currentFrameRef.current = 0;
+      } else if (i === currentFrameRef.current) {
+        drawImage(img);
       }
+
+      const loadProgress = loadedCount / frameCount;
+      if (
+        loadProgress >= 1 ||
+        loadProgress - lastProgressEmitRef.current >= 0.03 ||
+        loadProgress < lastProgressEmitRef.current
+      ) {
+        lastProgressEmitRef.current = loadProgress;
+        onLoadProgress?.(loadProgress);
+      }
+      if (loadedCount === frameCount) onLoaded?.();
     };
 
-    const loadImage = async (i: number) => {
-      try {
-        const response = await fetch(`${path}/ezgif-frame-${String(i + 1).padStart(3, "0")}.jpg`);
-        if (!response.ok) throw new Error("Failed to fetch");
-        const blob = await response.blob();
-        await onImageLoaded(i, blob);
-      } catch {
-        if (!cancelled) {
-          loadedCount++;
-          const loadProgress = loadedCount / frameCount;
-          if (
-            loadProgress >= 1 ||
-            loadProgress - lastProgressEmitRef.current >= 0.03 ||
-            loadProgress < lastProgressEmitRef.current
-          ) {
-            lastProgressEmitRef.current = loadProgress;
-            onLoadProgress?.(loadProgress);
+    const loadImage = (i: number): Promise<void> => {
+      return new Promise((resolve) => {
+        const img = new Image();
+        img.onload = () => {
+          onImageLoaded(i, img);
+          resolve();
+        };
+        img.onerror = () => {
+          if (!cancelled) {
+            loadedCount++;
+            const loadProgress = loadedCount / frameCount;
+            if (
+              loadProgress >= 1 ||
+              loadProgress - lastProgressEmitRef.current >= 0.03 ||
+              loadProgress < lastProgressEmitRef.current
+            ) {
+              lastProgressEmitRef.current = loadProgress;
+              onLoadProgress?.(loadProgress);
+            }
+            if (loadedCount === frameCount) onLoaded?.();
           }
-          if (loadedCount === frameCount) onLoaded?.();
-        }
-      }
+          resolve(); // Resolve anyway to continue loading others
+        };
+        img.src = `${path}/ezgif-frame-${String(i + 1).padStart(3, "0")}.jpg`;
+      });
     };
 
     const loadAll = async () => {
@@ -203,7 +198,7 @@ export function SequenceCanvas({
       }
       
       // Load the rest in small batches to prevent network/CPU choking
-      const batchSize = 2;
+      const batchSize = 4;
       for (let start = 5; start < frameCount; start += batchSize) {
         const batch = [];
         for (let i = start; i < Math.min(start + batchSize, frameCount); i++) {
@@ -218,8 +213,6 @@ export function SequenceCanvas({
 
     return () => { 
       cancelled = true;
-      // Note: we don't close bitmaps here because React Strict Mode
-      // would close them immediately on mount/unmount cycle
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [path, frameCount]);
