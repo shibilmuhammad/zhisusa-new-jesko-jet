@@ -98,7 +98,7 @@ export function LeisureSection() {
 
           <div className="mt-[-2rem] md:mt-[-4rem] flex flex-col items-center md:items-end max-w-xl text-center md:text-right z-20">
             <FadeText delay={0.2}>
-              <h3 className="font-display mt-4 text-[2.5rem] md:text-5xl lg:text-[4rem] uppercase tracking-[0.05em] font-medium text-brand-forest mb-4 md:mb-6 leading-[1.05]">
+              <h3 className="font-display mt-4 lg:mt-0 text-[2.5rem] md:text-5xl lg:text-[4rem] uppercase tracking-[0.05em] font-medium text-brand-forest mb-4 md:mb-6 leading-[1.05]">
                 Life Beyond<br />The Screen
               </h3>
             </FadeText>
