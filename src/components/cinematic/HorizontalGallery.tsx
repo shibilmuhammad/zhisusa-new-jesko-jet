@@ -1,7 +1,8 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { motion } from "framer-motion";
-import { useRef, useState, useEffect, MouseEvent } from "react";
+import { useRef, useState, MouseEvent } from "react";
 
 // ── Types ────────────────────────────────────────────────────────────────────
 export interface GalleryCard {
