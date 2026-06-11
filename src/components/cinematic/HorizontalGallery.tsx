@@ -19,6 +19,7 @@ export interface HorizontalGalleryProps {
   taglineEmphasis?: string;
   cards: GalleryCard[];
   ariaLabel?: string;
+  sectionHeight?: string; // Kept for backward compatibility with consuming components
 }
 
 // ── Component ────────────────────────────────────────────────────────────────
