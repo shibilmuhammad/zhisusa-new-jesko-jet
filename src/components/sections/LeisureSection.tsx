@@ -6,47 +6,47 @@ import { FadeText } from "../cinematic/FadeText";
 import { Anchor, Fish, Volleyball, CircleDashed, Flame, Star, Sun, ChevronRight, ChevronLeft } from "lucide-react";
 
 const activities = [
-  { 
-    name: "Kayaking", 
-    timePhase: "Dawn", 
+  {
+    name: "Kayaking",
+    timePhase: "Dawn",
     time: "6:00 AM",
     desc: "Paddle into peaceful mornings.",
-    icon: Anchor 
+    icon: Anchor
   },
-  { 
-    name: "Fishing", 
-    timePhase: "Morning", 
+  {
+    name: "Fishing",
+    timePhase: "Morning",
     time: "8:30 AM",
     desc: "Cast a line, catch a moment.",
-    icon: Fish 
+    icon: Fish
   },
-  { 
-    name: "Volleyball", 
-    timePhase: "Late Morning", 
+  {
+    name: "Volleyball",
+    timePhase: "Late Morning",
     time: "10:30 AM",
     desc: "Play, laugh, connect.",
-    icon: Volleyball 
+    icon: Volleyball
   },
-  { 
-    name: "Tennis", 
-    timePhase: "Afternoon", 
+  {
+    name: "Tennis",
+    timePhase: "Afternoon",
     time: "2:00 PM",
     desc: "Rally under the open sky.",
-    icon: CircleDashed 
+    icon: CircleDashed
   },
-  { 
-    name: "Bonfires", 
-    timePhase: "Sunset", 
+  {
+    name: "Bonfires",
+    timePhase: "Sunset",
     time: "6:30 PM",
     desc: "Stories, warmth & starry views.",
-    icon: Flame 
+    icon: Flame
   },
-  { 
-    name: "Stargazing", 
-    timePhase: "Night", 
+  {
+    name: "Stargazing",
+    timePhase: "Night",
     time: "8:30 PM",
     desc: "Look up. Disconnect to reconnect.",
-    icon: Star 
+    icon: Star
   },
 ];
 
@@ -57,85 +57,89 @@ export function LeisureSection() {
     offset: ["start end", "end start"],
   });
 
-  const headingY = useTransform(scrollYProgress, [0, 1], [50, -50]);
+  const headingY = useTransform(scrollYProgress, [0, 1], [30, -30]);
   const imageScale = useTransform(scrollYProgress, [0, 1], [1, 1.05]);
 
   return (
     <section
       ref={sectionRef}
-      className="relative w-full min-h-[900px] md:h-screen bg-background overflow-hidden flex flex-col justify-end pb-12 pt-24"
+      className="relative w-full min-h-[650px] lg:h-screen bg-background overflow-hidden flex flex-col"
       aria-label="Leisure experiences"
     >
-      {/* ── Background Image Layer ── */}
-      <motion.div 
+      {/* ── Background Image Layer (absolute to cover behind text and timeline) ── */}
+      <motion.div
         style={{ scale: imageScale }}
-        className="absolute top-0 left-0 w-full md:w-[65%] h-full origin-left z-0"
+        className="absolute top-0 left-0 w-full md:w-[75%] h-[85%] md:h-full origin-left z-0"
       >
-        <img 
-          src="/leisure_kayaking.png" 
-          alt="Kayaking at sunrise" 
-          className="w-full h-full object-cover object-[30%_center]" 
+        <img
+          src="/leisure_kayaking.png"
+          alt="Kayaking at sunrise"
+          className="w-full h-full object-cover object-[30%_center] opacity-90"
         />
         {/* Gradients to blend into background */}
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-background/80 to-background hidden md:block" />
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/90 to-transparent md:hidden" />
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background/90" />
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-background/40 to-background hidden md:block" />
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent md:hidden" />
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/20 to-background/95" />
       </motion.div>
 
       {/* ── Top/Middle Content ── */}
-      <div className="relative z-10 w-full px-6 md:px-16 lg:px-24 flex flex-col items-end mb-auto pt-8 pointer-events-none">
-        <FadeText>
-          <motion.h2 
-            style={{ y: headingY }}
-            className="font-display text-[5.5rem] sm:text-[8rem] md:text-[10rem] lg:text-[13rem] uppercase tracking-[-0.02em] font-light leading-[0.8] text-brand-forest/[0.08] select-none text-right"
-          >
-            Leisure.
-          </motion.h2>
-        </FadeText>
-        
-        <div className="mt-[-1.5rem] md:mt-[-4rem] flex flex-col items-end max-w-xl text-right z-20 pointer-events-auto">
-          <FadeText delay={0.2}>
-            <h3 className="font-display text-3xl md:text-5xl lg:text-[4rem] uppercase tracking-[0.05em] font-medium text-brand-forest mb-4 md:mb-6 leading-[1.05]">
-              Life Beyond<br/>The Screen
-            </h3>
+      <div className="relative w-full flex flex-col justify-center items-center md:items-end pt-32 md:pt-40 z-10 flex-shrink-0">
+
+        {/* Right Text Content */}
+        <div className="relative px-6 md:px-16 lg:px-24 flex flex-col items-center md:items-end w-full">
+          <FadeText>
+            <motion.h2
+              style={{ y: headingY }}
+              className="font-display  text-[4.8rem] sm:text-[7rem] md:text-[10rem] lg:text-[13rem] uppercase tracking-[-0.02em] font-light leading-[0.8] text-brand-forest/[0.22] select-none text-center md:text-right w-full overflow-hidden whitespace-nowrap"
+            >
+              Leisure.
+            </motion.h2>
           </FadeText>
-          <FadeText delay={0.3}>
-            <p className="text-brand-forest/80 text-xs md:text-base tracking-wide font-sans leading-relaxed max-w-sm md:max-w-md ml-auto">
-              Kayaking at sunrise. Bonfires after midnight.<br className="hidden md:block" /> Slow conversations under quiet skies.
-            </p>
-          </FadeText>
+
+          <div className="mt-[-2rem] md:mt-[-4rem] flex flex-col items-center md:items-end max-w-xl text-center md:text-right z-20">
+            <FadeText delay={0.2}>
+              <h3 className="font-display mt-4 text-[2.5rem] md:text-5xl lg:text-[4rem] uppercase tracking-[0.05em] font-medium text-brand-forest mb-4 md:mb-6 leading-[1.05]">
+                Life Beyond<br />The Screen
+              </h3>
+            </FadeText>
+            <FadeText delay={0.3}>
+              <p className="text-brand-forest/90 text-sm md:text-base tracking-wide font-sans leading-relaxed max-w-[280px] md:max-w-md mx-auto md:ml-auto md:mr-0 drop-shadow-sm font-medium">
+                Kayaking at sunrise. Bonfires after midnight.<br className="hidden md:block" /> Slow conversations under quiet skies.
+              </p>
+            </FadeText>
+          </div>
         </div>
       </div>
 
       {/* ── Bottom Timeline ── */}
-      <div className="relative w-full px-6 md:px-12 lg:px-16 z-20 mt-16 md:mt-24">
-        
+      <div className="relative w-full px-6 md:px-12 lg:px-16 pb-8 md:pb-12 pt-16 md:pt-20 z-20 mt-8 md:mt-auto">
+
         {/* Timeline Container */}
         <div className="relative w-full max-w-[1400px] mx-auto">
           {/* SVG Wavy Line (Hidden on Mobile) */}
-          <div className="absolute top-[4.5rem] left-[4rem] right-[4rem] h-10 z-0 hidden md:block">
-             <motion.svg 
-               initial={{ pathLength: 0, opacity: 0 }}
-               whileInView={{ pathLength: 1, opacity: 1 }}
-               viewport={{ once: true, margin: "-50px" }}
-               transition={{ duration: 2, ease: "easeInOut" }}
-               className="w-full h-full text-brand-forest/30" 
-               preserveAspectRatio="none" 
-               viewBox="0 0 100 24"
-             >
-               <path d="M 0 12 Q 10 0, 20 12 T 40 12 T 60 12 T 80 12 T 100 12" fill="none" stroke="currentColor" strokeWidth="0.5" strokeDasharray="1.5 2.5" />
-             </motion.svg>
+          <div className="absolute top-[5rem] left-[4rem] right-[4rem] h-10 z-0 hidden md:block">
+            <motion.svg
+              initial={{ pathLength: 0, opacity: 0 }}
+              whileInView={{ pathLength: 1, opacity: 1 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 2, ease: "easeInOut" }}
+              className="w-full h-full text-brand-forest/30"
+              preserveAspectRatio="none"
+              viewBox="0 0 100 24"
+            >
+              <path d="M 0 12 Q 10 0, 20 12 T 40 12 T 60 12 T 80 12 T 100 12" fill="none" stroke="currentColor" strokeWidth="0.4" strokeDasharray="1 2" />
+            </motion.svg>
           </div>
 
           {/* Activities List */}
           <div className="relative flex flex-nowrap overflow-x-auto md:overflow-visible justify-start md:justify-between items-start gap-6 md:gap-4 pb-6 md:pb-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
             {activities.map((act, i) => (
-              <motion.div 
+              <motion.div
                 key={act.name}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-20px" }}
-                transition={{ duration: 0.6, delay: 0.2 + i * 0.1, ease: [0.22, 1, 0.36, 1] }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.8, delay: 0.4 + i * 0.15, ease: [0.22, 1, 0.36, 1] }}
                 className="w-28 md:w-32 flex-shrink-0 flex flex-col items-center text-center group cursor-pointer"
               >
                 {/* Time Phase */}
@@ -160,11 +164,11 @@ export function LeisureSection() {
         </div>
 
         {/* Bottom Footer Elements */}
-        <motion.div 
-          initial={{ opacity: 0, y: 15 }}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.8 }}
+          transition={{ duration: 1, delay: 1.2 }}
           className="mt-8 md:mt-16 flex flex-col lg:flex-row items-center justify-between border-t border-brand-forest/10 pt-6 gap-6 lg:gap-0 max-w-[1400px] mx-auto"
         >
           {/* Tip */}
