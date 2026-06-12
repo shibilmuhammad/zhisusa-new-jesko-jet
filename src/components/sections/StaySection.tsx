@@ -37,11 +37,11 @@ const accommodations: GalleryCard[] = [
 export function StaySection() {
   return (
     <HorizontalGallery
-      watermark="Stay"
+      watermark="Live"
       tagline="Find your perfect"
       taglineEmphasis="retreat."
       cards={accommodations}
-      ariaLabel="Stay experiences"
+      ariaLabel="Live experiences"
       sectionHeight="200vh"
     />
   );

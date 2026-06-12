@@ -6,7 +6,7 @@ import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navLinks = [
-  { label: "Stay", href: "#stay" },
+  { label: "Live", href: "#live" },
   { label: "Work", href: "#work" },
   { label: "Leisure", href: "#leisure" },
   { label: "Experiences", href: "#experiences" },
@@ -52,22 +52,31 @@ export function Navbar() {
           href="#"
           className={cn(
             "font-display text-lg md:text-xl tracking-[0.25em] uppercase font-light transition-colors duration-500 hover:opacity-60",
-            scrolled ? "text-brand-forest" : "text-brand-cream md:text-brand-forest"
+            scrolled ? "text-brand-forest" : "text-brand-cream"
           )}
         >
           Zhisusa
         </a>
 
         {/* Desktop Links */}
-        <div className="hidden md:flex items-center gap-10 text-[11px] uppercase tracking-[0.2em] font-light text-brand-forest/50">
+        <div className={cn(
+          "hidden md:flex items-center gap-10 text-[11px] uppercase tracking-[0.2em] font-light transition-colors duration-700",
+          scrolled ? "text-brand-forest/60" : "text-brand-cream/70"
+        )}>
           {navLinks.map((link) => (
             <a
               key={link.label}
               href={link.href}
-              className="relative hover:text-brand-forest transition-colors duration-500 group py-1"
+              className={cn(
+                "relative transition-colors duration-500 group py-1",
+                scrolled ? "hover:text-brand-forest" : "hover:text-brand-cream"
+              )}
             >
               {link.label}
-              <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-brand-forest/30 group-hover:w-full transition-all duration-500 ease-cinematic" />
+              <span className={cn(
+                "absolute bottom-0 left-0 w-0 h-[1px] group-hover:w-full transition-all duration-500 ease-cinematic",
+                scrolled ? "bg-brand-forest/30" : "bg-brand-cream/40"
+              )} />
             </a>
           ))}
         </div>
@@ -76,7 +85,12 @@ export function Navbar() {
         <div className="flex items-center gap-4">
           <button
             onClick={() => window.dispatchEvent(new CustomEvent("open-booking"))}
-            className="hidden sm:block text-[11px] uppercase tracking-[0.2em] font-medium border border-brand-teal/50 px-6 py-2.5 rounded-full text-brand-teal hover:bg-brand-teal hover:text-white transition-all duration-500 ease-cinematic font-sans"
+            className={cn(
+              "hidden sm:block text-[11px] uppercase tracking-[0.2em] font-medium border px-6 py-2.5 rounded-full transition-all duration-500 ease-cinematic font-sans",
+              scrolled
+                ? "border-brand-teal/50 text-brand-teal hover:bg-brand-teal hover:text-white"
+                : "border-brand-cream/50 text-brand-cream hover:bg-brand-cream hover:text-black"
+            )}
           >
             Book Escape
           </button>

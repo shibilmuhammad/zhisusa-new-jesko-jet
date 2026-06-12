@@ -8,56 +8,41 @@ const experiences = [
     title: "Wellness Spaces",
     description: "Rejuvenate mind and body in nature's sanctuary.",
     image: "/exp_wellness_1778668492340.png",
-    span: "col-span-1 md:col-span-2 row-span-1",
-    aspect: "aspect-[21/9]",
     gradient: "from-[#121715] to-[#0a0a0a]",
-    accentPos: "top-0 right-0",
-    accentGradient:
-      "bg-[radial-gradient(circle_at_top_right,_rgba(138,154,134,0.08)_0%,_transparent_60%)]",
+    accentGradient: "bg-[radial-gradient(circle_at_top_right,_rgba(138,154,134,0.08)_0%,_transparent_60%)]",
+    spanClass: "col-span-1 md:col-span-2 lg:col-span-2 row-span-1 lg:row-span-2",
   },
   {
     title: "Social Gatherings",
     description: "Connect with like-minded souls over shared stories.",
     image: "/exp_social_1778668512362.png",
-    span: "col-span-1",
-    aspect: "aspect-square",
     gradient: "from-[#171412] to-[#0a0a0a]",
-    accentPos: "bottom-0 left-0",
-    accentGradient:
-      "bg-[radial-gradient(circle_at_bottom_left,_rgba(229,220,197,0.06)_0%,_transparent_60%)]",
-  },
-  {
-    title: "Nature Trails",
-    description: "Lose yourself in the wild. Find yourself renewed.",
-    image: "/exp_trails_1778668542925.png",
-    span: "col-span-1",
-    aspect: "aspect-square",
-    gradient: "from-[#10150f] to-[#0a0a0a]",
-    accentPos: "top-0 left-0",
-    accentGradient:
-      "bg-[radial-gradient(circle_at_top_left,_rgba(138,154,134,0.06)_0%,_transparent_60%)]",
+    accentGradient: "bg-[radial-gradient(circle_at_bottom_left,_rgba(229,220,197,0.06)_0%,_transparent_60%)]",
+    spanClass: "col-span-1 md:col-span-1 lg:col-span-1 row-span-1 lg:row-span-1",
   },
   {
     title: "Curated Dining",
     description: "Farm-to-table meals crafted with local essence.",
     image: "/exp_dining_1778668559476.png",
-    span: "col-span-1",
-    aspect: "aspect-[4/3]",
     gradient: "from-[#151210] to-[#0a0a0a]",
-    accentPos: "bottom-0 right-0",
-    accentGradient:
-      "bg-[radial-gradient(circle_at_bottom_right,_rgba(229,220,197,0.05)_0%,_transparent_60%)]",
+    accentGradient: "bg-[radial-gradient(circle_at_bottom_right,_rgba(229,220,197,0.05)_0%,_transparent_60%)]",
+    spanClass: "col-span-1 md:col-span-1 lg:col-span-1 row-span-1 lg:row-span-1",
   },
   {
     title: "Guided Meditation",
     description: "Stillness sessions at dawn, led by nature itself.",
     image: "/exp_meditation_1778668575248.png",
-    span: "col-span-1 md:col-span-2",
-    aspect: "aspect-[21/9]",
     gradient: "from-[#111417] to-[#0a0a0a]",
-    accentPos: "top-0 left-1/2",
-    accentGradient:
-      "bg-[radial-gradient(circle_at_top_center,_rgba(232,234,235,0.04)_0%,_transparent_60%)]",
+    accentGradient: "bg-[radial-gradient(circle_at_top_center,_rgba(232,234,235,0.04)_0%,_transparent_60%)]",
+    spanClass: "col-span-1 md:col-span-1 lg:col-span-1 row-span-1 lg:row-span-1",
+  },
+  {
+    title: "Campfire Nights",
+    description: "Share warmth, stories, and acoustic melodies under stars.",
+    image: "/leisure_bonfire.png",
+    gradient: "from-[#1a120e] to-[#0a0a0a]",
+    accentGradient: "bg-[radial-gradient(circle_at_bottom_center,_rgba(229,220,197,0.07)_0%,_transparent_60%)]",
+    spanClass: "col-span-1 md:col-span-1 lg:col-span-2 row-span-1 lg:row-span-1",
   },
 ];
 
@@ -90,8 +75,8 @@ export function ExperienceSection() {
         </FadeText>
       </div>
 
-      {/* Bento grid */}
-      <div className="max-w-[90rem] mx-auto grid grid-cols-1 md:grid-cols-3 gap-4">
+      {/* Bento grid box forming a perfect outer rectangle */}
+      <div className="max-w-[90rem] mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-[250px] md:auto-rows-[280px] lg:auto-rows-[240px]">
         {experiences.map((exp, index) => (
           <motion.div
             key={exp.title}
@@ -103,7 +88,7 @@ export function ExperienceSection() {
               delay: index * 0.1,
               ease: [0.22, 1, 0.36, 1],
             }}
-            className={`group relative overflow-hidden rounded-xl text-white cursor-pointer ${exp.span} ${exp.aspect}`}
+            className={`group relative overflow-hidden rounded-xl text-white cursor-pointer ${exp.spanClass}`}
           >
             {/* Background Image */}
             <motion.img

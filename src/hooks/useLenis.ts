@@ -3,6 +3,10 @@
 import Lenis from "@studio-freight/lenis";
 import { useEffect, useRef } from "react";
 
+interface CustomWindow extends Window {
+  lenis?: unknown;
+}
+
 export function useLenis() {
   const lenisRef = useRef<Lenis | null>(null);
   const rafIdRef = useRef<number | null>(null);
@@ -20,6 +24,7 @@ export function useLenis() {
     } as any);
 
     lenisRef.current = lenis;
+    (window as unknown as CustomWindow).lenis = lenis;
 
     function raf(time: number) {
       lenis.raf(time);
@@ -33,6 +38,7 @@ export function useLenis() {
         cancelAnimationFrame(rafIdRef.current);
       }
       lenis.destroy();
+      (window as unknown as CustomWindow).lenis = null;
       lenisRef.current = null;
     };
   }, []);

@@ -53,12 +53,12 @@ export function WorkspaceMorph() {
       className="relative h-[250vh] bg-background"
       aria-label="Workspace morph sequence"
     >
-      <div className="sticky top-0 h-screen overflow-hidden">
+      <div className="sticky top-0 h-screen overflow-hidden flex items-center justify-center bg-background">
         <SequenceCanvas
           path="/sequence-2-updated"
           frameCount={96}
           progress={smoothProgress}
-          className="absolute inset-0"
+          className="w-full aspect-video md:absolute md:inset-0 md:w-full md:h-full md:aspect-none"
         />
 
         {/* ── Top & Bottom Edge Blending Gradients ── */}

@@ -58,8 +58,8 @@ export default function HomePage() {
           onLoaded={handleHeroLoaded}
         />
 
-        {/* Section 2: Stay Experience */}
-        <div id="stay">
+        {/* Section 2: Live Experience */}
+        <div id="live">
           <StaySection />
         </div>
 

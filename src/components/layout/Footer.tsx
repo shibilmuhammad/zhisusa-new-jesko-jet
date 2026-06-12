@@ -9,7 +9,7 @@ const footerColumns = [
     links: ["Philosophy", "Destinations", "Experiences", "Journal"],
   },
   {
-    title: "Stay",
+    title: "Live",
     links: ["Private Villas", "Luxury Tents", "Tree Houses", "Glass Cabins"],
   },
   {

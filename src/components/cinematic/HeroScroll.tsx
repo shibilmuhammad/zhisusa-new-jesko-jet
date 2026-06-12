@@ -462,7 +462,7 @@ export function HeroScroll({ onLoadProgress, onLoaded }: HeroScrollProps) {
               className="font-display text-[#D8C3A5] uppercase leading-[1] font-extralight tracking-[0.06em] mb-4"
               style={{ fontSize: "clamp(2.4rem, 7vw, 7.5rem)" }}
             >
-              Work. Stay.
+              Work. Live.
               <br />
               <span className="text-white/40">Leisure.</span>
             </h2>

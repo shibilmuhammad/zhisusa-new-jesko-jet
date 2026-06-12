@@ -36,7 +36,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Zhisusa — Premium Nature Retreats & Immersive Workations",
     description:
-      "Escape the routine. Work, stay, and experience nature like never before.",
+      "Escape the routine. Work, live, and experience nature like never before.",
     type: "website",
     locale: "en_US",
   },

@@ -6,11 +6,55 @@ import { X, ChevronRight, Calendar, Users, Coffee, Home, Activity } from "lucide
 
 type Category = "WORK" | "LIVE" | "LEISURE";
 
+interface CustomWindow extends Window {
+  lenis?: {
+    stop: () => void;
+    start: () => void;
+  };
+}
+
+const formatDate = (dateStr: string) => {
+  if (!dateStr) return "";
+  const parts = dateStr.split("-");
+  if (parts.length !== 3) return dateStr;
+  
+  const year = parseInt(parts[0], 10);
+  const month = parseInt(parts[1], 10) - 1;
+  const day = parseInt(parts[2], 10);
+  
+  const dateObj = new Date(year, month, day);
+  if (isNaN(dateObj.getTime())) return dateStr;
+  
+  const weekday = dateObj.toLocaleDateString("en-US", { weekday: "short" });
+  const monthName = dateObj.toLocaleDateString("en-US", { month: "short" });
+  
+  return `${weekday}, ${day} ${monthName} ${year}`;
+};
+
 export function BookingSystem() {
   const [isOpen, setIsOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState<Category>("LIVE");
   // State for the new global button visibility
   const [isReady, setIsReady] = useState(false);
+
+  // Form state
+  const [selectedExperience, setSelectedExperience] = useState<string>("");
+  const [date1, setDate1] = useState<string>(""); // Check-in / Date
+  const [date2, setDate2] = useState<string>(""); // Check-out / Time
+  const [selectedGuests, setSelectedGuests] = useState<number | string>(2);
+  const [notes, setNotes] = useState<string>("");
+
+  // Submission state
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+
+  // Reset selections when category changes
+  useEffect(() => {
+    setSelectedExperience("");
+    setDate1("");
+    setDate2("");
+    setNotes("");
+  }, [activeCategory]);
 
   useEffect(() => {
     // Reveal button after a short delay for cinematic entry
@@ -20,17 +64,70 @@ export function BookingSystem() {
 
   // Prevent scrolling when modal is open
   useEffect(() => {
+    const lenisInstance = (window as unknown as CustomWindow).lenis;
     if (isOpen) {
+      document.documentElement.style.overflow = "hidden";
       document.body.style.overflow = "hidden";
+      if (lenisInstance) {
+        lenisInstance.stop();
+      }
     } else {
-      document.body.style.overflow = "auto";
+      document.documentElement.style.overflow = "";
+      document.body.style.overflow = "";
+      if (lenisInstance) {
+        lenisInstance.start();
+      }
     }
     return () => {
-      document.body.style.overflow = "auto";
+      document.documentElement.style.overflow = "";
+      document.body.style.overflow = "";
+      if (lenisInstance) {
+        lenisInstance.start();
+      }
     };
   }, [isOpen]);
 
-  const toggleModal = () => setIsOpen(!isOpen);
+  const toggleModal = () => {
+    setIsOpen(!isOpen);
+    if (isOpen) {
+      // Reset success state when closing modal
+      setIsSuccess(false);
+    }
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!selectedExperience) {
+      alert("Please select an experience category (e.g. Private Villa) before confirming.");
+      return;
+    }
+    if (!date1) {
+      alert(activeCategory === "LEISURE" ? "Please select a date." : "Please select an arrival date.");
+      return;
+    }
+    if (!date2) {
+      alert(activeCategory === "LEISURE" ? "Please select a time." : "Please select a departure date.");
+      return;
+    }
+
+    const payload = {
+      category: activeCategory,
+      experience: selectedExperience,
+      arrivalDate: date1,
+      departureDate: date2,
+      guests: selectedGuests,
+      notes: notes || "None",
+      submittedAt: new Date().toISOString()
+    };
+
+    setIsSubmitting(true);
+    console.log("Reservation Submitted Successfully:", JSON.stringify(payload, null, 2));
+
+    setTimeout(() => {
+      setIsSubmitting(false);
+      setIsSuccess(true);
+    }, 1200);
+  };
 
   const categories: { id: Category; icon: React.ElementType; label: string }[] = [
     { id: "WORK", icon: Coffee, label: "Workspaces" },
@@ -100,41 +197,43 @@ export function BookingSystem() {
                 damping: 28, 
                 mass: 0.8 
               }}
-              className="relative w-full max-w-5xl max-h-[90vh] bg-[#0a0a0a]/90 backdrop-blur-2xl border border-white/10 rounded-[2rem] overflow-hidden shadow-[0_30px_100px_rgba(0,0,0,0.8)] flex flex-col md:flex-row"
+              data-lenis-prevent
+              className="relative w-full max-w-5xl h-[90vh] md:h-[80vh] max-h-[800px] min-h-[500px] bg-[#0a0a0a]/90 backdrop-blur-2xl border border-white/10 rounded-[2rem] overflow-hidden shadow-[0_30px_100px_rgba(0,0,0,0.8)] flex flex-col md:flex-row"
             >
               {/* Close Button */}
               <button
                 onClick={toggleModal}
-                className="absolute top-8 right-8 w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white/50 hover:text-white hover:bg-white/10 transition-all duration-300 z-50"
+                className="absolute top-6 right-6 md:top-8 md:right-8 w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white/50 hover:text-white hover:bg-white/10 transition-all duration-300 z-50"
               >
                 <X size={20} />
               </button>
 
               {/* ── LEFT SIDE: Category Tabs ── */}
-              <div className="w-full md:w-[32%] bg-brand-teal/5 border-r border-brand-teal/10 p-8 md:p-12 flex flex-col justify-between shrink-0">
+              <div className="w-full md:w-[32%] bg-[#0e1716] md:bg-brand-teal/5 border-b md:border-b-0 md:border-r border-brand-teal/10 p-6 md:p-12 flex flex-col justify-between shrink-0">
                 <div>
-                  <h2 className="font-display text-3xl uppercase tracking-[0.1em] text-white mb-1">Reserve</h2>
-                  <p className="text-brand-silver text-[10px] tracking-widest uppercase mb-12 font-sans">Your Curated Escape</p>
+                  <h2 className="font-display text-2xl md:text-3xl uppercase tracking-[0.1em] text-white mb-1">Reserve</h2>
+                  <p className="text-brand-silver text-[9px] md:text-[10px] tracking-widest uppercase mb-4 md:mb-12 font-sans">Your Curated Escape</p>
                   
-                  <nav className="flex flex-col gap-3">
+                  <nav className="flex flex-row md:flex-col gap-2 md:gap-3 overflow-x-auto md:overflow-visible pb-2 md:pb-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
                     {categories.map((cat) => (
                       <button
                         key={cat.id}
+                        type="button"
                         onClick={() => setActiveCategory(cat.id)}
-                        className={`flex items-center gap-4 px-6 py-4 rounded-2xl transition-all duration-500 group ${
+                        className={`flex items-center gap-2.5 md:gap-4 px-4 md:px-6 py-2.5 md:py-4 rounded-xl md:rounded-2xl transition-all duration-500 group shrink-0 ${
                           activeCategory === cat.id 
                             ? "bg-brand-teal text-white" 
                             : "text-white/40 hover:text-white hover:bg-white/5"
                         }`}
                       >
-                        <cat.icon size={16} className={activeCategory === cat.id ? "text-white" : "text-white/40 group-hover:text-white transition-colors"} />
-                        <span className="text-[11px] uppercase tracking-[0.2em] font-semibold font-sans">{cat.label}</span>
+                        <cat.icon size={14} className={activeCategory === cat.id ? "text-white" : "text-white/40 group-hover:text-white transition-colors"} />
+                        <span className="text-[10px] md:text-[11px] uppercase tracking-[0.2em] font-semibold font-sans">{cat.label}</span>
                       </button>
                     ))}
                   </nav>
                 </div>
 
-                <div className="mt-12 pt-8 border-t border-brand-teal/15 hidden md:block">
+                <div className="mt-8 pt-6 border-t border-brand-teal/15 hidden md:block">
                   <p className="text-[10px] text-brand-silver/40 uppercase tracking-[0.4em] leading-relaxed font-sans">
                     Zhisusa Concierge<br />
                     Available 24/7 for tailored requests.
@@ -142,17 +241,110 @@ export function BookingSystem() {
                 </div>
               </div>
 
-              {/* ── RIGHT SIDE: Form ── */}
-              <div className="flex-1 p-8 md:p-16 overflow-y-auto custom-scrollbar">
+              {/* ── RIGHT SIDE: Form / Success State ── */}
+              <div data-lenis-prevent className="flex-1 p-6 md:p-16 overflow-y-auto custom-scrollbar min-h-0 relative">
                 <AnimatePresence mode="wait">
-                  <motion.div
-                    key={activeCategory}
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -20 }}
-                    transition={{ duration: 0.5, ease: "easeOut" }}
-                    className="pb-10"
-                  >
+                  {isSuccess ? (
+                    <motion.div
+                      key="success"
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.95 }}
+                      transition={{ duration: 0.4 }}
+                      className="text-center max-w-md mx-auto space-y-6 py-8 flex flex-col justify-center items-center h-full min-h-[450px]"
+                    >
+                      {/* Animated Checkmark Circle */}
+                      <div className="w-20 h-20 rounded-full bg-brand-teal/10 border border-brand-teal/20 flex items-center justify-center mx-auto text-brand-teal">
+                        <motion.div
+                          initial={{ scale: 0 }}
+                          animate={{ scale: 1 }}
+                          transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+                        >
+                          <svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                          </svg>
+                        </motion.div>
+                      </div>
+
+                      <div className="space-y-2">
+                        <h3 className="font-display text-3xl uppercase tracking-wider text-white">
+                          Request Received
+                        </h3>
+                        <p className="text-brand-silver text-xs uppercase tracking-[0.2em]">
+                          Your Curated Escape Awaits
+                        </p>
+                      </div>
+
+                      <div className="bg-white/[0.02] border border-white/5 rounded-2xl p-6 text-left space-y-4 font-sans text-xs w-full max-w-sm">
+                        <div className="flex justify-between border-b border-white/5 pb-2">
+                          <span className="text-white/40">Category:</span>
+                          <span className="text-brand-teal font-semibold uppercase">{activeCategory}</span>
+                        </div>
+                        <div className="flex justify-between border-b border-white/5 pb-2">
+                          <span className="text-white/40">Selected:</span>
+                          <span className="text-white font-medium text-right">{selectedExperience || "None"}</span>
+                        </div>
+                        {(date1 || date2) && (
+                          <div className="flex justify-between border-b border-white/5 pb-2">
+                            <span className="text-white/40">
+                              {activeCategory === "LEISURE" ? "Date & Time:" : "Live Period:"}
+                            </span>
+                            <span className="text-white font-medium text-right">
+                              {activeCategory === "LEISURE" 
+                                ? `${formatDate(date1)} at ${date2}` 
+                                : `${formatDate(date1)} to ${formatDate(date2)}`
+                              }
+                            </span>
+                          </div>
+                        )}
+                        <div className="flex justify-between border-b border-white/5 pb-2">
+                          <span className="text-white/40">Guests:</span>
+                          <span className="text-white font-medium">{selectedGuests} {Number(selectedGuests) === 1 ? "Person" : "People"}</span>
+                        </div>
+                        {notes && (
+                          <div className="pt-2">
+                            <span className="text-white/40 block mb-1">Additional Requests:</span>
+                            <p className="text-white/80 font-sans italic text-[11px] leading-relaxed max-h-16 overflow-y-auto custom-scrollbar break-words">
+                              &quot;{notes}&quot;
+                            </p>
+                          </div>
+                        )}
+                      </div>
+
+                      <p className="text-white/60 text-xs leading-relaxed max-w-sm mx-auto font-sans">
+                        Our Zhisusa Concierge team will review your selection and contact you within 2 hours to confirm your custom itinerary.
+                      </p>
+
+                      <div className="pt-4">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setIsOpen(false);
+                            // Reset state after closure transition
+                            setTimeout(() => {
+                              setIsSuccess(false);
+                              setSelectedExperience("");
+                              setDate1("");
+                              setDate2("");
+                              setNotes("");
+                            }, 500);
+                          }}
+                          className="px-8 py-3 rounded-full bg-brand-teal text-white text-[10px] uppercase tracking-[0.25em] font-semibold font-sans hover:bg-brand-teal/90 transition-colors"
+                        >
+                          Back to Experience
+                        </button>
+                      </div>
+                    </motion.div>
+                  ) : (
+                    <motion.form
+                      key={activeCategory}
+                      onSubmit={handleSubmit}
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: -20 }}
+                      transition={{ duration: 0.5, ease: "easeOut" }}
+                      className="pb-10"
+                    >
                       <div className="max-w-xl">
                         <header className="mb-10">
                           <h3 className="font-display text-4xl md:text-5xl uppercase tracking-[0.06em] text-white font-normal leading-tight italic">
@@ -171,7 +363,16 @@ export function BookingSystem() {
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                               {(activeCategory === "WORK" ? workspaceOptions : 
                                 activeCategory === "LIVE" ? accommodationOptions : activityOptions).map((opt) => (
-                                <button key={opt} className="px-4 py-3.5 rounded-xl border border-white/5 bg-white/[0.03] text-left text-white/60 text-[11px] font-sans tracking-wide hover:border-brand-teal/40 hover:bg-brand-teal/10 hover:text-brand-teal transition-all duration-300">
+                                <button
+                                  key={opt}
+                                  type="button"
+                                  className={`px-4 py-3.5 rounded-xl border text-left text-[11px] font-sans tracking-wide transition-all duration-300 ${
+                                    selectedExperience === opt
+                                      ? "border-brand-teal bg-brand-teal/20 text-brand-teal shadow-[0_0_15px_rgba(78,124,122,0.15)]"
+                                      : "border-white/5 bg-white/[0.03] text-white/60 hover:border-brand-teal/40 hover:bg-brand-teal/10 hover:text-brand-teal"
+                                  }`}
+                                  onClick={() => setSelectedExperience(opt)}
+                                >
                                   {opt}
                                 </button>
                               ))}
@@ -187,7 +388,14 @@ export function BookingSystem() {
                               <div className="relative group">
                                 <Calendar className="absolute left-0 top-1/2 -translate-y-1/2 text-white/20 group-hover:text-brand-teal/60 transition-colors" size={15} />
                                 <input 
-                                  type="text" 
+                                  type={date1 ? "date" : "text"}
+                                  onFocus={(e) => (e.target.type = "date")}
+                                  onBlur={(e) => {
+                                    if (!date1) e.target.type = "text";
+                                  }}
+                                  style={{ colorScheme: "dark" }}
+                                  value={date1}
+                                  onChange={(e) => setDate1(e.target.value)}
                                   placeholder={activeCategory === "LEISURE" ? "Select Date" : "Check-in"} 
                                   className="w-full bg-transparent border-b border-white/10 py-3 pl-7 text-white text-sm font-sans focus:outline-none focus:border-brand-teal/60 transition-colors placeholder:text-white/10"
                                 />
@@ -200,7 +408,14 @@ export function BookingSystem() {
                               <div className="relative group">
                                 <Users className="absolute left-0 top-1/2 -translate-y-1/2 text-white/20 group-hover:text-brand-teal/60 transition-colors" size={15} />
                                 <input 
-                                  type="text" 
+                                  type={date2 ? (activeCategory === "LEISURE" ? "time" : "date") : "text"}
+                                  onFocus={(e) => (e.target.type = activeCategory === "LEISURE" ? "time" : "date")}
+                                  onBlur={(e) => {
+                                    if (!date2) e.target.type = "text";
+                                  }}
+                                  style={{ colorScheme: "dark" }}
+                                  value={date2}
+                                  onChange={(e) => setDate2(e.target.value)}
                                   placeholder={activeCategory === "LEISURE" ? "Select Time" : "Check-out"} 
                                   className="w-full bg-transparent border-b border-white/10 py-3 pl-7 text-white text-sm font-sans focus:outline-none focus:border-brand-teal/60 transition-colors placeholder:text-white/10"
                                 />
@@ -213,7 +428,16 @@ export function BookingSystem() {
                             <label className="text-[9px] uppercase tracking-[0.5em] text-brand-silver/50 font-semibold block font-sans">Number of People</label>
                             <div className="flex gap-3">
                               {[1, 2, 3, 4, "5+"].map((num) => (
-                                <button key={num.toString()} className="w-11 h-11 rounded-full border border-white/10 flex items-center justify-center text-xs font-sans text-white/50 hover:border-brand-teal hover:text-brand-teal hover:bg-brand-teal/10 transition-all duration-300">
+                                <button
+                                  key={num.toString()}
+                                  type="button"
+                                  className={`w-11 h-11 rounded-full border flex items-center justify-center text-xs font-sans transition-all duration-300 ${
+                                    selectedGuests === num
+                                      ? "border-brand-teal bg-brand-teal/20 text-brand-teal font-semibold shadow-[0_0_15px_rgba(78,124,122,0.15)]"
+                                      : "border-white/10 text-white/50 hover:border-brand-teal hover:text-brand-teal hover:bg-brand-teal/10"
+                                  }`}
+                                  onClick={() => setSelectedGuests(num)}
+                                >
                                   {num}
                                 </button>
                               ))}
@@ -224,6 +448,8 @@ export function BookingSystem() {
                           <div className="space-y-3">
                             <label className="text-[9px] uppercase tracking-[0.5em] text-brand-silver/50 font-semibold block font-sans">Additional Requests</label>
                             <textarea 
+                              value={notes}
+                              onChange={(e) => setNotes(e.target.value)}
                               placeholder="Notes or special requests..."
                               className="w-full bg-white/[0.03] border border-white/5 rounded-2xl p-5 text-white text-sm font-sans focus:outline-none focus:border-brand-teal/30 focus:bg-brand-teal/5 transition-all min-h-[90px] placeholder:text-white/10"
                             />
@@ -231,8 +457,22 @@ export function BookingSystem() {
 
                           {/* Submit */}
                           <div className="pt-6">
-                            <button className="w-full py-5 rounded-2xl bg-brand-teal text-white text-[11px] uppercase tracking-[0.35em] font-semibold font-sans hover:bg-brand-teal/90 hover:scale-[1.01] active:scale-[0.99] transition-all duration-500 shadow-[0_20px_50px_rgba(36,95,115,0.3)]">
-                              Confirm Reservation
+                            <button
+                              type="submit"
+                              disabled={isSubmitting}
+                              className="w-full py-5 rounded-2xl bg-brand-teal text-white text-[11px] uppercase tracking-[0.35em] font-semibold font-sans hover:bg-brand-teal/90 hover:scale-[1.01] active:scale-[0.99] transition-all duration-500 shadow-[0_20px_50px_rgba(36,95,115,0.3)] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                            >
+                              {isSubmitting ? (
+                                <>
+                                  <svg className="animate-spin h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
+                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth={4} />
+                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                                  </svg>
+                                  <span>Processing Request...</span>
+                                </>
+                              ) : (
+                                "Confirm Reservation"
+                              )}
                             </button>
                             <p className="text-center text-brand-silver/30 text-[9px] uppercase tracking-[0.3em] mt-5 font-sans">
                               Our team will contact you within 2 hours.
@@ -241,9 +481,10 @@ export function BookingSystem() {
 
                         </div>
                       </div>
-                    </motion.div>
-                  </AnimatePresence>
-                </div>
+                    </motion.form>
+                  )}
+                </AnimatePresence>
+              </div>
             </motion.div>
           </div>
         )}
