@@ -4,7 +4,7 @@
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { useRef, useState } from "react";
 import { FadeText } from "../cinematic/FadeText";
-import { Anchor, Fish, Volleyball, CircleDashed, Flame, Star, Sun, ChevronRight, ChevronLeft } from "lucide-react";
+import { Anchor, Fish, Volleyball, CircleDashed, Flame, Star, Sun } from "lucide-react";
 
 const activities = [
   {
@@ -222,29 +222,12 @@ export function LeisureSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 1, delay: 1.2 }}
-          className="mt-8 md:mt-16 flex flex-col lg:flex-row items-center justify-between border-t border-brand-forest/10 pt-6 gap-6 lg:gap-0 max-w-[1400px] mx-auto"
+          className="mt-8 md:mt-16 flex items-center justify-center border-t border-brand-forest/10 pt-6 max-w-[1400px] mx-auto"
         >
           {/* Tip */}
           <div className="flex items-center gap-2">
             <Sun size={14} className="text-brand-terra" />
             <span className="text-[9px] md:text-[10px] uppercase tracking-[0.15em] font-medium text-brand-forest/60">TIP: CHECK WEATHER & SUN TIMES</span>
-          </div>
-
-          {/* Button */}
-          <button className="flex items-center gap-3 px-8 py-3.5 rounded-full bg-brand-forest/80 hover:bg-brand-forest transition-colors duration-500 text-white group backdrop-blur-sm shadow-lg shadow-brand-forest/10">
-            <span className="text-[10px] md:text-xs uppercase tracking-[0.2em] font-medium">VIEW FULL ACTIVITY GUIDE</span>
-            <ChevronRight size={14} className="group-hover:translate-x-1 transition-transform" />
-          </button>
-
-          {/* Pagination */}
-          <div className="flex items-center gap-4">
-            <button className="w-8 h-8 rounded-full border border-brand-forest/20 flex items-center justify-center hover:bg-brand-forest hover:text-white transition-colors text-brand-forest/60">
-              <ChevronLeft size={14} />
-            </button>
-            <span className="text-[10px] tracking-[0.2em] font-medium text-brand-forest/60">1 / 7</span>
-            <button className="w-8 h-8 rounded-full border border-brand-forest/20 flex items-center justify-center hover:bg-brand-forest hover:text-white transition-colors text-brand-forest/60">
-              <ChevronRight size={14} />
-            </button>
           </div>
         </motion.div>
 

@@ -244,7 +244,7 @@ export function HeroScroll({ onLoadProgress, onLoaded }: HeroScrollProps) {
             path="/sequence-1"
             frameCount={96}
             progress={smoothProgress} // Use smoothProgress for cinematic momentum in frames
-            className="absolute inset-0"
+            className="absolute inset-0 w-full h-full"
             onLoadProgress={onLoadProgress}
             onLoaded={onLoaded}
           />

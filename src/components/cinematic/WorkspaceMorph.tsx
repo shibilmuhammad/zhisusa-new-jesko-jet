@@ -1,10 +1,21 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import { SequenceCanvas } from "./SequenceCanvas";
 export function WorkspaceMorph() {
   const containerRef = useRef<HTMLDivElement>(null);
+  
+  const [sequenceData, setSequenceData] = useState<{ path: string; frameCount: number } | null>(null);
+
+  useEffect(() => {
+    const isMobile = window.innerWidth < 768;
+    setSequenceData(
+      isMobile
+        ? { path: "/sequence-2_mobile", frameCount: 40 }
+        : { path: "/sequence-2-updated-2_new", frameCount: 121 }
+    );
+  }, []);
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -53,13 +64,15 @@ export function WorkspaceMorph() {
       className="relative h-[250vh] bg-background"
       aria-label="Workspace morph sequence"
     >
-      <div className="sticky top-0 h-screen overflow-hidden flex items-center justify-center bg-background">
-        <SequenceCanvas
-          path="/sequence-2-updated"
-          frameCount={96}
-          progress={smoothProgress}
-          className="w-full aspect-video md:absolute md:inset-0 md:w-full md:h-full md:aspect-none"
-        />
+      <div className="sticky top-0 h-screen overflow-hidden bg-background">
+        {sequenceData && (
+          <SequenceCanvas
+            path={sequenceData.path}
+            frameCount={sequenceData.frameCount}
+            progress={smoothProgress}
+            className="absolute inset-0 w-full h-full"
+          />
+        )}
 
         {/* ── Top & Bottom Edge Blending Gradients ── */}
         <div className="absolute top-0 left-0 right-0 h-32 md:h-64 bg-gradient-to-b from-background to-transparent z-[3] pointer-events-none" />

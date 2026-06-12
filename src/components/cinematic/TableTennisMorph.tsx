@@ -51,8 +51,8 @@ export function TableTennisMorph() {
       className="relative h-[250vh] bg-background"
       aria-label="Table tennis morph sequence"
     >
-      <div className="sticky top-0 h-screen overflow-hidden flex items-center justify-center bg-[#0a0a0a]">
-        <motion.div style={{ scale: containerScale }} className="w-full aspect-video md:h-full md:w-full md:aspect-none relative">
+      <div className="sticky top-0 h-screen overflow-hidden bg-[#0a0a0a]">
+        <motion.div style={{ scale: containerScale }} className="w-full h-full relative">
           <SequenceCanvas
             path="/sequence-3"
             frameCount={64}
