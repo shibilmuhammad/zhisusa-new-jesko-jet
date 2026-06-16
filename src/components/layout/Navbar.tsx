@@ -94,7 +94,7 @@ export function Navbar() {
                 : "border-brand-cream/50 text-brand-cream hover:bg-brand-cream hover:text-black"
             )}
           >
-            Book Escape
+            Book Your Escape
           </button>
 
           {/* Mobile Menu Toggle */}
@@ -154,7 +154,7 @@ export function Navbar() {
           }}
           className="mt-4 text-sm uppercase tracking-[0.2em] font-light border border-brand-forest/20 px-8 py-3 rounded-full text-brand-forest hover:bg-brand-forest hover:text-background transition-all duration-500"
         >
-          Book Escape
+          Book Your Escape
         </motion.button>
       </motion.div>
     </>
