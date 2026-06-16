@@ -1,3 +1,4 @@
+// Vercel deployment trigger comment
 import type { Metadata, Viewport } from "next";
 import { Bodoni_Moda, Poppins } from "next/font/google";
 import "./globals.css";
