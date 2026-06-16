@@ -18,7 +18,7 @@ export function PhilosophySection() {
   return (
     <section
       ref={sectionRef}
-      className="relative w-full py-40 md:py-56 lg:py-64 px-6 md:px-10 lg:px-16 bg-background overflow-hidden"
+      className="relative w-full pt-24 md:pt-32 lg:pt-36 pb-40 md:pb-56 lg:pb-64 px-6 md:px-10 lg:px-16 bg-background overflow-hidden"
       aria-label="Our philosophy"
     >
       {/* Ambient background */}

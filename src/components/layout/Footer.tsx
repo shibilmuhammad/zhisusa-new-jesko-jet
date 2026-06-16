@@ -1,5 +1,5 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
-
 
 import { FadeText } from "../cinematic/FadeText";
 
@@ -32,9 +32,13 @@ export function Footer() {
             <FadeText>
               <a
                 href="#"
-                className="font-display text-2xl md:text-3xl tracking-[0.25em] uppercase font-light block mb-8 hover:opacity-70 transition-opacity duration-500 text-brand-forest"
+                className="block mb-8 hover:opacity-70 transition-opacity duration-500"
               >
-                Zhisusa
+                <img
+                  src="/Logo/Zhisusa Text Logo_Black.png"
+                  alt="Zhisusa"
+                  className="h-6 md:h-7 w-auto object-contain"
+                />
               </a>
             </FadeText>
             <FadeText delay={0.1}>

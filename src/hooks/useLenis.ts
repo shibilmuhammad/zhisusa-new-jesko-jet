@@ -12,6 +12,12 @@ export function useLenis() {
   const rafIdRef = useRef<number | null>(null);
 
   useEffect(() => {
+    // Prevent the browser from restoring the scroll position on reload
+    if (typeof window !== "undefined") {
+      window.history.scrollRestoration = "manual";
+      window.scrollTo(0, 0);
+    }
+
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (prefersReducedMotion) return;
 
@@ -25,6 +31,9 @@ export function useLenis() {
 
     lenisRef.current = lenis;
     (window as unknown as CustomWindow).lenis = lenis;
+
+    // Reset Lenis scroll target to top immediately
+    lenis.scrollTo(0, { immediate: true });
 
     function raf(time: number) {
       lenis.raf(time);

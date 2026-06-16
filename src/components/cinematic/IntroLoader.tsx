@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
@@ -52,9 +53,13 @@ export function IntroLoader({ isLoading, progress }: IntroLoaderProps) {
             transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
             className="relative z-10 flex flex-col items-center"
           >
-            <h1 className="font-display text-brand-forest text-3xl md:text-4xl tracking-[0.35em] uppercase font-light mb-12">
-              Zhisusa
-            </h1>
+            <div className="mb-12 flex justify-center">
+              <img
+                src="/Logo/Zhisusa Text Logo_Black.png"
+                alt="Zhisusa"
+                className="h-6 md:h-7 w-auto object-contain animate-pulse-slow"
+              />
+            </div>
 
             {/* Progress bar */}
             <div className="w-48 h-[1px] bg-brand-forest/10 relative overflow-hidden rounded-full">

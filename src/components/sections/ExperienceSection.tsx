@@ -49,7 +49,7 @@ const experiences = [
 export function ExperienceSection() {
   return (
     <section
-      className="relative w-full py-32 md:py-48 px-6 md:px-10 lg:px-16 bg-background overflow-hidden"
+      className="relative w-full pt-16 md:pt-24 lg:pt-28 pb-16 md:pb-24 lg:pb-28 px-6 md:px-10 lg:px-16 bg-background overflow-hidden"
       aria-label="Curated experiences"
     >
       {/* Section heading */}

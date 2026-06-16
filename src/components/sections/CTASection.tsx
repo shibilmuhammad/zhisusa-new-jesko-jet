@@ -17,6 +17,7 @@ export function CTASection() {
 
   return (
     <section
+      id="cta-section"
       ref={sectionRef}
       className="relative w-full py-48 md:py-64 lg:py-80 px-6 md:px-10 bg-[#060a09] flex items-center justify-center overflow-hidden"
       aria-label="Book your journey"

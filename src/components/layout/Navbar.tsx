@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { useState } from "react";
@@ -6,8 +7,8 @@ import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navLinks = [
-  { label: "Live", href: "#live" },
   { label: "Work", href: "#work" },
+  { label: "Live", href: "#live" },
   { label: "Leisure", href: "#leisure" },
   { label: "Experiences", href: "#experiences" },
 ];
@@ -50,12 +51,13 @@ export function Navbar() {
         {/* Logo */}
         <a
           href="#"
-          className={cn(
-            "font-display text-lg md:text-xl tracking-[0.25em] uppercase font-light transition-colors duration-500 hover:opacity-60",
-            scrolled ? "text-brand-forest" : "text-brand-cream"
-          )}
+          className="transition-opacity duration-300 hover:opacity-70 flex items-center"
         >
-          Zhisusa
+          <img
+            src={scrolled ? "/Logo/Zhisusa Text Logo_Black.png" : "/Logo/Zhisusa Text Logo_White.png"}
+            alt="Zhisusa"
+            className="h-4 md:h-[18px] w-auto object-contain transition-all duration-500"
+          />
         </a>
 
         {/* Desktop Links */}

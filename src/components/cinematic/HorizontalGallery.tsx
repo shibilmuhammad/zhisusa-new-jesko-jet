@@ -93,7 +93,7 @@ export function HorizontalGallery({
 
   return (
     <section
-      className="relative bg-background py-16 md:py-24 overflow-hidden flex flex-col"
+      className="relative bg-background pt-16 md:pt-24 pb-8 md:pb-12 lg:pb-14 overflow-hidden flex flex-col"
       aria-label={ariaLabel}
     >
       {/* ══ HEADER ROW: title left + tagline right ══ */}
