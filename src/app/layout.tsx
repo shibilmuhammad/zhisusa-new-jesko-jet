@@ -18,6 +18,7 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://zhisusa.com"),
   title: "Zhisusa — Premium Nature Retreats & Immersive Workations",
   description:
     "Luxury nature retreats, immersive workspaces, premium eco stays, wellness escapes, and curated workation experiences. Escape the routine. Reconnect with nature.",
@@ -39,6 +40,18 @@ export const metadata: Metadata = {
       "Escape the routine. Work, live, and experience nature like never before.",
     type: "website",
     locale: "en_US",
+    siteName: "Zhisusa",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Zhisusa — Premium Nature Retreats & Immersive Workations",
+    description:
+      "Escape the routine. Work, live, and experience nature like never before.",
+  },
+  icons: {
+    icon: "/icon.png",
+    shortcut: "/icon.png",
+    apple: "/icon.png",
   },
 };
 
