@@ -31,29 +31,31 @@ export function WorkspaceMorph() {
   });
   
   // ── READABILITY LAYER ──
-  const readabilityOpacity = useTransform(smoothProgress, [0.35, 0.55], [0, 1]);
+  const readabilityOpacity = useTransform(smoothProgress, [0.4, 0.6], [0, 1]);
   
   // ── PHASE 1: INDOOR TITLE ──
-  const indoorTitleOpacity = useTransform(smoothProgress, [0.1, 0.15, 0.33, 0.38], [0, 1, 1, 0]);
-  const indoorTitleY = useTransform(smoothProgress, [0.1, 0.15, 0.33, 0.38], [30, 0, 0, -30]);
-  const indoorTitleBlur = useTransform(smoothProgress, [0.1, 0.15, 0.33, 0.38], ["blur(12px)", "blur(0px)", "blur(0px)", "blur(12px)"]);
-  const indoorTitleScale = useTransform(smoothProgress, [0.1, 0.15, 0.33, 0.38], [0.96, 1, 1, 1.08]);
+  const indoorTitleOpacity = useTransform(smoothProgress, [0, 0.45, 0.52], [1, 1, 0]);
+  const indoorTitleY = useTransform(smoothProgress, [0, 0.45, 0.52], [0, 0, -40]);
+  const indoorTitleBlur = useTransform(smoothProgress, [0, 0.45, 0.52], ["blur(0px)", "blur(0px)", "blur(12px)"]);
+  const indoorTitleScale = useTransform(smoothProgress, [0, 0.45, 0.52], [1, 1, 1.08]);
+  const indoorTitleTracking = useTransform(smoothProgress, [0, 0.45], ["0.11em", "0.18em"]);
   
   // ── PHASE 1: INDOOR SUBTEXT ──
-  const indoorSubOpacity = useTransform(smoothProgress, [0.12, 0.17, 0.31, 0.36], [0, 1, 1, 0]);
-  const indoorSubY = useTransform(smoothProgress, [0.12, 0.17, 0.31, 0.36], [20, 0, 0, -20]);
-  const indoorSubBlur = useTransform(smoothProgress, [0.12, 0.17, 0.31, 0.36], ["blur(8px)", "blur(0px)", "blur(0px)", "blur(8px)"]);
+  const indoorSubOpacity = useTransform(smoothProgress, [0, 0.42, 0.49], [1, 1, 0]);
+  const indoorSubY = useTransform(smoothProgress, [0, 0.42, 0.49], [0, 0, -20]);
+  const indoorSubBlur = useTransform(smoothProgress, [0, 0.42, 0.49], ["blur(0px)", "blur(0px)", "blur(8px)"]);
   
   // ── PHASE 2: OUTDOOR TITLE ──
-  const outdoorTitleOpacity = useTransform(smoothProgress, [0.39, 0.44, 0.8, 0.9], [0, 1, 1, 0]);
-  const outdoorTitleY = useTransform(smoothProgress, [0.39, 0.44, 0.8, 0.9], [30, 0, 0, -30]);
-  const outdoorTitleBlur = useTransform(smoothProgress, [0.39, 0.44, 0.8, 0.9], ["blur(12px)", "blur(0px)", "blur(0px)", "blur(12px)"]);
-  const outdoorTitleScale = useTransform(smoothProgress, [0.39, 0.44, 0.8, 0.9], [0.96, 1, 1, 1.08]);
+  const outdoorTitleOpacity = useTransform(smoothProgress, [0.49, 0.56, 0.85, 0.92], [0, 1, 1, 0]);
+  const outdoorTitleY = useTransform(smoothProgress, [0.49, 0.56, 0.85, 0.92], [40, 0, 0, -40]);
+  const outdoorTitleBlur = useTransform(smoothProgress, [0.49, 0.56, 0.85, 0.92], ["blur(12px)", "blur(0px)", "blur(0px)", "blur(12px)"]);
+  const outdoorTitleScale = useTransform(smoothProgress, [0.49, 0.56, 0.85, 0.92], [0.96, 1, 1, 1.08]);
+  const outdoorTitleTracking = useTransform(smoothProgress, [0.49, 0.85], ["0.11em", "0.18em"]);
   
   // ── PHASE 2: OUTDOOR SUBTEXT ──
-  const outdoorSubOpacity = useTransform(smoothProgress, [0.41, 0.46, 0.8, 0.9], [0, 1, 1, 0]);
-  const outdoorSubY = useTransform(smoothProgress, [0.41, 0.46, 0.8, 0.9], [20, 0, 0, -20]);
-  const outdoorSubBlur = useTransform(smoothProgress, [0.41, 0.46, 0.8, 0.9], ["blur(8px)", "blur(0px)", "blur(0px)", "blur(8px)"]);
+  const outdoorSubOpacity = useTransform(smoothProgress, [0.51, 0.58, 0.83, 0.90], [0, 1, 1, 0]);
+  const outdoorSubY = useTransform(smoothProgress, [0.51, 0.58, 0.83, 0.90], [20, 0, 0, -20]);
+  const outdoorSubBlur = useTransform(smoothProgress, [0.51, 0.58, 0.83, 0.90], ["blur(8px)", "blur(0px)", "blur(0px)", "blur(8px)"]);
 
   const textShadowStyle = { textShadow: "0 4px 20px rgba(247, 244, 238, 0.6)" };
   const titleShadowStyle = { textShadow: "0 10px 40px rgba(247, 244, 238, 0.7)" };
@@ -115,11 +117,12 @@ export function WorkspaceMorph() {
                 opacity: indoorTitleOpacity,
                 y: indoorTitleY,
                 filter: indoorTitleBlur,
-                scale: indoorTitleScale
+                scale: indoorTitleScale,
+                letterSpacing: indoorTitleTracking
               }}
-              className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl uppercase tracking-[0.11em] font-medium text-brand-forest mb-5"
+              className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl uppercase font-light text-brand-forest mb-5"
             >
-              Work Without Walls
+              Work <span className="italic font-light text-brand-forest/80">Without Walls</span>
             </motion.h2>
             
             <motion.div 
@@ -132,15 +135,15 @@ export function WorkspaceMorph() {
                 className="flex flex-wrap justify-center items-center gap-2 sm:gap-3 md:gap-4 text-brand-forest/90 text-sm sm:text-base md:text-lg lg:text-xl tracking-[0.06em] font-normal"
               >
                 <span>Private offices</span>
-                <span className="text-brand-forest/40 text-xs md:text-sm">•</span>
+                <span className="text-brand-terra text-xs md:text-sm font-bold">•</span>
                 <span>Focus zones</span>
-                <span className="text-brand-forest/40 text-xs md:text-sm">•</span>
+                <span className="text-brand-terra text-xs md:text-sm font-bold">•</span>
                 <span>Minimal deep-work spaces</span>
               </div>
-              <div className="mt-6 md:mt-8 flex items-center gap-4 text-[10px] sm:text-xs tracking-[0.24em] uppercase text-brand-forest/70 font-medium">
-                <span className="w-8 h-[1px] bg-brand-forest/20" />
+              <div className="mt-6 md:mt-8 flex items-center gap-4 text-[10px] sm:text-xs tracking-[0.3em] uppercase text-brand-forest/60 font-light">
+                <span className="w-8 h-[1px] bg-brand-terra/40" />
                 <span style={textShadowStyle}>Designed for uninterrupted focus.</span>
-                <span className="w-8 h-[1px] bg-brand-forest/20" />
+                <span className="w-8 h-[1px] bg-brand-terra/40" />
               </div>
             </motion.div>
           </div>
@@ -153,11 +156,12 @@ export function WorkspaceMorph() {
                 opacity: outdoorTitleOpacity,
                 y: outdoorTitleY,
                 filter: outdoorTitleBlur,
-                scale: outdoorTitleScale
+                scale: outdoorTitleScale,
+                letterSpacing: outdoorTitleTracking
               }}
-              className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl uppercase tracking-[0.11em] font-medium text-brand-forest mb-5"
+              className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl uppercase font-light text-brand-forest mb-5"
             >
-              Work With Nature
+              Work <span className="italic font-light text-brand-forest/80">With Nature</span>
             </motion.h2>
 
             <motion.div 
@@ -170,13 +174,13 @@ export function WorkspaceMorph() {
                 className="flex flex-wrap justify-center items-center gap-2 sm:gap-3 md:gap-4 text-brand-forest/90 text-sm sm:text-base md:text-lg lg:text-xl tracking-[0.06em] font-normal"
               >
                 <span>Open-air desks</span>
-                <span className="text-brand-forest/40 text-xs md:text-sm">•</span>
+                <span className="text-brand-terra text-xs md:text-sm font-bold">•</span>
                 <span>Nature-integrated focus</span>
               </div>
-              <div className="mt-6 md:mt-8 flex items-center gap-4 text-[10px] sm:text-xs tracking-[0.24em] uppercase text-brand-forest/70 font-medium">
-                <span className="w-8 h-[1px] bg-brand-forest/20" />
+              <div className="mt-6 md:mt-8 flex items-center gap-4 text-[10px] sm:text-xs tracking-[0.3em] uppercase text-brand-forest/60 font-light">
+                <span className="w-8 h-[1px] bg-brand-terra/40" />
                 <span style={textShadowStyle}>Designed for calm, creative productivity.</span>
-                <span className="w-8 h-[1px] bg-brand-forest/20" />
+                <span className="w-8 h-[1px] bg-brand-terra/40" />
               </div>
             </motion.div>
           </div>
