@@ -4,7 +4,7 @@
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { useRef, useState } from "react";
 import { FadeText } from "../cinematic/FadeText";
-import { Anchor, Fish, Volleyball, CircleDashed, Flame, Star, Sun } from "lucide-react";
+import { Anchor, Fish, Sprout, Volleyball, CircleDashed, Flame, Star, Sun } from "lucide-react";
 
 const activities = [
   {
@@ -16,9 +16,17 @@ const activities = [
     image: "/1_Kayaking.png"
   },
   {
+    name: "Gardening",
+    timePhase: "Early Morning",
+    time: "7:30 AM",
+    desc: "Nurture life, connect with the earth.",
+    icon: Sprout,
+    image: "/2_Gardening.png"
+  },
+  {
     name: "Fishing",
     timePhase: "Morning",
-    time: "8:30 AM",
+    time: "9:00 AM",
     desc: "Cast a line, catch a moment.",
     icon: Fish,
     image: "/leisure_fishing.png"
