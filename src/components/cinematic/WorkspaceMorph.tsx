@@ -35,12 +35,14 @@ export function WorkspaceMorph() {
   
   // ── PHASE 1: INDOOR TITLE ──
   const indoorTitleOpacity = useTransform(smoothProgress, [0, 0.45, 0.52], [1, 1, 0]);
-  const indoorTitleY = useTransform(smoothProgress, [0, 0.45, 0.52], [0, 0, -40]);
+  const indoorTitleY = useTransform(smoothProgress, [0, 0.45, 0.52], [0, 0, -20]);
   const indoorTitleBlur = useTransform(smoothProgress, [0, 0.45, 0.52], ["blur(0px)", "blur(0px)", "blur(12px)"]);
-  const indoorTitleScale = useTransform(smoothProgress, [0, 0.45, 0.52], [1, 1, 1.08]);
-  const indoorTitleTracking = useTransform(smoothProgress, [0, 0.45], ["0.11em", "0.18em"]);
-  const indoorWorkX = useTransform(smoothProgress, [0, 0.45, 0.52], [0, -25, -60]);
-  const indoorWithoutX = useTransform(smoothProgress, [0, 0.45, 0.52], [0, 25, 60]);
+  const indoorTitleScale = useTransform(smoothProgress, [0, 0.45, 0.52], [1, 1, 1.05]);
+  const indoorTitleTracking = useTransform(smoothProgress, [0, 0.45], ["0.11em", "0.22em"]);
+  
+  // Staggered vertical displacement for a drift out effect on scroll
+  const indoorWorkY = useTransform(smoothProgress, [0, 0.45, 0.52], [0, -10, -50]);
+  const indoorWithoutY = useTransform(smoothProgress, [0, 0.45, 0.52], [0, 10, 45]);
   
   // ── PHASE 1: INDOOR SUBTEXT ──
   const indoorSubOpacity = useTransform(smoothProgress, [0, 0.42, 0.49], [1, 1, 0]);
@@ -49,12 +51,14 @@ export function WorkspaceMorph() {
   
   // ── PHASE 2: OUTDOOR TITLE ──
   const outdoorTitleOpacity = useTransform(smoothProgress, [0.49, 0.56, 0.85, 0.92], [0, 1, 1, 0]);
-  const outdoorTitleY = useTransform(smoothProgress, [0.49, 0.56, 0.85, 0.92], [40, 0, 0, -40]);
+  const outdoorTitleY = useTransform(smoothProgress, [0.49, 0.56, 0.85, 0.92], [20, 0, 0, -20]);
   const outdoorTitleBlur = useTransform(smoothProgress, [0.49, 0.56, 0.85, 0.92], ["blur(12px)", "blur(0px)", "blur(0px)", "blur(12px)"]);
-  const outdoorTitleScale = useTransform(smoothProgress, [0.49, 0.56, 0.85, 0.92], [0.96, 1, 1, 1.08]);
-  const outdoorTitleTracking = useTransform(smoothProgress, [0.49, 0.85], ["0.11em", "0.18em"]);
-  const outdoorWorkX = useTransform(smoothProgress, [0.49, 0.56, 0.85, 0.92], [-40, 0, 0, -60]);
-  const outdoorWithX = useTransform(smoothProgress, [0.49, 0.56, 0.85, 0.92], [40, 0, 0, 60]);
+  const outdoorTitleScale = useTransform(smoothProgress, [0.49, 0.56, 0.85, 0.92], [0.96, 1, 1, 1.05]);
+  const outdoorTitleTracking = useTransform(smoothProgress, [0.49, 0.85], ["0.11em", "0.22em"]);
+  
+  // Vertical convergence on entry, and divergence on exit
+  const outdoorWorkY = useTransform(smoothProgress, [0.49, 0.56, 0.85, 0.92], [-45, 0, 0, -50]);
+  const outdoorWithY = useTransform(smoothProgress, [0.49, 0.56, 0.85, 0.92], [40, 0, 0, 45]);
   
   // ── PHASE 2: OUTDOOR SUBTEXT ──
   const outdoorSubOpacity = useTransform(smoothProgress, [0.51, 0.58, 0.83, 0.90], [0, 1, 1, 0]);
@@ -124,13 +128,19 @@ export function WorkspaceMorph() {
                 scale: indoorTitleScale,
                 letterSpacing: indoorTitleTracking
               }}
-              className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl uppercase font-light text-brand-forest mb-5 flex flex-wrap justify-center gap-x-5 gap-y-2 select-none"
+              className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl text-brand-forest mb-5 flex flex-wrap justify-center items-baseline gap-x-5 gap-y-2 select-none"
             >
-              <motion.span style={{ x: indoorWorkX, display: "inline-block" }}>
+              <motion.span 
+                style={{ y: indoorWorkY, display: "inline-block" }}
+                className="uppercase font-semibold tracking-wide"
+              >
                 Work
               </motion.span>
-              <motion.span style={{ x: indoorWithoutX, display: "inline-block" }} className="italic font-light text-brand-forest/80">
-                Without Walls
+              <motion.span 
+                style={{ y: indoorWithoutY, display: "inline-block" }} 
+                className="italic font-light text-brand-forest/80 lowercase"
+              >
+                without walls
               </motion.span>
             </motion.h2>
             
@@ -168,13 +178,19 @@ export function WorkspaceMorph() {
                 scale: outdoorTitleScale,
                 letterSpacing: outdoorTitleTracking
               }}
-              className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl uppercase font-light text-brand-forest mb-5 flex flex-wrap justify-center gap-x-5 gap-y-2 select-none"
+              className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl text-brand-forest mb-5 flex flex-wrap justify-center items-baseline gap-x-5 gap-y-2 select-none"
             >
-              <motion.span style={{ x: outdoorWorkX, display: "inline-block" }}>
+              <motion.span 
+                style={{ y: outdoorWorkY, display: "inline-block" }}
+                className="uppercase font-semibold tracking-wide"
+              >
                 Work
               </motion.span>
-              <motion.span style={{ x: outdoorWithX, display: "inline-block" }} className="italic font-light text-brand-forest/80">
-                With Nature
+              <motion.span 
+                style={{ y: outdoorWithY, display: "inline-block" }} 
+                className="italic font-light text-brand-forest/80 lowercase"
+              >
+                with nature
               </motion.span>
             </motion.h2>
 
