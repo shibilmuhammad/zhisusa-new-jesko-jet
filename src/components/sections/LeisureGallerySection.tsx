@@ -12,9 +12,9 @@ const leisureActivities: GalleryCard[] = [
     index: "01",
   },
   {
-    title: "Gardening",
-    subtitle: "Morning nurture",
-    description: "Connect with the earth and discover the grounding peace of working the soil.",
+    title: "Fishing",
+    subtitle: "Morning stillness",
+    description: "Find clarity and patience in the quiet anticipation of the catch.",
     image: "/2_Gardening.png",
     index: "02",
   },
