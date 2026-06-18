@@ -21,7 +21,7 @@ const activities = [
     time: "8:30 AM",
     desc: "Cast a line, catch a moment.",
     icon: Fish,
-    image: "/2_Gardening.png"
+    image: "/leisure_fishing.png"
   },
   {
     name: "Volleyball",

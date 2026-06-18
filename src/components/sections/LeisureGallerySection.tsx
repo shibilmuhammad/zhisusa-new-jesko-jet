@@ -15,7 +15,7 @@ const leisureActivities: GalleryCard[] = [
     title: "Fishing",
     subtitle: "Morning stillness",
     description: "Find clarity and patience in the quiet anticipation of the catch.",
-    image: "/2_Gardening.png",
+    image: "/leisure_fishing.png",
     index: "02",
   },
   {
