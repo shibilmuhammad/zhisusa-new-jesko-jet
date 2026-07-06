@@ -24,12 +24,12 @@ const activities = [
     image: "/2_Gardening.png"
   },
   {
-    name: "Fishing",
+    name: "Swimming",
     timePhase: "Morning",
     time: "9:00 AM",
-    desc: "Cast a line, catch a moment.",
+    desc: "Dive into crystal-clear waters.",
     icon: Fish,
-    image: "/leisure_fishing.png"
+    image: "/Swimming Pool.png"
   },
   {
     name: "Volleyball",
@@ -45,7 +45,7 @@ const activities = [
     time: "2:00 PM",
     desc: "Rally under the open sky.",
     icon: CircleDashed,
-    image: "/leisure_tennis.png"
+    image: "/Tennis.png"
   },
   {
     name: "Bonfires",
@@ -53,7 +53,7 @@ const activities = [
     time: "6:30 PM",
     desc: "Stories, warmth & starry views.",
     icon: Flame,
-    image: "/leisure_bonfire.png"
+    image: "/bonfire.png"
   },
   {
     name: "Stargazing",
@@ -61,7 +61,7 @@ const activities = [
     time: "8:30 PM",
     desc: "Look up. Disconnect to reconnect.",
     icon: Star,
-    image: "/leisure_stargazing.png"
+    image: "/stargazing.png"
   },
 ];
 

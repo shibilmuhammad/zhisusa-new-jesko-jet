@@ -39,7 +39,7 @@ const experiences = [
   {
     title: "Campfire Nights",
     description: "Share warmth, stories, and acoustic melodies under stars.",
-    image: "/leisure_bonfire.png",
+    image: "/bonfire.png",
     gradient: "from-[#1a120e] to-[#0a0a0a]",
     accentGradient: "bg-[radial-gradient(circle_at_bottom_center,_rgba(229,220,197,0.07)_0%,_transparent_60%)]",
     spanClass: "col-span-1 md:col-span-1 lg:col-span-2 row-span-1 lg:row-span-1",
